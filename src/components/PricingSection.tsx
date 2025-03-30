@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Check, HelpCircle } from 'lucide-react';
 
@@ -52,7 +53,7 @@ const PricingSection = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 relative">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {/* Starter */}
           <div className="pricing-card">
             <div className="text-center mb-6">
@@ -110,9 +111,10 @@ const PricingSection = () => {
             </button>
           </div>
 
-          {/* Pro Card with enhanced Best Value visibility */}
+          {/* Pro */}
           <div className="pricing-card relative border-2 border-promogenie-600">
-            <div className="absolute -top-7 left-1/2 transform -translate-x-1/2 px-4 py-1 bg-promogenie-600 text-white text-xs font-bold rounded-full whitespace-nowrap z-10">
+            {/* Best Value badge positioned outside the card at the top */}
+            <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 px-4 py-1 bg-promogenie-600 text-white text-xs font-bold rounded-full whitespace-nowrap">
               BEST VALUE
             </div>
             
@@ -123,10 +125,7 @@ const PricingSection = () => {
                 <span className="text-4xl font-bold">{billingPeriod === 'monthly' ? '$79' : '$790'}</span>
                 <span className="text-gray-500 ml-1">/{billingPeriod === 'monthly' ? 'mo' : 'yr'}</span>
               </div>
-              <p className="text-sm text-gray-500 mt-2">
-                Designed for marketers aiming for more flexibility and options.
-                <span className="block text-xs text-promogenie-600 mt-1">Best value for growing businesses</span>
-              </p>
+              <p className="text-sm text-gray-500 mt-2">Designed for marketers aiming for more flexibility and options.</p>
             </div>
 
             <div className="border-t border-gray-100 pt-6 pb-4">
