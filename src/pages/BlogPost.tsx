@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { ArrowLeft, ArrowRight, Facebook, Twitter, Linkedin, Share2, Clock, User, Calendar } from 'lucide-react';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -14,7 +13,6 @@ const BlogPost = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   
-  // Find the current post
   const currentPost = blogData.find(post => post.slug === slug);
   
   if (!currentPost) {
@@ -26,17 +24,14 @@ const BlogPost = () => {
     );
   }
   
-  // Find index of current post
   const currentIndex = blogData.findIndex(post => post.slug === slug);
   const prevPost = currentIndex > 0 ? blogData[currentIndex - 1] : null;
   const nextPost = currentIndex < blogData.length - 1 ? blogData[currentIndex + 1] : null;
   
-  // Get related posts (excluding current)
   const relatedPosts = blogData
     .filter(post => post.category === currentPost.category && post.slug !== slug)
     .slice(0, 3);
     
-  // If we don't have enough related posts in the same category, add some from other categories
   if (relatedPosts.length < 3) {
     const otherPosts = blogData
       .filter(post => post.category !== currentPost.category && post.slug !== slug)
@@ -69,18 +64,21 @@ const BlogPost = () => {
       
       <main className="flex-grow pt-24">
         <article className="pb-16">
-          {/* Hero section */}
           <div className="w-full bg-gradient-to-b from-promogenie-50 to-white py-12">
             <div className="container mx-auto px-4">
               <div className="max-w-4xl mx-auto">
                 <Breadcrumb className="mb-6">
                   <BreadcrumbList>
                     <BreadcrumbItem>
-                      <BreadcrumbLink as={Link} to="/">Home</BreadcrumbLink>
+                      <BreadcrumbLink asChild>
+                        <Link to="/">Home</Link>
+                      </BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                      <BreadcrumbLink as={Link} to="/blog">Blog</BreadcrumbLink>
+                      <BreadcrumbLink asChild>
+                        <Link to="/blog">Blog</Link>
+                      </BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
@@ -115,7 +113,6 @@ const BlogPost = () => {
             </div>
           </div>
           
-          {/* Featured image */}
           <div className="container mx-auto px-4 -mt-6">
             <div className="max-w-4xl mx-auto">
               <div className="w-full h-[400px] mb-10 rounded-xl overflow-hidden shadow-lg">
@@ -128,12 +125,10 @@ const BlogPost = () => {
             </div>
           </div>
           
-          {/* Content */}
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
               <div className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: currentPost.content }} />
               
-              {/* Tags */}
               <div className="mt-12 flex flex-wrap gap-2">
                 {currentPost.tags.map((tag, index) => (
                   <span key={index} className="inline-block px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">
@@ -142,7 +137,6 @@ const BlogPost = () => {
                 ))}
               </div>
               
-              {/* Author */}
               <div className="mt-12 p-6 bg-gray-50 rounded-xl flex items-center gap-4">
                 <Avatar className="h-16 w-16">
                   <AvatarFallback className="bg-promogenie-100 text-promogenie-700 text-xl">
@@ -155,7 +149,6 @@ const BlogPost = () => {
                 </div>
               </div>
               
-              {/* Share */}
               <div className="mt-12 flex items-center gap-4">
                 <span className="font-medium">Share this article:</span>
                 <div className="flex gap-2">
@@ -174,7 +167,6 @@ const BlogPost = () => {
                 </div>
               </div>
               
-              {/* Prev/Next Navigation */}
               <div className="mt-16 border-t border-b border-gray-200 py-8 grid md:grid-cols-2 gap-6">
                 {prevPost ? (
                   <Link to={`/blog/${prevPost.slug}`} className="flex flex-col group">
@@ -200,7 +192,6 @@ const BlogPost = () => {
           </div>
         </article>
         
-        {/* Related Posts */}
         <section className="bg-gray-50 py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
