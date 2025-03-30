@@ -1,9 +1,87 @@
 
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Upload, Sparkles, Star } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
 
 const Hero = () => {
+  const [isDragging, setIsDragging] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const { toast } = useToast();
+
+  const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const file = e.dataTransfer.files[0];
+      
+      // Check if the file is an image
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Invalid file type",
+          description: "Please upload an image file (JPEG, PNG, etc.)",
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target && typeof event.target.result === 'string') {
+          setUploadedImage(event.target.result);
+          toast({
+            title: "Image uploaded successfully",
+            description: "Your product image is ready for processing",
+          });
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }, [toast]);
+
+  const handleFileInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      
+      // Check if the file is an image
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Invalid file type",
+          description: "Please upload an image file (JPEG, PNG, etc.)",
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target && typeof event.target.result === 'string') {
+          setUploadedImage(event.target.result);
+          toast({
+            title: "Image uploaded successfully",
+            description: "Your product image is ready for processing",
+          });
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }, [toast]);
+
+  const triggerFileInput = () => {
+    document.getElementById('file-upload')?.click();
+  };
+
   return (
     <div className="pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden">
       <div className="container mx-auto px-4">
@@ -57,15 +135,32 @@ const Hero = () => {
                     <div className="mx-auto text-xs font-medium text-gray-500">AI Image Generator</div>
                   </div>
                   <div className="p-5">
-                    <div className="bg-gray-50 border-2 border-dashed border-gray-200 rounded-lg p-4 text-center mb-4">
+                    <div 
+                      className={`bg-gray-50 border-2 ${isDragging ? 'border-promogenie-500' : 'border-dashed border-gray-200'} rounded-lg p-4 text-center mb-4 cursor-pointer transition-colors`}
+                      onDragOver={handleDragOver}
+                      onDragLeave={handleDragLeave}
+                      onDrop={handleDrop}
+                      onClick={triggerFileInput}
+                    >
+                      <input 
+                        type="file" 
+                        id="file-upload" 
+                        className="hidden" 
+                        accept="image/*"
+                        onChange={handleFileInputChange}
+                      />
                       <div className="inline-flex flex-col items-center justify-center">
                         <Upload className="h-8 w-8 text-gray-400 mb-2" />
                         <p className="text-sm text-gray-500">Drag and drop your product image</p>
-                        <p className="text-xs text-gray-400 mt-1">or browse to upload</p>
+                        <p className="text-xs text-gray-400 mt-1">or click to browse</p>
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3 mb-4">
-                      <img src="/lovable-uploads/66b5f224-adda-4dff-9b36-4271935c7694.png" alt="Product" className="w-full h-32 object-cover rounded-lg" />
+                      {uploadedImage ? (
+                        <img src={uploadedImage} alt="Uploaded Product" className="w-full h-32 object-cover rounded-lg" />
+                      ) : (
+                        <img src="/lovable-uploads/66b5f224-adda-4dff-9b36-4271935c7694.png" alt="Product" className="w-full h-32 object-cover rounded-lg" />
+                      )}
                       <div className="w-full h-32 bg-gray-100 rounded-lg flex items-center justify-center">
                         <div className="animate-pulse h-4 bg-gray-200 rounded w-3/4"></div>
                       </div>
