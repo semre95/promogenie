@@ -113,12 +113,13 @@ const PricingSection = () => {
 
           {/* Pro */}
           <div className="pricing-card relative border-2 border-promogenie-600">
-            <div className="absolute top-0 right-0 -translate-y-4 px-4 py-1 bg-promogenie-600 text-white text-xs font-bold rounded-full">
+            {/* Best Value badge positioned outside the card at the top */}
+            <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 px-4 py-1 bg-promogenie-600 text-white text-xs font-bold rounded-full whitespace-nowrap">
               BEST VALUE
             </div>
             
             <div className="text-center mb-6">
-              <div className="text-xs uppercase font-semibold text-promogenie-600 mb-1">For Boutique Agencies & Startup Brands</div>
+              <div className="text-xs uppercase font-semibold text-promogenie-600 mb-1">FOR BOUTIQUE AGENCIES & STARTUP BRANDS</div>
               <h3 className="text-2xl font-bold mb-2">Pro</h3>
               <div className="flex items-baseline justify-center">
                 <span className="text-4xl font-bold">{billingPeriod === 'monthly' ? '$79' : '$790'}</span>

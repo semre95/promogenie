@@ -24,8 +24,8 @@ const Index = () => {
         <VirtualInfluencersSection />
         <CompetitiveEdgeSection />
         <PricingSection />
-        <FAQSection />
         <CTASection />
+        <FAQSection />
       </main>
       <Footer />
     </div>
