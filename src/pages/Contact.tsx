@@ -2,7 +2,7 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { Mail, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Contact = () => {
@@ -37,7 +37,7 @@ const Contact = () => {
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <div className="grid md:grid-cols-3 gap-8">
+              <div className="grid md:grid-cols-2 gap-8">
                 <div className="bg-gray-50 p-6 rounded-lg text-center">
                   <div className="w-12 h-12 bg-promogenie-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Mail className="text-promogenie-600" size={24} />
@@ -54,18 +54,10 @@ const Contact = () => {
                 
                 <div className="bg-gray-50 p-6 rounded-lg text-center">
                   <div className="w-12 h-12 bg-promogenie-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <MapPin className="text-promogenie-600" size={24} />
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2">Location</h3>
-                  <p className="text-gray-600">San Francisco, CA</p>
-                </div>
-                
-                <div className="bg-gray-50 p-6 rounded-lg text-center">
-                  <div className="w-12 h-12 bg-promogenie-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Phone className="text-promogenie-600" size={24} />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">Support Hours</h3>
-                  <p className="text-gray-600">Monday - Friday<br />9am - 5pm PST</p>
+                  <p className="text-gray-600">Monday - Friday<br />9am - 5pm GMT+2</p>
                 </div>
               </div>
             </div>
