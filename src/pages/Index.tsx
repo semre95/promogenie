@@ -8,6 +8,7 @@ import HowItWorksSection from '../components/HowItWorksSection';
 import VirtualInfluencersSection from '../components/VirtualInfluencersSection';
 import CompetitiveEdgeSection from '../components/CompetitiveEdgeSection';
 import PricingSection from '../components/PricingSection';
+import TestimonialSection from '../components/TestimonialSection';
 import FAQSection from '../components/FAQSection';
 import CTASection from '../components/CTASection';
 import Footer from '../components/Footer';
@@ -24,6 +25,7 @@ const Index = () => {
         <VirtualInfluencersSection />
         <CompetitiveEdgeSection />
         <PricingSection />
+        <TestimonialSection />
         <CTASection />
         <FAQSection />
       </main>

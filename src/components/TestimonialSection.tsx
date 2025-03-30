@@ -1,5 +1,7 @@
 
 import React from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { Card, CardContent } from './ui/card';
 
 const testimonials = [
   {
@@ -35,25 +37,22 @@ const TestimonialSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-white p-8 rounded-xl shadow-lg relative fancy-border-gradient">
-              <div className="mb-6">
-                <svg width="45" height="36" className="text-promogenie-200" viewBox="0 0 45 36" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M13.5 18H9C9 12.375 13.5 7.875 19.125 7.875V11.25C15.75 11.25 13.5 13.5 13.5 18ZM27 18H22.5C22.5 12.375 27 7.875 32.625 7.875V11.25C29.25 11.25 27 13.5 27 18Z" fill="currentColor"/>
-                </svg>
-              </div>
-              <p className="text-gray-600 mb-6">{testimonial.content}</p>
-              <div className="flex items-center">
-                <img 
-                  src={testimonial.avatar} 
-                  alt={testimonial.author} 
-                  className="w-12 h-12 rounded-full mr-4"
-                />
-                <div>
-                  <h4 className="font-semibold">{testimonial.author}</h4>
-                  <p className="text-sm text-gray-500">{testimonial.role}</p>
+            <Card key={index} className="border border-purple-200 shadow-sm bg-white overflow-hidden">
+              <CardContent className="p-8">
+                <div className="mb-6 text-purple-300 text-4xl font-serif">"</div>
+                <p className="text-gray-700 mb-6">{testimonial.content}</p>
+                <div className="flex items-center">
+                  <Avatar className="h-12 w-12 mr-4">
+                    <AvatarImage src={testimonial.avatar} alt={testimonial.author} />
+                    <AvatarFallback>{testimonial.author.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <h4 className="font-semibold">{testimonial.author}</h4>
+                    <p className="text-sm text-gray-500">{testimonial.role}</p>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
 
