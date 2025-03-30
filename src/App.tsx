@@ -15,7 +15,6 @@ import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import Contact from "./pages/Contact";
 import Demos from "./pages/Demos";
-import Testimonials from "./pages/Testimonials";
 import Blog from "./pages/Blog";
 import Careers from "./pages/Careers";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -39,7 +38,6 @@ const App = () => (
           <Route path="/signup" element={<Signup />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/demos" element={<Demos />} />
-          <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

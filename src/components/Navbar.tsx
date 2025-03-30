@@ -31,6 +31,9 @@ const Navbar = () => {
           <Link to="/pricing" className="font-medium text-gray-700 hover:text-promogenie-600 transition-colors">
             Pricing
           </Link>
+          <Link to="/#testimonials" className="font-medium text-gray-700 hover:text-promogenie-600 transition-colors">
+            Testimonials
+          </Link>
           <Link to="/about" className="font-medium text-gray-700 hover:text-promogenie-600 transition-colors">
             About
           </Link>
@@ -62,6 +65,9 @@ const Navbar = () => {
             </Link>
             <Link to="/pricing" className="font-medium text-gray-700 hover:text-promogenie-600 transition-colors" onClick={toggleMenu}>
               Pricing
+            </Link>
+            <Link to="/#testimonials" className="font-medium text-gray-700 hover:text-promogenie-600 transition-colors" onClick={toggleMenu}>
+              Testimonials
             </Link>
             <Link to="/about" className="font-medium text-gray-700 hover:text-promogenie-600 transition-colors" onClick={toggleMenu}>
               About
