@@ -25,7 +25,7 @@ const Pricing = () => {
         </section>
         
         {/* Pricing Section */}
-        <PricingSection />
+        <PricingSection hideHeading={true} />
 
         {/* Guarantee Section */}
         <section className="py-16 bg-white">

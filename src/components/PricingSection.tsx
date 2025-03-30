@@ -4,8 +4,11 @@ import { Check, HelpCircle } from 'lucide-react';
 import { Badge } from './ui/badge';
 
 type PricingPeriod = 'monthly' | 'annually';
+interface PricingSectionProps {
+  hideHeading?: boolean;
+}
 
-const PricingSection = () => {
+const PricingSection = ({ hideHeading = false }: PricingSectionProps) => {
   const [billingPeriod, setBillingPeriod] = useState<PricingPeriod>('monthly');
 
   const toggleBillingPeriod = () => {
@@ -27,31 +30,33 @@ const PricingSection = () => {
   return (
     <section id="pricing" className="py-16 md:py-24 bg-white">
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Simple, Transparent Pricing</h2>
-          <p className="text-lg text-gray-600 mb-8">
-            Choose the plan that best suits your needs. No hidden fees, cancel anytime.
-          </p>
-
-          <div className="flex items-center justify-center mb-8">
-            <span className={`text-sm mr-3 ${billingPeriod === 'monthly' ? 'font-medium text-promogenie-600' : 'text-gray-500'}`}>
-              Monthly
-            </span>
-            <button
-              onClick={toggleBillingPeriod}
-              className="relative inline-flex h-6 w-12 items-center rounded-full bg-gray-200"
-            >
-              <span className="sr-only">Toggle billing period</span>
-              <span
-                className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform ${
-                  billingPeriod === 'annually' ? 'translate-x-6' : 'translate-x-1'
-                }`}
-              />
-            </button>
-            <span className={`text-sm ml-3 ${billingPeriod === 'annually' ? 'font-medium text-promogenie-600' : 'text-gray-500'}`}>
-              Annually <span className="text-xs text-green-500 font-medium ml-1">(Save 17%)</span>
-            </span>
+        {!hideHeading && (
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Simple, Transparent Pricing</h2>
+            <p className="text-lg text-gray-600 mb-8">
+              Choose the plan that best suits your needs. No hidden fees, cancel anytime.
+            </p>
           </div>
+        )}
+
+        <div className="flex items-center justify-center mb-8">
+          <span className={`text-sm mr-3 ${billingPeriod === 'monthly' ? 'font-medium text-promogenie-600' : 'text-gray-500'}`}>
+            Monthly
+          </span>
+          <button
+            onClick={toggleBillingPeriod}
+            className="relative inline-flex h-6 w-12 items-center rounded-full bg-gray-200"
+          >
+            <span className="sr-only">Toggle billing period</span>
+            <span
+              className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform ${
+                billingPeriod === 'annually' ? 'translate-x-6' : 'translate-x-1'
+              }`}
+            />
+          </button>
+          <span className={`text-sm ml-3 ${billingPeriod === 'annually' ? 'font-medium text-promogenie-600' : 'text-gray-500'}`}>
+            Annually <span className="text-xs text-green-500 font-medium ml-1">(Save 17%)</span>
+          </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
