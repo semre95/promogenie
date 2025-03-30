@@ -1,13 +1,30 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const getTestimonialsLink = () => {
+    if (location.pathname === '/') {
+      return '/#testimonials';
+    } else {
+      return '/#testimonials';
+    }
+  };
+
+  const handleTestimonialsClick = (e: React.MouseEvent) => {
+    if (location.pathname === '/') {
+      e.preventDefault();
+      document.getElementById('testimonials')?.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMenuOpen(false);
   };
 
   return (
@@ -31,7 +48,11 @@ const Navbar = () => {
           <Link to="/pricing" className="font-medium text-gray-700 hover:text-promogenie-600 transition-colors">
             Pricing
           </Link>
-          <Link to="/#testimonials" className="font-medium text-gray-700 hover:text-promogenie-600 transition-colors">
+          <Link 
+            to={getTestimonialsLink()} 
+            className="font-medium text-gray-700 hover:text-promogenie-600 transition-colors"
+            onClick={handleTestimonialsClick}
+          >
             Testimonials
           </Link>
           <Link to="/about" className="font-medium text-gray-700 hover:text-promogenie-600 transition-colors">
@@ -66,7 +87,11 @@ const Navbar = () => {
             <Link to="/pricing" className="font-medium text-gray-700 hover:text-promogenie-600 transition-colors" onClick={toggleMenu}>
               Pricing
             </Link>
-            <Link to="/#testimonials" className="font-medium text-gray-700 hover:text-promogenie-600 transition-colors" onClick={toggleMenu}>
+            <Link 
+              to={getTestimonialsLink()} 
+              className="font-medium text-gray-700 hover:text-promogenie-600 transition-colors"
+              onClick={handleTestimonialsClick}
+            >
               Testimonials
             </Link>
             <Link to="/about" className="font-medium text-gray-700 hover:text-promogenie-600 transition-colors" onClick={toggleMenu}>

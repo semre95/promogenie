@@ -6,16 +6,19 @@ import { Card, CardContent } from './ui/card';
 const testimonials = [
   {
     content: "PromoGenie revolutionized our marketing workflow. We've cut our content creation time by 80% while producing more engaging ads than ever before.",
+    name: "Sarah J.",
     role: "Marketing Director",
     avatar: "https://randomuser.me/api/portraits/women/32.jpg"
   },
   {
     content: "As a small business owner, I couldn't afford professional photoshoots. PromoGenie lets me create studio-quality product images that convert much better than my amateur photos.",
+    name: "Mark L.",
     role: "Founder",
     avatar: "https://randomuser.me/api/portraits/men/44.jpg"
   },
   {
     content: "The AI influencer videos are incredible. Our engagement rates jumped 35% when we started using them in our social media campaigns. Worth every penny!",
+    name: "Tiffany H.",
     role: "Social Media Manager",
     avatar: "https://randomuser.me/api/portraits/women/55.jpg"
   }
@@ -26,7 +29,7 @@ const TestimonialSection = () => {
     <section id="testimonials" className="py-16 md:py-24 bg-gradient-to-r from-promogenie-50 to-white">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-promogenie-600">Our Customers</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">What <span className="text-promogenie-600">Our Customers</span> Say</h2>
           <p className="text-lg text-gray-600">
             Join thousands of businesses transforming their marketing with PromoGenie
           </p>
@@ -44,6 +47,7 @@ const TestimonialSection = () => {
                     <AvatarFallback>C</AvatarFallback>
                   </Avatar>
                   <div>
+                    <p className="font-medium text-gray-800">{testimonial.name}</p>
                     <p className="text-sm text-gray-500">{testimonial.role}</p>
                   </div>
                 </div>

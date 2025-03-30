@@ -1,9 +1,18 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Facebook, Twitter, Instagram } from 'lucide-react';
 
 const Footer = () => {
+  const location = useLocation();
+
+  const handleTestimonialsClick = (e: React.MouseEvent) => {
+    if (location.pathname === '/') {
+      e.preventDefault();
+      document.getElementById('testimonials')?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <footer className="bg-gray-50 border-t border-gray-200">
       <div className="container mx-auto px-4 py-12">
@@ -50,7 +59,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/#testimonials" className="text-gray-600 hover:text-promogenie-600 transition-colors">
+                <Link 
+                  to="/#testimonials" 
+                  className="text-gray-600 hover:text-promogenie-600 transition-colors"
+                  onClick={handleTestimonialsClick}
+                >
                   Testimonials
                 </Link>
               </li>
