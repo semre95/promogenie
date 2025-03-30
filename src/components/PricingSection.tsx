@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Check, HelpCircle } from 'lucide-react';
 
@@ -111,8 +112,8 @@ const PricingSection = () => {
           </div>
 
           {/* Pro */}
-          <div className="pricing-card relative">
-            <div className="absolute top-0 right-0 translate-x-2 -translate-y-2 bg-promogenie-600 text-white text-xs font-bold px-3 py-1 rounded-md">
+          <div className="pricing-card relative border-2 border-promogenie-600">
+            <div className="absolute top-0 right-0 -translate-y-4 px-4 py-1 bg-promogenie-600 text-white text-xs font-bold rounded-full">
               BEST VALUE
             </div>
             
@@ -290,28 +291,6 @@ const PricingSection = () => {
             <button className="w-full mt-4 px-4 py-2 bg-gray-800 text-white rounded-md font-medium hover:bg-gray-700 transition-colors">
               Contact Sales
             </button>
-          </div>
-        </div>
-
-        <div className="mt-16 max-w-3xl mx-auto text-center">
-          <h3 className="text-2xl font-bold mb-4">Frequently Asked Questions</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 text-left">
-            <div className="rounded-lg p-6 bg-gray-50">
-              <h4 className="text-lg font-semibold mb-2">What is a credit?</h4>
-              <p className="text-gray-600 text-sm">Credits are used for generating AI content. One credit typically allows for a full generation cycle including multiple variations of an image or video.</p>
-            </div>
-            <div className="rounded-lg p-6 bg-gray-50">
-              <h4 className="text-lg font-semibold mb-2">Can I upgrade anytime?</h4>
-              <p className="text-gray-600 text-sm">Yes! You can upgrade your plan at any time. The new rate will be prorated based on your current billing cycle.</p>
-            </div>
-            <div className="rounded-lg p-6 bg-gray-50">
-              <h4 className="text-lg font-semibold mb-2">How do AI influencers work?</h4>
-              <p className="text-gray-600 text-sm">Our AI creates realistic influencer images featuring your product. With premium plans, these influencers can speak about your product with synchronized lip movements.</p>
-            </div>
-            <div className="rounded-lg p-6 bg-gray-50">
-              <h4 className="text-lg font-semibold mb-2">Do you offer refunds?</h4>
-              <p className="text-gray-600 text-sm">We offer a 7-day money-back guarantee if you're not satisfied with our service. Contact our support team for assistance.</p>
-            </div>
           </div>
         </div>
       </div>
