@@ -1,7 +1,19 @@
+
+# Allow all web crawlers
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://promogenie.co/sitemap.xml
+
+# Specific rules for major crawlers
 User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
+Allow: /
+
+User-agent: Yandexbot
 Allow: /
 
 User-agent: Twitterbot
@@ -10,5 +22,7 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+# Disallow specific paths
 User-agent: *
-Allow: /
+Disallow: /admin/
+Disallow: /private/
