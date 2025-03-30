@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { Check, HelpCircle } from 'lucide-react';
+import { Badge } from './ui/badge';
 
 type PricingPeriod = 'monthly' | 'annually';
 
@@ -111,14 +112,14 @@ const PricingSection = () => {
             </button>
           </div>
 
-          {/* Pro */}
-          <div className="pricing-card relative border-2 border-promogenie-600">
-            {/* Best Value badge positioned outside the card at the top */}
-            <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 px-4 py-1 bg-promogenie-600 text-white text-xs font-bold rounded-full whitespace-nowrap">
+          {/* Pro - Best Value */}
+          <div className="pricing-card relative mt-6 md:mt-0 overflow-visible border-2 border-promogenie-600 rounded-xl">
+            {/* Best Value badge positioned at the top */}
+            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 py-1 px-5 bg-promogenie-600 text-white text-sm font-bold uppercase rounded-md z-10">
               BEST VALUE
             </div>
             
-            <div className="text-center mb-6">
+            <div className="text-center mb-6 pt-3">
               <div className="text-xs uppercase font-semibold text-promogenie-600 mb-1">FOR BOUTIQUE AGENCIES & STARTUP BRANDS</div>
               <h3 className="text-2xl font-bold mb-2">Pro</h3>
               <div className="flex items-baseline justify-center">
