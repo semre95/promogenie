@@ -50,9 +50,9 @@ const FeatureSection = () => {
     <section className="py-16 md:py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Transform Your Product Marketing</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">The Future of <span className="text-promogenie-600">Product Marketing</span></h2>
           <p className="text-lg text-gray-600">
-            Our AI-powered platform turns simple product photos into professional ad creatives, saving you thousands on photoshoots and content creation.
+            Why spend thousands on influencers when AI can create personalized, high-converting ads for you instantly?
           </p>
         </div>
 

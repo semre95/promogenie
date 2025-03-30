@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Check, HelpCircle } from 'lucide-react';
 
@@ -54,11 +53,11 @@ const PricingSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {/* Starter Plan */}
+          {/* Starter */}
           <div className="pricing-card">
             <div className="text-center mb-6">
               <div className="text-xs uppercase font-semibold text-promogenie-600 mb-1">For Small Businesses & Freelancers</div>
-              <h3 className="text-2xl font-bold mb-2">Starter Plan</h3>
+              <h3 className="text-2xl font-bold mb-2">Starter</h3>
               <div className="flex items-baseline justify-center">
                 <span className="text-4xl font-bold">{billingPeriod === 'monthly' ? '$19' : '$190'}</span>
                 <span className="text-gray-500 ml-1">/{billingPeriod === 'monthly' ? 'mo' : 'yr'}</span>
@@ -111,15 +110,15 @@ const PricingSection = () => {
             </button>
           </div>
 
-          {/* Pro Plan */}
+          {/* Pro */}
           <div className="pricing-card relative">
             <div className="absolute top-0 right-0 translate-x-2 -translate-y-2 bg-promogenie-600 text-white text-xs font-bold px-3 py-1 rounded-md">
-              POPULAR
+              BEST VALUE
             </div>
             
             <div className="text-center mb-6">
               <div className="text-xs uppercase font-semibold text-promogenie-600 mb-1">For Boutique Agencies & Startup Brands</div>
-              <h3 className="text-2xl font-bold mb-2">Pro Plan</h3>
+              <h3 className="text-2xl font-bold mb-2">Pro</h3>
               <div className="flex items-baseline justify-center">
                 <span className="text-4xl font-bold">{billingPeriod === 'monthly' ? '$79' : '$790'}</span>
                 <span className="text-gray-500 ml-1">/{billingPeriod === 'monthly' ? 'mo' : 'yr'}</span>
@@ -172,11 +171,11 @@ const PricingSection = () => {
             </button>
           </div>
 
-          {/* Team Plan */}
+          {/* Team */}
           <div className="pricing-card">
             <div className="text-center mb-6">
               <div className="text-xs uppercase font-semibold text-promogenie-600 mb-1">For Creative Agencies & E-commerce Brands</div>
-              <h3 className="text-2xl font-bold mb-2">Team Plan</h3>
+              <h3 className="text-2xl font-bold mb-2">Team</h3>
               <div className="flex items-baseline justify-center">
                 <span className="text-4xl font-bold">{billingPeriod === 'monthly' ? '$199' : '$1,990'}</span>
                 <span className="text-gray-500 ml-1">/{billingPeriod === 'monthly' ? 'mo' : 'yr'}</span>
@@ -229,11 +228,11 @@ const PricingSection = () => {
             </button>
           </div>
 
-          {/* Enterprise Plan */}
+          {/* Enterprise */}
           <div className="pricing-card bg-gray-50">
             <div className="text-center mb-6">
               <div className="text-xs uppercase font-semibold text-promogenie-600 mb-1">For Large-scale Ad Generation Needs</div>
-              <h3 className="text-2xl font-bold mb-2">Enterprise Plan</h3>
+              <h3 className="text-2xl font-bold mb-2">Enterprise</h3>
               <div className="flex items-baseline justify-center">
                 <span className="text-2xl font-bold">Let's Talk</span>
               </div>

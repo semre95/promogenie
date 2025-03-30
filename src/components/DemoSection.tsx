@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const DemoSection = () => {
@@ -14,91 +14,19 @@ const DemoSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          <div className="rounded-xl overflow-hidden shadow-lg">
-            <div className="relative">
-              <img 
-                src="/lovable-uploads/66b5f224-adda-4dff-9b36-4271935c7694.png" 
-                alt="Original Product" 
-                className="w-full h-64 object-cover"
-              />
-              <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white text-sm font-medium rounded-md px-3 py-1">
-                Original Photo
+        <div className="max-w-4xl mx-auto mb-16">
+          <div className="rounded-xl overflow-hidden shadow-xl">
+            <div className="relative aspect-video bg-gray-900 flex items-center justify-center">
+              <div className="absolute inset-0 opacity-60 bg-gradient-to-r from-promogenie-800 to-promogenie-500"></div>
+              
+              <div className="h-24 w-24 rounded-full bg-white bg-opacity-20 border-2 border-white flex items-center justify-center z-10 cursor-pointer hover:bg-opacity-30 transition-all">
+                <Play size={48} className="text-white ml-2" />
               </div>
-            </div>
-            <div className="p-6 bg-white">
-              <h3 className="text-xl font-semibold mb-2">Customer's Photo</h3>
-              <p className="text-gray-600">Simple product photo taken with a smartphone camera, no special lighting or setup.</p>
-            </div>
-          </div>
-
-          <div className="rounded-xl overflow-hidden shadow-lg">
-            <div className="relative">
-              <img 
-                src="/lovable-uploads/c34afa33-cf25-449c-b085-bf4f1837ef04.png" 
-                alt="AI Generated Scene" 
-                className="w-full h-64 object-cover"
-              />
-              <div className="absolute top-4 left-4 bg-promogenie-600 text-white text-sm font-medium rounded-md px-3 py-1">
-                AI Generated
+              
+              <div className="absolute bottom-6 left-6 text-white z-10">
+                <p className="text-sm font-medium">PromoGenie Demo</p>
+                <h3 className="text-2xl font-bold">Transform Any Photo Into Ad Magic</h3>
               </div>
-            </div>
-            <div className="p-6 bg-white">
-              <h3 className="text-xl font-semibold mb-2">Nature-Inspired Scene</h3>
-              <p className="text-gray-600">Our AI placed the product in a beautiful natural setting with perfect lighting and composition.</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          <div className="rounded-xl overflow-hidden shadow-lg">
-            <div className="relative">
-              <img 
-                src="/lovable-uploads/b5208401-363e-4a97-b8ca-f32220d76188.png" 
-                alt="Professional Studio" 
-                className="w-full h-64 object-cover"
-              />
-              <div className="absolute top-4 left-4 bg-promogenie-600 text-white text-sm font-medium rounded-md px-3 py-1">
-                AI Generated
-              </div>
-            </div>
-            <div className="p-6 bg-white">
-              <h3 className="text-xl font-semibold mb-2">Studio Quality</h3>
-              <p className="text-gray-600">Professional studio-quality image with perfect lighting and composition.</p>
-            </div>
-          </div>
-
-          <div className="rounded-xl overflow-hidden shadow-lg">
-            <div className="relative">
-              <img 
-                src="/lovable-uploads/7ce9dcd6-4849-4940-adbe-6865ace9cbce.png" 
-                alt="Influencer Marketing" 
-                className="w-full h-64 object-cover"
-              />
-              <div className="absolute top-4 left-4 bg-promogenie-600 text-white text-sm font-medium rounded-md px-3 py-1">
-                AI Generated
-              </div>
-            </div>
-            <div className="p-6 bg-white">
-              <h3 className="text-xl font-semibold mb-2">Influencer Marketing</h3>
-              <p className="text-gray-600">AI-generated influencer using your product in a professionally styled setting.</p>
-            </div>
-          </div>
-
-          <div className="rounded-xl overflow-hidden shadow-lg">
-            <div className="relative">
-              <img 
-                src="/lovable-uploads/2ade2a23-37dc-4a8f-9c0e-22d0763d8d4b.png" 
-                alt="Video Still" 
-                className="w-full h-64 object-cover"
-              />
-              <div className="absolute top-4 left-4 bg-promogenie-600 text-white text-sm font-medium rounded-md px-3 py-1">
-                AI Generated
-              </div>
-            </div>
-            <div className="p-6 bg-white">
-              <h3 className="text-xl font-semibold mb-2">Video Content</h3>
-              <p className="text-gray-600">Still from an AI-generated video with influencer speaking about your product.</p>
             </div>
           </div>
         </div>

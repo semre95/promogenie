@@ -9,10 +9,10 @@ const CTASection = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">
-            Ready to Transform Your Product Marketing?
+            Ready to Revolutionize Your Advertising?
           </h2>
           <p className="text-lg md:text-xl mb-8 text-promogenie-100">
-            Join thousands of brands using PromoGenie to create stunning ad creatives in minutes, not days.
+            Try PromoGenie risk-free with our 7-day money-back guarantee. Create your first ad in under a minute.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 

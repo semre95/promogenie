@@ -17,10 +17,10 @@ const Hero = () => {
                 </div>
               </div>
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-6 bg-gradient-to-r from-promogenie-800 via-promogenie-600 to-promogenie-400 bg-clip-text text-transparent">
-                Transform Product Photos into <span className="italic">Stunning</span> Ad Creatives
+                AI-Generated Product Ads in Seconds
               </h1>
               <p className="text-lg md:text-xl text-gray-600 mb-8">
-                Upload a simple product photo and our AI will generate professional ad images, creative scenes, and AI influencer videos with perfect lip-sync—all in minutes.
+                Upload a photo, get professional ads featuring virtual influencers promoting your product on TikTok, Instagram & YouTube.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Link to="/signup" className="px-8 py-3 bg-promogenie-600 text-white rounded-md font-medium text-lg hover:bg-promogenie-700 transition-colors shadow-lg button-shine flex items-center justify-center">
@@ -95,6 +95,30 @@ const Hero = () => {
               <div className="absolute -top-6 -left-6 w-24 h-24 bg-promogenie-200 rounded-full opacity-50 blur-xl animate-float"></div>
               <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-promogenie-300 rounded-full opacity-50 blur-xl animate-float" style={{ animationDelay: '2s' }}></div>
               <div className="absolute top-1/4 -right-4 w-16 h-16 bg-promogenie-400 rounded-full opacity-40 blur-xl animate-float" style={{ animationDelay: '4s' }}></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Trusted by brands section */}
+      <div className="container mx-auto px-4 mt-16">
+        <div className="text-center">
+          <h2 className="text-xl font-bold tracking-wider text-gray-500 mb-10">TRUSTED BY INNOVATIVE BRANDS</h2>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+            <div className="w-24 h-16 bg-gray-100 rounded flex items-center justify-center">
+              <span className="font-bold text-gray-400">ACME</span>
+            </div>
+            <div className="w-24 h-16 bg-gray-100 rounded flex items-center justify-center">
+              <span className="font-bold text-gray-400">NexTech</span>
+            </div>
+            <div className="w-24 h-16 bg-gray-100 rounded flex items-center justify-center">
+              <span className="font-bold text-gray-400">EcoStyle</span>
+            </div>
+            <div className="w-24 h-16 bg-gray-100 rounded flex items-center justify-center">
+              <span className="font-bold text-gray-400">FitLife</span>
+            </div>
+            <div className="w-24 h-16 bg-gray-100 rounded flex items-center justify-center">
+              <span className="font-bold text-gray-400">GlobeX</span>
             </div>
           </div>
         </div>
