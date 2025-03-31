@@ -82,8 +82,8 @@ const Hero = () => {
     document.getElementById('file-upload')?.click();
   };
 
-  // Product dashboard UI screenshot
-  const dashboardUIImage = "/lovable-uploads/f5cb9ea6-8264-4244-9c73-fd4e3044d7b4.png";
+  // Product dashboard UI screenshot - updated to new screenshot
+  const dashboardUIImage = "/lovable-uploads/4b2910ca-1c16-45c8-bcb5-51ab13699b48.png";
 
   return (
     <div className="pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden">
