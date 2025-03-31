@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useToast } from "@/hooks/use-toast";
@@ -17,16 +17,29 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Setup test account on component mount
+  useEffect(() => {
+    // For demo purposes only - this ensures the test account is always set up
+    // In a production app, this would be handled securely on the server
+    localStorage.setItem("testEmail", btoa("test@promogenie.co"));
+    localStorage.setItem("testPassword", btoa("prmgn2025*"));
+  }, []);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     // For demo purposes, we check for the test account
-    // In a real app, you would validate credentials securely
     const testEmail = localStorage.getItem("testEmail") ? atob(localStorage.getItem("testEmail") || "") : "";
     const testPassword = localStorage.getItem("testPassword") ? atob(localStorage.getItem("testPassword") || "") : "";
 
-    if (email === testEmail && password === testPassword) {
+    console.log("Test email from localStorage:", testEmail);
+    console.log("Test password from localStorage:", testPassword);
+    console.log("Entered email:", email);
+    console.log("Entered password:", password);
+
+    // Always allow the test account to login
+    if (email === "test@promogenie.co" && password === "prmgn2025*") {
       // Set authentication state
       localStorage.setItem("isAuthenticated", "true");
       
@@ -38,23 +51,13 @@ const Login = () => {
         });
         navigate('/dashboard');
       }, 1000);
-    } else if (email === "test@promogenie.co") {
-      // Hint for demo account
-      setTimeout(() => {
-        setIsSubmitting(false);
-        toast({
-          title: "Invalid credentials",
-          description: "Hint: The test account password is prmgn2025*",
-          variant: "destructive"
-        });
-      }, 1000);
     } else {
       // Regular failed login
       setTimeout(() => {
         setIsSubmitting(false);
         toast({
           title: "Login failed",
-          description: "Invalid email or password. Try the test account: test@promogenie.co",
+          description: "Invalid email or password. Try the test account: test@promogenie.co / prmgn2025*",
           variant: "destructive"
         });
       }, 1000);

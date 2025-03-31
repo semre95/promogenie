@@ -16,7 +16,9 @@ import {
   LogOut,
   Settings,
   CreditCard,
-  History
+  History,
+  Plus,
+  X
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import DashboardHeader from '@/components/DashboardHeader';
@@ -50,6 +52,40 @@ const Dashboard = () => {
   const [generatedVideo, setGeneratedVideo] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   
+  // New state for uploaded images
+  const [uploadedImages, setUploadedImages] = useState<File[]>([]);
+  const [uploadedImagePreviews, setUploadedImagePreviews] = useState<string[]>([]);
+  
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const newFiles = Array.from(e.target.files);
+      setUploadedImages(prev => [...prev, ...newFiles]);
+      
+      // Create previews for the new images
+      const newPreviews = newFiles.map(file => URL.createObjectURL(file));
+      setUploadedImagePreviews(prev => [...prev, ...newPreviews]);
+      
+      toast({
+        title: "Images uploaded",
+        description: `${newFiles.length} image${newFiles.length > 1 ? 's' : ''} uploaded successfully.`,
+      });
+    }
+  };
+  
+  const handleRemoveUploadedImage = (index: number) => {
+    const newImages = [...uploadedImages];
+    const newPreviews = [...uploadedImagePreviews];
+    
+    // Revoke the URL to prevent memory leaks
+    URL.revokeObjectURL(newPreviews[index]);
+    
+    newImages.splice(index, 1);
+    newPreviews.splice(index, 1);
+    
+    setUploadedImages(newImages);
+    setUploadedImagePreviews(newPreviews);
+  };
+  
   const handleImageGeneration = () => {
     if (!promptText) {
       toast({
@@ -64,6 +100,15 @@ const Dashboard = () => {
       toast({
         title: "Error",
         description: "Please select an influencer",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (uploadedImagePreviews.length === 0) {
+      toast({
+        title: "Error",
+        description: "Please upload at least one product image",
         variant: "destructive"
       });
       return;
@@ -196,7 +241,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="flex min-h-screen bg-promogenie-800">
+    <div className="flex min-h-screen bg-gray-100">
       <DashboardSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
       
       <div className="flex-1">
@@ -207,12 +252,12 @@ const Dashboard = () => {
             defaultValue="image" 
             value={activeTab} 
             onValueChange={setActiveTab}
-            className="w-full max-w-6xl mx-auto bg-promogenie-700 rounded-xl p-6 shadow-xl"
+            className="w-full max-w-6xl mx-auto bg-white rounded-xl p-6 shadow-lg"
           >
             <TabsList className="grid w-full grid-cols-3 mb-8">
-              <TabsTrigger value="image">Image Generation</TabsTrigger>
-              <TabsTrigger value="video">Video Creation</TabsTrigger>
-              <TabsTrigger value="export">Export</TabsTrigger>
+              <TabsTrigger value="image" className="data-[state=active]:bg-promogenie-600 data-[state=active]:text-white">Image Generation</TabsTrigger>
+              <TabsTrigger value="video" className="data-[state=active]:bg-promogenie-600 data-[state=active]:text-white">Video Creation</TabsTrigger>
+              <TabsTrigger value="export" className="data-[state=active]:bg-promogenie-600 data-[state=active]:text-white">Export</TabsTrigger>
             </TabsList>
             
             {/* Image Generation Tab */}
@@ -220,25 +265,70 @@ const Dashboard = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-white text-xl font-semibold mb-3">Upload Product Image</h3>
-                    <div className="bg-promogenie-600 border-2 border-dashed border-promogenie-400 rounded-lg p-8 text-center cursor-pointer hover:bg-promogenie-500 transition-colors">
-                      <Upload className="h-10 w-10 mx-auto text-white mb-2" />
-                      <p className="text-white">Drag and drop your product image here</p>
-                      <p className="text-promogenie-200 text-sm mt-1">or click to browse</p>
-                      <input type="file" className="hidden" accept="image/*" />
+                    <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Upload Product Images</h3>
+                    <div className="bg-gray-50 border-2 border-dashed border-promogenie-200 rounded-lg p-8 text-center cursor-pointer hover:bg-gray-100 transition-colors relative">
+                      <input 
+                        type="file" 
+                        id="product-images"
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+                        accept="image/*" 
+                        multiple
+                        onChange={handleImageUpload}
+                      />
+                      <Upload className="h-10 w-10 mx-auto text-promogenie-500 mb-2" />
+                      <p className="text-promogenie-700">Drag and drop your product images here</p>
+                      <p className="text-promogenie-500 text-sm mt-1">or click to browse</p>
                     </div>
+
+                    {/* Uploaded Images Preview */}
+                    {uploadedImagePreviews.length > 0 && (
+                      <div className="mt-4">
+                        <h4 className="text-promogenie-700 font-medium mb-2">Uploaded Images</h4>
+                        <div className="grid grid-cols-3 gap-3">
+                          {uploadedImagePreviews.map((preview, index) => (
+                            <div key={index} className="relative group">
+                              <img
+                                src={preview}
+                                alt={`Uploaded ${index + 1}`}
+                                className="w-full aspect-square object-cover rounded-md border border-gray-200"
+                              />
+                              <button
+                                onClick={() => handleRemoveUploadedImage(index)}
+                                className="absolute -top-2 -right-2 bg-white rounded-full p-1 shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                                <X className="h-4 w-4 text-promogenie-600" />
+                              </button>
+                            </div>
+                          ))}
+                          <div className="flex items-center justify-center border-2 border-dashed border-promogenie-200 rounded-md aspect-square cursor-pointer hover:bg-gray-50 transition-colors">
+                            <label htmlFor="add-more-images" className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
+                              <Plus className="h-6 w-6 text-promogenie-500" />
+                              <span className="text-xs text-promogenie-500 mt-1">Add more</span>
+                              <input
+                                type="file"
+                                id="add-more-images"
+                                className="hidden"
+                                accept="image/*"
+                                multiple
+                                onChange={handleImageUpload}
+                              />
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   
                   <div>
-                    <h3 className="text-white text-xl font-semibold mb-3">Image Settings</h3>
+                    <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Image Settings</h3>
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-white mb-2">Aspect Ratio</label>
+                        <label className="block text-promogenie-700 mb-2">Aspect Ratio</label>
                         <Select 
                           value={selectedAspectRatio} 
                           onValueChange={setSelectedAspectRatio}
                         >
-                          <SelectTrigger className="bg-promogenie-600 text-white border-promogenie-500">
+                          <SelectTrigger className="bg-white text-promogenie-700 border-promogenie-200">
                             <SelectValue placeholder="Select aspect ratio" />
                           </SelectTrigger>
                           <SelectContent>
@@ -252,12 +342,12 @@ const Dashboard = () => {
                       </div>
                       
                       <div>
-                        <label className="block text-white mb-2">Scene Description</label>
+                        <label className="block text-promogenie-700 mb-2">Scene Description</label>
                         <Textarea 
                           value={promptText}
                           onChange={(e) => setPromptText(e.target.value)}
                           placeholder="Describe the setting, style, mood, and any specific details..."
-                          className="min-h-[100px] bg-promogenie-600 text-white border-promogenie-500"
+                          className="min-h-[100px] bg-white text-promogenie-700 border-promogenie-200"
                         />
                       </div>
                     </div>
@@ -265,7 +355,7 @@ const Dashboard = () => {
                 </div>
                 
                 <div>
-                  <h3 className="text-white text-xl font-semibold mb-3">Pick Your Influencer</h3>
+                  <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Pick Your Influencer</h3>
                   
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                     {influencers.map(influencer => (
@@ -273,8 +363,8 @@ const Dashboard = () => {
                         key={influencer.id}
                         className={`rounded-lg overflow-hidden cursor-pointer transition-all ${
                           selectedInfluencer === influencer.id 
-                            ? 'ring-4 ring-promogenie-300 transform scale-105' 
-                            : 'border border-promogenie-500 hover:border-promogenie-300'
+                            ? 'ring-4 ring-promogenie-400 transform scale-105' 
+                            : 'border border-promogenie-200 hover:border-promogenie-400'
                         }`}
                         onClick={() => setSelectedInfluencer(influencer.id)}
                       >
@@ -285,17 +375,17 @@ const Dashboard = () => {
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <div className="p-2 bg-promogenie-600">
-                          <p className="text-white text-sm font-medium truncate">{influencer.name}</p>
-                          <p className="text-promogenie-300 text-xs">{influencer.category}</p>
+                        <div className="p-2 bg-white">
+                          <p className="text-promogenie-700 text-sm font-medium truncate">{influencer.name}</p>
+                          <p className="text-promogenie-500 text-xs">{influencer.category}</p>
                         </div>
                       </div>
                     ))}
                   </div>
                   
                   <div className="flex justify-end items-center">
-                    <p className="text-promogenie-300 italic mr-4">Create your own influencer... 
-                      <span className="ml-1 text-promogenie-200 font-medium">Coming Soon</span>
+                    <p className="text-promogenie-500 italic mr-4">Create your own influencer... 
+                      <span className="ml-1 text-promogenie-700 font-medium">Coming Soon</span>
                     </p>
                   </div>
                 </div>
@@ -303,10 +393,10 @@ const Dashboard = () => {
               
               <div className="flex justify-between items-center pt-4">
                 <div>
-                  <p className="text-white">Cost: <span className="text-promogenie-300 font-semibold">5 Wishes</span></p>
+                  <p className="text-promogenie-700">Cost: <span className="text-promogenie-600 font-semibold">5 Wishes</span></p>
                 </div>
                 <Button 
-                  className="bg-promogenie-500 hover:bg-promogenie-400 text-white px-8"
+                  className="bg-promogenie-600 hover:bg-promogenie-700 text-white px-8"
                   onClick={handleImageGeneration}
                   disabled={isGenerating}
                 >
@@ -321,9 +411,10 @@ const Dashboard = () => {
                 </Button>
               </div>
               
+              {/* Generated Images Results */}
               {generatedImages.length > 0 && (
                 <div>
-                  <h3 className="text-white text-xl font-semibold mb-3">Results</h3>
+                  <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Results</h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {generatedImages.map((image, index) => (
                       <div key={index} className="relative group">
@@ -336,7 +427,7 @@ const Dashboard = () => {
                           <Button 
                             onClick={() => handleImageSelect(image)}
                             variant="outline" 
-                            className="bg-white text-promogenie-800 hover:bg-promogenie-100"
+                            className="bg-white text-promogenie-700 hover:bg-promogenie-50"
                           >
                             Select for Video
                           </Button>
@@ -354,7 +445,7 @@ const Dashboard = () => {
                 <div className="space-y-6">
                   {selectedImage ? (
                     <div>
-                      <h3 className="text-white text-xl font-semibold mb-3">Selected Image</h3>
+                      <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Selected Image</h3>
                       <img 
                         src={selectedImage} 
                         alt="Selected for video" 
@@ -362,37 +453,37 @@ const Dashboard = () => {
                       />
                     </div>
                   ) : (
-                    <div className="bg-promogenie-600 rounded-lg p-8 text-center">
-                      <p className="text-white">Please select an image from the Image Generation tab first</p>
+                    <div className="bg-gray-50 rounded-lg p-8 text-center">
+                      <p className="text-promogenie-700">Please select an image from the Image Generation tab first</p>
                     </div>
                   )}
                   
                   <div>
-                    <h3 className="text-white text-xl font-semibold mb-3">Ad Script</h3>
+                    <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Ad Script</h3>
                     <Textarea 
                       value={scriptText}
                       onChange={(e) => setScriptText(e.target.value)}
                       placeholder="Write your ad script here (max 12 seconds when read)"
-                      className="min-h-[150px] bg-promogenie-600 text-white border-promogenie-500"
+                      className="min-h-[150px] bg-white text-promogenie-700 border-promogenie-200"
                     />
-                    <p className="text-promogenie-300 mt-2 text-sm">
+                    <p className="text-promogenie-500 mt-2 text-sm">
                       {scriptText.split(' ').length} words (recommended: max {videoLength === "6" ? "15" : "30"} words for {videoLength} seconds)
                     </p>
                   </div>
                   
                   <div>
-                    <h3 className="text-white text-xl font-semibold mb-3">Video Length</h3>
+                    <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Video Length</h3>
                     <div className="flex space-x-4">
                       <Button
                         variant={videoLength === "6" ? "default" : "outline"}
-                        className={videoLength === "6" ? "bg-promogenie-500" : "border-promogenie-500 text-white"}
+                        className={videoLength === "6" ? "bg-promogenie-600 text-white" : "border-promogenie-300 text-promogenie-700"}
                         onClick={() => setVideoLength("6")}
                       >
                         6 seconds
                       </Button>
                       <Button
                         variant={videoLength === "12" ? "default" : "outline"}
-                        className={videoLength === "12" ? "bg-promogenie-500" : "border-promogenie-500 text-white"}
+                        className={videoLength === "12" ? "bg-promogenie-600 text-white" : "border-promogenie-300 text-promogenie-700"}
                         onClick={() => setVideoLength("12")}
                       >
                         12 seconds
@@ -402,7 +493,7 @@ const Dashboard = () => {
                 </div>
                 
                 <div>
-                  <h3 className="text-white text-xl font-semibold mb-3">Pick Your Voice</h3>
+                  <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Pick Your Voice</h3>
                   
                   <div className="grid grid-cols-2 gap-3 mb-4">
                     {voices.map((voice) => (
@@ -410,8 +501,8 @@ const Dashboard = () => {
                         key={voice.id}
                         className={`p-4 rounded-lg cursor-pointer transition-all ${
                           selectedVoice === voice.id 
-                            ? 'bg-promogenie-500 text-white border-promogenie-300' 
-                            : 'bg-promogenie-600 text-promogenie-200 border border-promogenie-500 hover:border-promogenie-300 hover:text-white'
+                            ? 'bg-promogenie-600 text-white border-promogenie-300' 
+                            : 'bg-white text-promogenie-700 border border-promogenie-200 hover:border-promogenie-400 hover:bg-promogenie-50'
                         }`}
                         onClick={() => setSelectedVoice(voice.id)}
                       >
@@ -421,8 +512,8 @@ const Dashboard = () => {
                   </div>
                   
                   <div className="flex justify-end items-center">
-                    <p className="text-promogenie-300 italic mr-4">Create your own voice... 
-                      <span className="ml-1 text-promogenie-200 font-medium">Coming Soon</span>
+                    <p className="text-promogenie-500 italic mr-4">Create your own voice... 
+                      <span className="ml-1 text-promogenie-700 font-medium">Coming Soon</span>
                     </p>
                   </div>
                 </div>
@@ -430,10 +521,10 @@ const Dashboard = () => {
               
               <div className="flex justify-between items-center pt-4">
                 <div>
-                  <p className="text-white">Cost: <span className="text-promogenie-300 font-semibold">{calculateWishCost()} Wishes</span></p>
+                  <p className="text-promogenie-700">Cost: <span className="text-promogenie-600 font-semibold">{calculateWishCost()} Wishes</span></p>
                 </div>
                 <Button 
-                  className="bg-promogenie-500 hover:bg-promogenie-400 text-white px-8"
+                  className="bg-promogenie-600 hover:bg-promogenie-700 text-white px-8"
                   onClick={handleVideoGeneration}
                   disabled={isGenerating || !selectedImage}
                 >
@@ -454,8 +545,8 @@ const Dashboard = () => {
               {generatedVideo ? (
                 <>
                   <div>
-                    <h3 className="text-white text-xl font-semibold mb-3">Your Video</h3>
-                    <div className="aspect-video bg-promogenie-600 rounded-lg overflow-hidden flex items-center justify-center relative">
+                    <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Your Video</h3>
+                    <div className="aspect-video bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center relative">
                       <img 
                         src={generatedVideo} 
                         alt="Generated video" 
@@ -463,7 +554,7 @@ const Dashboard = () => {
                       />
                       <div className="absolute inset-0 flex items-center justify-center">
                         <Button 
-                          className="bg-white text-promogenie-800 rounded-full w-16 h-16 flex items-center justify-center"
+                          className="bg-white text-promogenie-700 rounded-full w-16 h-16 flex items-center justify-center"
                         >
                           <Video className="h-8 w-8" />
                         </Button>
@@ -472,30 +563,30 @@ const Dashboard = () => {
                   </div>
                   
                   <div>
-                    <h3 className="text-white text-xl font-semibold mb-3">Post Processing</h3>
-                    <div className="p-4 bg-promogenie-600 rounded-lg">
+                    <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Post Processing</h3>
+                    <div className="p-4 bg-gray-50 rounded-lg">
                       <div className="flex flex-col space-y-2">
                         <div className="flex items-center">
-                          <button className="flex items-center space-x-2 text-promogenie-300 cursor-not-allowed" disabled>
+                          <button className="flex items-center space-x-2 text-promogenie-500 cursor-not-allowed" disabled>
                             <span>Style</span>
                           </button>
-                          <span className="ml-2 text-promogenie-300 text-sm bg-promogenie-500 px-2 py-0.5 rounded">Coming Soon</span>
+                          <span className="ml-2 text-promogenie-500 text-sm bg-promogenie-100 px-2 py-0.5 rounded">Coming Soon</span>
                         </div>
                         <div className="flex items-center">
-                          <button className="flex items-center space-x-2 text-promogenie-300 cursor-not-allowed" disabled>
+                          <button className="flex items-center space-x-2 text-promogenie-500 cursor-not-allowed" disabled>
                             <span>Upscale</span>
                           </button>
-                          <span className="ml-2 text-promogenie-300 text-sm bg-promogenie-500 px-2 py-0.5 rounded">Coming Soon</span>
+                          <span className="ml-2 text-promogenie-500 text-sm bg-promogenie-100 px-2 py-0.5 rounded">Coming Soon</span>
                         </div>
                       </div>
                     </div>
                   </div>
                   
                   <div>
-                    <h3 className="text-white text-xl font-semibold mb-3">Share & Download</h3>
+                    <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Share & Download</h3>
                     <div className="flex space-x-4">
                       <Button 
-                        className="bg-promogenie-500 hover:bg-promogenie-400 text-white"
+                        className="bg-promogenie-600 hover:bg-promogenie-700 text-white"
                         onClick={handleDownload}
                       >
                         <Download className="mr-2 h-4 w-4" />
@@ -503,7 +594,7 @@ const Dashboard = () => {
                       </Button>
                       <Button 
                         variant="outline" 
-                        className="border-promogenie-500 text-white hover:bg-promogenie-600"
+                        className="border-promogenie-300 text-promogenie-700 hover:bg-promogenie-50"
                         onClick={handleShare}
                       >
                         <Share2 className="mr-2 h-4 w-4" />
@@ -515,10 +606,10 @@ const Dashboard = () => {
               ) : (
                 <div className="flex flex-col items-center justify-center py-16">
                   <Video className="h-16 w-16 text-promogenie-400 mb-4" />
-                  <p className="text-white text-lg mb-2">Generate a video first</p>
-                  <p className="text-promogenie-300">Go to the Video Creation tab to generate your video</p>
+                  <p className="text-promogenie-700 text-lg mb-2">Generate a video first</p>
+                  <p className="text-promogenie-500">Go to the Video Creation tab to generate your video</p>
                   <Button 
-                    className="mt-6 bg-promogenie-500 hover:bg-promogenie-400 text-white"
+                    className="mt-6 bg-promogenie-600 hover:bg-promogenie-700 text-white"
                     onClick={() => setActiveTab("video")}
                   >
                     Go to Video Creation

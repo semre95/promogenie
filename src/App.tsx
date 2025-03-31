@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -31,9 +30,6 @@ const queryClient = new QueryClient();
 // In a real app, you would use a proper auth system
 const isAuthenticated = () => {
   // For testing purposes, we'll consider the test account always authenticated
-  const testEmail = "test@promogenie.co";
-  const testPassword = "prmgn2025*"; // Note: In a real app, never store passwords in code
-  
   // Check if the user is logged in via localStorage or session
   return localStorage.getItem("isAuthenticated") === "true";
 };
@@ -52,14 +48,12 @@ const App = () => {
   useEffect(() => {
     // In a real app, this would be handled securely on the server
     // This is only for demo purposes
-    if (process.env.NODE_ENV === 'development') {
-      // Set up the test account in localStorage (encrypted in a real app)
-      localStorage.setItem("testEmail", btoa("test@promogenie.co"));
-      localStorage.setItem("testPassword", btoa("prmgn2025*"));
-      
-      // Auto-login for demo purposes
-      localStorage.setItem("isAuthenticated", "true");
-    }
+    // Set up the test account in localStorage (encrypted in a real app)
+    localStorage.setItem("testEmail", btoa("test@promogenie.co"));
+    localStorage.setItem("testPassword", btoa("prmgn2025*"));
+    
+    // Auto-login for demo purposes (comment out in production)
+    localStorage.setItem("isAuthenticated", "true");
   }, []);
 
   return (
