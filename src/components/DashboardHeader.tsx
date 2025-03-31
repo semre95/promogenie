@@ -8,7 +8,8 @@ import {
   HelpCircle, 
   LogOut, 
   Settings,
-  X
+  X,
+  Trash2
 } from 'lucide-react';
 import { 
   DropdownMenu,
@@ -87,12 +88,28 @@ const DashboardHeader = () => {
     ));
   };
   
+  // Delete specific notification
+  const deleteNotification = (id, e) => {
+    e.stopPropagation(); // Prevent triggering the markAsRead
+    setNotifications(notifications.filter(notification => notification.id !== id));
+    toast({
+      description: "Notification removed",
+    });
+  };
+  
   // Mark all notifications as read
   const markAllAsRead = () => {
     setNotifications(notifications.map(notification => ({...notification, read: true})));
     toast({
-      title: "Notifications cleared",
-      description: "All notifications have been marked as read.",
+      description: "All notifications marked as read",
+    });
+  };
+  
+  // Clear all notifications
+  const clearAllNotifications = () => {
+    setNotifications([]);
+    toast({
+      description: "All notifications cleared",
     });
   };
 
@@ -128,16 +145,28 @@ const DashboardHeader = () => {
           <PopoverContent className="w-80 p-0" align="end">
             <div className="p-4 border-b border-gray-100 flex items-center justify-between">
               <h3 className="font-semibold">Notifications</h3>
-              {unreadCount > 0 && (
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={markAllAsRead}
-                  className="h-auto py-1 px-2 text-xs"
-                >
-                  Mark all as read
-                </Button>
-              )}
+              <div className="flex space-x-2">
+                {unreadCount > 0 && (
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={markAllAsRead}
+                    className="h-auto py-1 px-2 text-xs"
+                  >
+                    Mark all as read
+                  </Button>
+                )}
+                {notifications.length > 0 && (
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={clearAllNotifications}
+                    className="h-auto py-1 px-2 text-xs text-red-500 hover:text-red-600 hover:bg-red-50"
+                  >
+                    Clear all
+                  </Button>
+                )}
+              </div>
             </div>
             
             <div className="max-h-[350px] overflow-y-auto">
@@ -150,9 +179,17 @@ const DashboardHeader = () => {
                   >
                     <div className="flex justify-between items-start mb-1">
                       <h4 className="font-medium text-sm">{notification.title}</h4>
-                      {!notification.read && (
-                        <span className="h-2 w-2 rounded-full bg-promogenie-600"></span>
-                      )}
+                      <div className="flex items-center">
+                        {!notification.read && (
+                          <span className="h-2 w-2 rounded-full bg-promogenie-600 mr-2"></span>
+                        )}
+                        <button
+                          onClick={(e) => deleteNotification(notification.id, e)}
+                          className="text-gray-400 hover:text-red-500 transition-colors"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
                     </div>
                     <p className="text-sm text-gray-600 mb-1">{notification.message}</p>
                     <p className="text-xs text-gray-500">{notification.time}</p>
@@ -221,89 +258,87 @@ const DashboardHeader = () => {
             
             {/* Menu Items */}
             <div className="py-2">
-              <DropdownMenu>
-                <DropdownMenuContent className="w-full" forceMount>
-                  <DropdownMenuItem 
-                    className="flex items-center p-3 cursor-pointer hover:bg-gray-50"
-                    onClick={() => {
-                      setProfileOpen(false);
-                      navigate('/pricing');
-                    }}
-                  >
-                    <CreditCard className="h-4 w-4 mr-3 text-gray-600" />
-                    <span>Subscription</span>
-                    <span className="ml-auto text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">Free</span>
-                  </DropdownMenuItem>
-                  
-                  <DropdownMenuItem 
-                    className="flex items-center p-3 cursor-pointer hover:bg-gray-50"
-                    onClick={() => {
-                      setProfileOpen(false);
-                      // Navigate to account page when implemented
-                      toast({
-                        title: "Account",
-                        description: "Account page will be implemented soon.",
-                      });
-                    }}
-                  >
-                    <User className="h-4 w-4 mr-3 text-gray-600" />
-                    <span>Account</span>
-                  </DropdownMenuItem>
-                  
-                  <DropdownMenuItem 
-                    className="flex items-center p-3 cursor-pointer hover:bg-gray-50"
-                    onClick={() => {
-                      setProfileOpen(false);
-                      // Billing logic
-                      toast({
-                        title: "Billing",
-                        description: "Billing page will be implemented soon.",
-                      });
-                    }}
-                  >
-                    <CreditCard className="h-4 w-4 mr-3 text-gray-600" />
-                    <span>Billing</span>
-                  </DropdownMenuItem>
-                  
-                  <DropdownMenuItem 
-                    className="flex items-center p-3 cursor-pointer hover:bg-gray-50"
-                    onClick={() => {
-                      setProfileOpen(false);
-                      // Download logic
-                      toast({
-                        title: "Downloads",
-                        description: "Your downloads will appear here.",
-                      });
-                    }}
-                  >
-                    <Download className="h-4 w-4 mr-3 text-gray-600" />
-                    <span>Downloads</span>
-                  </DropdownMenuItem>
-                  
-                  <DropdownMenuItem 
-                    className="flex items-center p-3 cursor-pointer hover:bg-gray-50"
-                    onClick={() => {
-                      setProfileOpen(false);
-                      // Help center logic
-                      toast({
-                        title: "Help Center",
-                        description: "Help center will be implemented soon.",
-                      });
-                    }}
-                  >
-                    <HelpCircle className="h-4 w-4 mr-3 text-gray-600" />
-                    <span>Help center</span>
-                  </DropdownMenuItem>
-                  
-                  <DropdownMenuItem 
-                    className="flex items-center p-3 cursor-pointer hover:bg-gray-50" 
-                    onClick={handleLogout}
-                  >
-                    <LogOut className="h-4 w-4 mr-3 text-gray-600" />
-                    <span>Log out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <div className="w-full">
+                <div 
+                  className="flex items-center p-3 cursor-pointer hover:bg-gray-50"
+                  onClick={() => {
+                    setProfileOpen(false);
+                    navigate('/pricing');
+                  }}
+                >
+                  <CreditCard className="h-4 w-4 mr-3 text-gray-600" />
+                  <span>Subscription</span>
+                  <span className="ml-auto text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">Free</span>
+                </div>
+                
+                <div 
+                  className="flex items-center p-3 cursor-pointer hover:bg-gray-50"
+                  onClick={() => {
+                    setProfileOpen(false);
+                    // Navigate to account page when implemented
+                    toast({
+                      title: "Account",
+                      description: "Account page will be implemented soon.",
+                    });
+                  }}
+                >
+                  <User className="h-4 w-4 mr-3 text-gray-600" />
+                  <span>Account</span>
+                </div>
+                
+                <div 
+                  className="flex items-center p-3 cursor-pointer hover:bg-gray-50"
+                  onClick={() => {
+                    setProfileOpen(false);
+                    // Billing logic
+                    toast({
+                      title: "Billing",
+                      description: "Billing page will be implemented soon.",
+                    });
+                  }}
+                >
+                  <CreditCard className="h-4 w-4 mr-3 text-gray-600" />
+                  <span>Billing</span>
+                </div>
+                
+                <div 
+                  className="flex items-center p-3 cursor-pointer hover:bg-gray-50"
+                  onClick={() => {
+                    setProfileOpen(false);
+                    // Download logic
+                    toast({
+                      title: "Downloads",
+                      description: "Your downloads will appear here.",
+                    });
+                  }}
+                >
+                  <Download className="h-4 w-4 mr-3 text-gray-600" />
+                  <span>Downloads</span>
+                </div>
+                
+                <div 
+                  className="flex items-center p-3 cursor-pointer hover:bg-gray-50"
+                  onClick={() => {
+                    setProfileOpen(false);
+                    // Help center logic
+                    toast({
+                      title: "Help Center",
+                      description: "Help center will be implemented soon.",
+                    });
+                  }}
+                >
+                  <HelpCircle className="h-4 w-4 mr-3 text-gray-600" />
+                  <span>Help center</span>
+                </div>
+                
+                <div 
+                  className="flex items-center p-3 cursor-pointer hover:bg-gray-50" 
+                  onClick={handleLogout}
+                >
+                  <LogOut className="h-4 w-4 mr-3 text-gray-600" />
+                  <span>Log out</span>
+                </div>
+              </div>
             </div>
           </PopoverContent>
         </Popover>
