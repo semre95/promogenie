@@ -11,8 +11,7 @@ import {
   HelpCircle, 
   LogOut, 
   Settings,
-  MessageSquare,
-  Languages
+  MessageSquare
 } from 'lucide-react';
 import { 
   DropdownMenu,
@@ -105,58 +104,60 @@ const DashboardHeader = () => {
               
               <DropdownMenuSeparator className="my-0" />
               
-              {/* Menu Items */}
-              <div className="py-1">
-                <DropdownMenuItem className="flex items-center p-3 cursor-pointer hover:bg-gray-50">
-                  <CreditCard className="h-4 w-4 mr-3 text-gray-600" />
-                  <span>Subscription</span>
-                  <span className="ml-auto text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">Free</span>
-                </DropdownMenuItem>
-                
-                <DropdownMenuItem className="flex items-center p-3 cursor-pointer hover:bg-gray-50">
-                  <User className="h-4 w-4 mr-3 text-gray-600" />
-                  <span>Account</span>
-                </DropdownMenuItem>
-                
-                <DropdownMenuItem className="flex items-center p-3 cursor-pointer hover:bg-gray-50">
-                  <Download className="h-4 w-4 mr-3 text-gray-600" />
-                  <span>Downloads</span>
-                </DropdownMenuItem>
-                
-                <DropdownMenuItem className="flex items-center p-3 cursor-pointer hover:bg-gray-50">
-                  <MessageSquare className="h-4 w-4 mr-3 text-gray-600" />
-                  <span>Join community</span>
-                </DropdownMenuItem>
-                
-                <DropdownMenuItem className="flex items-center p-3 cursor-pointer hover:bg-gray-50">
-                  <MessageSquare className="h-4 w-4 mr-3 text-gray-600" />
-                  <span>Join Discord server</span>
-                </DropdownMenuItem>
-                
-                <DropdownMenuItem className="flex items-center p-3 cursor-pointer hover:bg-gray-50">
-                  <Globe className="h-4 w-4 mr-3 text-gray-600" />
-                  <span>Language</span>
-                  <div className="ml-auto flex items-center">
-                    <span className="text-sm text-gray-500 mr-1">English</span>
-                    <ChevronDown className="h-3 w-3 text-gray-500" />
-                  </div>
-                </DropdownMenuItem>
-                
-                <DropdownMenuItem className="flex items-center p-3 cursor-pointer hover:bg-gray-50">
-                  <Settings className="h-4 w-4 mr-3 text-gray-600" />
-                  <span>Use AI code</span>
-                </DropdownMenuItem>
-                
-                <DropdownMenuItem className="flex items-center p-3 cursor-pointer hover:bg-gray-50">
-                  <HelpCircle className="h-4 w-4 mr-3 text-gray-600" />
-                  <span>Help center</span>
-                </DropdownMenuItem>
-                
-                <DropdownMenuItem className="flex items-center p-3 cursor-pointer hover:bg-gray-50" onClick={handleLogout}>
-                  <LogOut className="h-4 w-4 mr-3 text-gray-600" />
-                  <span>Log out</span>
-                </DropdownMenuItem>
-              </div>
+              {/* Menu Items - Correctly wrapped in a DropdownMenu component */}
+              <DropdownMenu>
+                <DropdownMenuContent className="w-full" forceMount>
+                  <DropdownMenuItem className="flex items-center p-3 cursor-pointer hover:bg-gray-50">
+                    <CreditCard className="h-4 w-4 mr-3 text-gray-600" />
+                    <span>Subscription</span>
+                    <span className="ml-auto text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">Free</span>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem className="flex items-center p-3 cursor-pointer hover:bg-gray-50">
+                    <User className="h-4 w-4 mr-3 text-gray-600" />
+                    <span>Account</span>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem className="flex items-center p-3 cursor-pointer hover:bg-gray-50">
+                    <Download className="h-4 w-4 mr-3 text-gray-600" />
+                    <span>Downloads</span>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem className="flex items-center p-3 cursor-pointer hover:bg-gray-50">
+                    <MessageSquare className="h-4 w-4 mr-3 text-gray-600" />
+                    <span>Join community</span>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem className="flex items-center p-3 cursor-pointer hover:bg-gray-50">
+                    <MessageSquare className="h-4 w-4 mr-3 text-gray-600" />
+                    <span>Join Discord server</span>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem className="flex items-center p-3 cursor-pointer hover:bg-gray-50">
+                    <Globe className="h-4 w-4 mr-3 text-gray-600" />
+                    <span>Language</span>
+                    <div className="ml-auto flex items-center">
+                      <span className="text-sm text-gray-500 mr-1">English</span>
+                      <ChevronDown className="h-3 w-3 text-gray-500" />
+                    </div>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem className="flex items-center p-3 cursor-pointer hover:bg-gray-50">
+                    <Settings className="h-4 w-4 mr-3 text-gray-600" />
+                    <span>Use AI code</span>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem className="flex items-center p-3 cursor-pointer hover:bg-gray-50">
+                    <HelpCircle className="h-4 w-4 mr-3 text-gray-600" />
+                    <span>Help center</span>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem className="flex items-center p-3 cursor-pointer hover:bg-gray-50" onClick={handleLogout}>
+                    <LogOut className="h-4 w-4 mr-3 text-gray-600" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </PopoverContent>
         </Popover>
