@@ -5,43 +5,43 @@ import { Camera, Image, Video, Mic, Sparkles, RefreshCw, Palette, Users } from '
 const features = [
   {
     icon: <Camera className="h-6 w-6 text-promogenie-600" />,
-    title: "Upload Any Photo",
-    description: "Upload photos taken with any camera. No need for professional equipment or transparent backgrounds."
+    title: "Upload Product Photos",
+    description: "Start with any product photo. Our AI enhances it and places it in diverse contexts with virtual influencers."
   },
   {
     icon: <Image className="h-6 w-6 text-promogenie-600" />,
-    title: "Professional Images",
-    description: "Transform regular photos into professional studio-quality product shots automatically."
-  },
-  {
-    icon: <Sparkles className="h-6 w-6 text-promogenie-600" />,
-    title: "Creative Scenes",
-    description: "Place your products in beautiful, contextually relevant environments like beaches or jungles."
+    title: "Choose Aspect Ratio",
+    description: "Select the perfect format for your platform: square (1:1), portrait (3:4, 9:16), or landscape (16:9, 4:3)."
   },
   {
     icon: <Users className="h-6 w-6 text-promogenie-600" />,
-    title: "AI Influencers",
-    description: "Generate realistic influencers using or wearing your products in diverse settings."
+    title: "AI Influencer Selection",
+    description: "Choose from our diverse range of AI influencers matched to your product's category and target audience."
+  },
+  {
+    icon: <Palette className="h-6 w-6 text-promogenie-600" />,
+    title: "Custom Prompting",
+    description: "Describe the exact setting, mood, and context you want for your product promotion."
   },
   {
     icon: <Video className="h-6 w-6 text-promogenie-600" />,
     title: "Video Generation",
-    description: "Convert your static images into engaging video content with smooth transitions."
+    description: "Transform static images into engaging 6 or 12-second videos with your chosen influencer."
   },
   {
     icon: <Mic className="h-6 w-6 text-promogenie-600" />,
-    title: "Lip-Sync Technology",
-    description: "Add voice with perfect lip synchronization to your AI influencer videos."
+    title: "Voice Selection",
+    description: "Choose the perfect voice for your ad from our library of professional voiceovers."
   },
   {
-    icon: <Palette className="h-6 w-6 text-promogenie-600" />,
-    title: "Customizable Prompts",
-    description: "Fine-tune your generations with custom prompts to match your brand vision."
+    icon: <Sparkles className="h-6 w-6 text-promogenie-600" />,
+    title: "Script Creation",
+    description: "Write custom ad scripts that your AI influencer will deliver naturally with perfect lip sync."
   },
   {
     icon: <RefreshCw className="h-6 w-6 text-promogenie-600" />,
-    title: "Unlimited Variants",
-    description: "Generate multiple variations to find the perfect creative for your campaign."
+    title: "Easy Exporting",
+    description: "Download your videos in formats optimized for TikTok, Instagram, YouTube, and other platforms."
   }
 ];
 
@@ -50,9 +50,9 @@ const FeatureSection = () => {
     <section className="py-16 md:py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">The Future of <span className="text-promogenie-600">Product Marketing</span></h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">The Future of <span className="text-promogenie-600">Influencer Marketing</span></h2>
           <p className="text-lg text-gray-600">
-            Why spend thousands on influencers when AI can create personalized, high-converting ads for you instantly?
+            Why spend thousands on influencers when AI can create personalized, high-converting videos for you instantly?
           </p>
         </div>
 

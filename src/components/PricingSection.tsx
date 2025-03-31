@@ -1,303 +1,150 @@
 
-import React, { useState } from 'react';
-import { Check, HelpCircle } from 'lucide-react';
-import { Badge } from './ui/badge';
+import React from 'react';
+import { Check } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-type PricingPeriod = 'monthly' | 'annually';
 interface PricingSectionProps {
   hideHeading?: boolean;
 }
 
 const PricingSection = ({ hideHeading = false }: PricingSectionProps) => {
-  const [billingPeriod, setBillingPeriod] = useState<PricingPeriod>('monthly');
-
-  const toggleBillingPeriod = () => {
-    setBillingPeriod(billingPeriod === 'monthly' ? 'annually' : 'monthly');
-  };
-
-  const getPrice = (monthlyPrice: number): string => {
-    if (billingPeriod === 'annually') {
-      const annualPrice = monthlyPrice * 10; // 2 months free
-      return `$${annualPrice}`;
-    }
-    return `$${monthlyPrice}`;
-  };
-
-  const getBillingLabel = (): string => {
-    return billingPeriod === 'monthly' ? 'Monthly' : 'Annually';
-  };
-
   return (
-    <section id="pricing" className="py-16 md:py-24 bg-white">
+    <section className="py-16 md:py-24 bg-gray-50">
       <div className="container mx-auto px-4">
         {!hideHeading && (
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Simple, Transparent Pricing</h2>
-            <p className="text-lg text-gray-600 mb-8">
-              Choose the plan that best suits your needs. No hidden fees, cancel anytime.
+            <p className="text-lg text-gray-600">
+              Choose the perfect plan for your AI influencer marketing needs
             </p>
           </div>
         )}
 
-        <div className="flex items-center justify-center mb-8">
-          <span className={`text-sm mr-3 ${billingPeriod === 'monthly' ? 'font-medium text-promogenie-600' : 'text-gray-500'}`}>
-            Monthly
-          </span>
-          <button
-            onClick={toggleBillingPeriod}
-            className="relative inline-flex h-6 w-12 items-center rounded-full bg-gray-200"
-          >
-            <span className="sr-only">Toggle billing period</span>
-            <span
-              className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform ${
-                billingPeriod === 'annually' ? 'translate-x-6' : 'translate-x-1'
-              }`}
-            />
-          </button>
-          <span className={`text-sm ml-3 ${billingPeriod === 'annually' ? 'font-medium text-promogenie-600' : 'text-gray-500'}`}>
-            Annually <span className="text-xs text-green-500 font-medium ml-1">(Save 17%)</span>
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {/* Starter */}
-          <div className="pricing-card">
-            <div className="text-center mb-6">
-              <div className="text-xs uppercase font-semibold text-promogenie-600 mb-1">For Small Businesses & Freelancers</div>
-              <h3 className="text-2xl font-bold mb-2">Starter</h3>
-              <div className="flex items-baseline justify-center">
-                <span className="text-4xl font-bold">{billingPeriod === 'monthly' ? '$19' : '$190'}</span>
-                <span className="text-gray-500 ml-1">/{billingPeriod === 'monthly' ? 'mo' : 'yr'}</span>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {/* Basic Plan */}
+          <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow">
+            <div className="p-6 border-b">
+              <h3 className="text-xl font-bold mb-2">Starter</h3>
+              <div className="flex items-end gap-1 mb-4">
+                <span className="text-4xl font-bold">$19</span>
+                <span className="text-gray-500">/month</span>
               </div>
-              <p className="text-sm text-gray-500 mt-2">Perfect for those who just begin their journey.</p>
+              <p className="text-gray-600">Perfect for small businesses beginning their AI influencer journey.</p>
             </div>
-
-            <div className="border-t border-gray-100 pt-6 pb-4">
-              <div className="flex items-center mb-4">
-                <div className="w-6 h-6 rounded-full bg-promogenie-100 flex items-center justify-center mr-3">
-                  <span className="text-promogenie-600 text-sm font-bold">$</span>
-                </div>
-                <span className="font-medium">10 Credits</span>
-              </div>
-              
+            <div className="p-6">
               <ul className="space-y-3">
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">50+ on-brand ad copy generations</span>
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <span>50 wishes per month</span>
                 </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">600 on-brand image ad variations</span>
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <span>3 AI influencers</span>
                 </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">One-click publishing on Meta, Google, LinkedIn & TikTok</span>
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <span>720p video quality</span>
                 </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">Basic AI image generation</span>
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <span>6 second videos</span>
                 </li>
-                <li className="flex text-gray-400">
-                  <Check size={18} className="text-gray-300 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">Custom prompt creation</span>
-                </li>
-                <li className="flex text-gray-400">
-                  <Check size={18} className="text-gray-300 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">AI influencer generation</span>
-                </li>
-                <li className="flex text-gray-400">
-                  <Check size={18} className="text-gray-300 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">Video creation with lip-sync</span>
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <span>Email support</span>
                 </li>
               </ul>
             </div>
-
-            <button className="w-full mt-4 px-4 py-2 border border-promogenie-600 text-promogenie-600 rounded-md font-medium hover:bg-promogenie-50 transition-colors">
-              Get Started
-            </button>
+            <div className="p-6 pt-0">
+              <Link to="/signup" className="block w-full py-3 px-4 text-center bg-white border border-promogenie-600 text-promogenie-600 hover:bg-promogenie-50 rounded-md font-medium transition-colors">
+                Get Started
+              </Link>
+            </div>
           </div>
-
-          {/* Pro - Best Value */}
-          <div className="pricing-card relative mt-6 md:mt-0 overflow-visible border-2 border-promogenie-600 rounded-xl">
-            {/* Best Value badge positioned at the top */}
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 py-1 px-5 bg-promogenie-600 text-white text-sm font-bold uppercase rounded-md z-10">
-              BEST VALUE
+          
+          {/* Pro Plan */}
+          <div className="bg-white rounded-lg shadow-md overflow-hidden border-2 border-promogenie-600 hover:shadow-lg transform scale-105 transition-all relative">
+            <div className="absolute top-0 right-0 bg-promogenie-600 text-white text-xs font-bold px-3 py-1 rounded-bl">
+              POPULAR
             </div>
-            
-            <div className="text-center mb-6 pt-3">
-              <div className="text-xs uppercase font-semibold text-promogenie-600 mb-1">FOR BOUTIQUE AGENCIES & STARTUP BRANDS</div>
-              <h3 className="text-2xl font-bold mb-2">Pro</h3>
-              <div className="flex items-baseline justify-center">
-                <span className="text-4xl font-bold">{billingPeriod === 'monthly' ? '$79' : '$790'}</span>
-                <span className="text-gray-500 ml-1">/{billingPeriod === 'monthly' ? 'mo' : 'yr'}</span>
+            <div className="p-6 border-b">
+              <h3 className="text-xl font-bold mb-2">Professional</h3>
+              <div className="flex items-end gap-1 mb-4">
+                <span className="text-4xl font-bold">$49</span>
+                <span className="text-gray-500">/month</span>
               </div>
-              <p className="text-sm text-gray-500 mt-2">Designed for marketers aiming for more flexibility and options.</p>
+              <p className="text-gray-600">For growing businesses with regular marketing campaigns.</p>
             </div>
-
-            <div className="border-t border-gray-100 pt-6 pb-4">
-              <div className="flex items-center mb-4">
-                <div className="w-6 h-6 rounded-full bg-promogenie-100 flex items-center justify-center mr-3">
-                  <span className="text-promogenie-600 text-sm font-bold">$</span>
-                </div>
-                <span className="font-medium">50 Credits</span>
-              </div>
-              
+            <div className="p-6">
               <ul className="space-y-3">
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">250+ on-brand ad copy generations</span>
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <span>200 wishes per month</span>
                 </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">3,000 on-brand image ad variations</span>
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <span>All 8 AI influencers</span>
                 </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">One-click publishing on Meta, Google, LinkedIn & TikTok</span>
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <span>1080p HD video quality</span>
                 </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">Advanced AI image generation</span>
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <span>12 second videos</span>
                 </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">Custom prompt creation</span>
-                </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">AI influencer generation</span>
-                </li>
-                <li className="flex text-gray-400">
-                  <Check size={18} className="text-gray-300 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">Video creation with lip-sync</span>
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <span>Priority support</span>
                 </li>
               </ul>
             </div>
-
-            <button className="w-full mt-4 px-4 py-2 bg-promogenie-600 text-white rounded-md font-medium hover:bg-promogenie-700 transition-colors button-shine">
-              Get Started
-            </button>
+            <div className="p-6 pt-0">
+              <Link to="/signup" className="block w-full py-3 px-4 text-center bg-promogenie-600 text-white hover:bg-promogenie-700 rounded-md font-medium transition-colors shadow-md">
+                Get Started
+              </Link>
+            </div>
           </div>
-
-          {/* Team */}
-          <div className="pricing-card">
-            <div className="text-center mb-6">
-              <div className="text-xs uppercase font-semibold text-promogenie-600 mb-1">For Creative Agencies & E-commerce Brands</div>
-              <h3 className="text-2xl font-bold mb-2">Team</h3>
-              <div className="flex items-baseline justify-center">
-                <span className="text-4xl font-bold">{billingPeriod === 'monthly' ? '$199' : '$1,990'}</span>
-                <span className="text-gray-500 ml-1">/{billingPeriod === 'monthly' ? 'mo' : 'yr'}</span>
+          
+          {/* Enterprise Plan */}
+          <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow">
+            <div className="p-6 border-b">
+              <h3 className="text-xl font-bold mb-2">Enterprise</h3>
+              <div className="flex items-end gap-1 mb-4">
+                <span className="text-4xl font-bold">$149</span>
+                <span className="text-gray-500">/month</span>
               </div>
-              <p className="text-sm text-gray-500 mt-2">Ideal for teams with regular advertising needs.</p>
+              <p className="text-gray-600">For businesses with high-volume marketing needs.</p>
             </div>
-
-            <div className="border-t border-gray-100 pt-6 pb-4">
-              <div className="flex items-center mb-4">
-                <div className="w-6 h-6 rounded-full bg-promogenie-100 flex items-center justify-center mr-3">
-                  <span className="text-promogenie-600 text-sm font-bold">$</span>
-                </div>
-                <span className="font-medium">150 Credits</span>
-              </div>
-              
+            <div className="p-6">
               <ul className="space-y-3">
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">750+ on-brand ad copy generations</span>
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <span>Unlimited wishes</span>
                 </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">9,000 on-brand image ad variations</span>
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <span>Custom AI influencer creation</span>
                 </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">One-click publishing on Meta, Google, LinkedIn & TikTok</span>
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <span>4K Ultra HD video quality</span>
                 </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">Premium AI image generation</span>
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <span>12 second videos with post-processing</span>
                 </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">Custom prompt creation</span>
-                </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">AI influencer generation</span>
-                </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">Video creation with lip-sync</span>
+                <li className="flex items-start">
+                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <span>Dedicated account manager</span>
                 </li>
               </ul>
             </div>
-
-            <button className="w-full mt-4 px-4 py-2 border border-promogenie-600 text-promogenie-600 rounded-md font-medium hover:bg-promogenie-50 transition-colors">
-              Get Started
-            </button>
-          </div>
-
-          {/* Enterprise */}
-          <div className="pricing-card bg-gray-50">
-            <div className="text-center mb-6">
-              <div className="text-xs uppercase font-semibold text-promogenie-600 mb-1">For Large-scale Ad Generation Needs</div>
-              <h3 className="text-2xl font-bold mb-2">Enterprise</h3>
-              <div className="flex items-baseline justify-center">
-                <span className="text-2xl font-bold">Let's Talk</span>
-              </div>
-              <p className="text-sm text-gray-500 mt-2">Tell us what you need, and we'll tailor our solutions.</p>
+            <div className="p-6 pt-0">
+              <Link to="/signup" className="block w-full py-3 px-4 text-center bg-white border border-promogenie-600 text-promogenie-600 hover:bg-promogenie-50 rounded-md font-medium transition-colors">
+                Get Started
+              </Link>
             </div>
-
-            <div className="border-t border-gray-100 pt-6 pb-4">
-              <div className="flex items-center mb-4">
-                <div className="w-6 h-6 rounded-full bg-promogenie-100 flex items-center justify-center mr-3">
-                  <span className="text-promogenie-600 text-sm font-bold">$</span>
-                </div>
-                <span className="font-medium">As Many As You Need</span>
-              </div>
-              
-              <ul className="space-y-3">
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">On-brand ad copy generations at scale</span>
-                </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">Unlimited on-brand image ad variations</span>
-                </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">One-click publishing on Meta, Google, LinkedIn & TikTok</span>
-                </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">Enterprise-grade AI image generation</span>
-                </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">Advanced custom prompt creation</span>
-                </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">Premium AI influencer generation</span>
-                </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">Advanced video creation with lip-sync</span>
-                </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">Dedicated account manager</span>
-                </li>
-                <li className="flex">
-                  <Check size={18} className="text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm">Custom integration & API access</span>
-                </li>
-              </ul>
-            </div>
-
-            <button className="w-full mt-4 px-4 py-2 bg-gray-800 text-white rounded-md font-medium hover:bg-gray-700 transition-colors">
-              Contact Sales
-            </button>
           </div>
         </div>
       </div>
