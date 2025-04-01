@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
@@ -6,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSearchParams } from 'react-router-dom';
+import { login, isAuthenticated } from "@/utils/auth";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,7 +20,7 @@ const Login = () => {
   
   // Redirect if already authenticated
   useEffect(() => {
-    if (localStorage.getItem("isAuthenticated") === "true") {
+    if (isAuthenticated()) {
       navigate('/dashboard');
     }
   }, [navigate]);
@@ -38,28 +40,39 @@ const Login = () => {
       return;
     }
 
-    // Retrieve test account from localStorage (encrypted in a real app)
-    const testEmail = atob(localStorage.getItem("testEmail") || "");
-    const testPassword = atob(localStorage.getItem("testPassword") || "");
-
-    // Simulate authentication (replace with real API call)
-    if (email === testEmail && password === testPassword) {
-      // On successful login
-      localStorage.setItem("isAuthenticated", "true");
+    try {
+      // Use the new login function
+      const result = await login(email, password);
       
-      // Remember user if "remember me" is checked
-      if (rememberMe) {
-        localStorage.setItem("rememberedUser", JSON.stringify({ email }));
+      if (result) {
+        // On successful login
+        localStorage.setItem("isAuthenticated", "true");
+        
+        // Remember user if "remember me" is checked
+        if (rememberMe) {
+          localStorage.setItem("rememberedUser", JSON.stringify({ email }));
+        } else {
+          localStorage.removeItem("rememberedUser");
+        }
+        
+        toast({
+          title: "Success",
+          description: "You have successfully logged in.",
+        });
+        
+        // Redirect to the dashboard
+        navigate('/dashboard');
       } else {
-        localStorage.removeItem("rememberedUser");
+        toast({
+          title: "Error",
+          description: "Invalid credentials.",
+          variant: "destructive"
+        });
       }
-      
-      // Redirect to the dashboard HTML
-      window.location.href = "/dashboard.html";
-    } else {
+    } catch (error) {
       toast({
         title: "Error",
-        description: "Invalid credentials.",
+        description: "An error occurred during login.",
         variant: "destructive"
       });
     }

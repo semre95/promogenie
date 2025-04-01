@@ -1,11 +1,15 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Eye, EyeOff } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
+import { signup } from "@/utils/auth";
 
 const Signup = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -13,11 +17,42 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [marketingConsent, setMarketingConsent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle signup logic here
-    console.log('Signup attempt with:', { name, email, company, password, acceptTerms, marketingConsent });
+    
+    if (!acceptTerms) {
+      toast({
+        title: "Error",
+        description: "You must accept the Terms of Service to create an account.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Call the signup function with the user's information
+      const result = await signup(name, password, email);
+      
+      if (result) {
+        toast({
+          title: "Success",
+          description: "Your account has been created successfully!",
+        });
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An error occurred during signup.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Password strength calculation
@@ -198,9 +233,10 @@ const Signup = () => {
               
               <button
                 type="submit"
+                disabled={loading}
                 className="w-full py-2 px-4 bg-promogenie-600 text-white font-medium rounded-md hover:bg-promogenie-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-promogenie-500 transition-colors button-shine"
               >
-                Create account
+                {loading ? "Creating account..." : "Create account"}
               </button>
             </form>
             

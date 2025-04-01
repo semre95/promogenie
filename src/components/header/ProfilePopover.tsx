@@ -16,6 +16,7 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { logout, getUsername } from '@/utils/auth';
 
 interface ProfilePopoverProps {
   userEmail: string;
@@ -31,13 +32,21 @@ const ProfilePopover = ({ userEmail }: ProfilePopoverProps) => {
     return email.charAt(0).toUpperCase();
   };
   
-  const handleLogout = () => {
-    localStorage.removeItem("isAuthenticated");
-    toast({
-      title: "Logged out",
-      description: "You have been successfully logged out.",
-    });
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast({
+        title: "Logged out",
+        description: "You have been successfully logged out.",
+      });
+      navigate('/login');
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An error occurred during logout.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
@@ -56,7 +65,7 @@ const ProfilePopover = ({ userEmail }: ProfilePopoverProps) => {
             <AvatarFallback>{getInitial(userEmail)}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
-            <span className="font-medium text-promogenie-800">{userEmail}</span>
+            <span className="font-medium text-promogenie-800">{getUsername() || userEmail}</span>
             <span className="text-sm text-gray-500">{userEmail}</span>
           </div>
         </div>

@@ -1,11 +1,16 @@
 
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { isAuthenticated, logout } from '@/utils/auth';
+import { useToast } from '@/hooks/use-toast';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const authenticated = isAuthenticated();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -25,6 +30,23 @@ const Navbar = () => {
       document.getElementById('testimonials')?.scrollIntoView({ behavior: 'smooth' });
     }
     setIsMenuOpen(false);
+  };
+  
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast({
+        title: "Success",
+        description: "You have been logged out successfully.",
+      });
+      navigate('/login');
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An error occurred during logout.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
@@ -58,12 +80,29 @@ const Navbar = () => {
           <Link to="/about" className="font-medium text-gray-700 hover:text-promogenie-600 transition-colors">
             About
           </Link>
-          <Link to="/login" className="px-4 py-2 text-promogenie-600 border border-promogenie-600 rounded-md font-medium hover:bg-promogenie-50 transition-colors">
-            Login
-          </Link>
-          <Link to="/signup" className="px-4 py-2 bg-promogenie-600 text-white rounded-md font-medium hover:bg-promogenie-700 transition-colors button-shine">
-            Sign Up
-          </Link>
+          
+          {authenticated ? (
+            <>
+              <Link to="/dashboard" className="px-4 py-2 text-promogenie-600 border border-promogenie-600 rounded-md font-medium hover:bg-promogenie-50 transition-colors">
+                Dashboard
+              </Link>
+              <button 
+                onClick={handleLogout}
+                className="px-4 py-2 bg-promogenie-600 text-white rounded-md font-medium hover:bg-promogenie-700 transition-colors button-shine"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="px-4 py-2 text-promogenie-600 border border-promogenie-600 rounded-md font-medium hover:bg-promogenie-50 transition-colors">
+                Login
+              </Link>
+              <Link to="/signup" className="px-4 py-2 bg-promogenie-600 text-white rounded-md font-medium hover:bg-promogenie-700 transition-colors button-shine">
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -98,12 +137,31 @@ const Navbar = () => {
               About
             </Link>
             <div className="pt-4 flex flex-col space-y-3">
-              <Link to="/login" className="w-full px-4 py-2 text-center text-promogenie-600 border border-promogenie-600 rounded-md font-medium hover:bg-promogenie-50 transition-colors" onClick={toggleMenu}>
-                Login
-              </Link>
-              <Link to="/signup" className="w-full px-4 py-2 text-center bg-promogenie-600 text-white rounded-md font-medium hover:bg-promogenie-700 transition-colors button-shine" onClick={toggleMenu}>
-                Sign Up
-              </Link>
+              {authenticated ? (
+                <>
+                  <Link to="/dashboard" className="w-full px-4 py-2 text-center text-promogenie-600 border border-promogenie-600 rounded-md font-medium hover:bg-promogenie-50 transition-colors" onClick={toggleMenu}>
+                    Dashboard
+                  </Link>
+                  <button 
+                    onClick={() => {
+                      handleLogout();
+                      toggleMenu();
+                    }}
+                    className="w-full px-4 py-2 text-center bg-promogenie-600 text-white rounded-md font-medium hover:bg-promogenie-700 transition-colors button-shine"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="w-full px-4 py-2 text-center text-promogenie-600 border border-promogenie-600 rounded-md font-medium hover:bg-promogenie-50 transition-colors" onClick={toggleMenu}>
+                    Login
+                  </Link>
+                  <Link to="/signup" className="w-full px-4 py-2 text-center bg-promogenie-600 text-white rounded-md font-medium hover:bg-promogenie-700 transition-colors button-shine" onClick={toggleMenu}>
+                    Sign Up
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
