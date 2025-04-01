@@ -4,1900 +4,1322 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PromoGenie Studio | Dashboard</title>
-  <meta name="description" content="PromoGenie Studio - AI-Powered Marketing Dashboard">
-  
-  <!-- Tailwind CSS via CDN -->
+  <title>PromoGenie Dashboard</title>
+  <!-- TailwindCSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Configure Tailwind -->
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
+            promogenie: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              200: '#ddd6fe',
+              300: '#c4b5fd',
+              400: '#a78bfa',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95',
+            },
             primary: {
-              DEFAULT: '#6d28d9',
-              light: '#8b5cf6',
-              dark: '#5b21b6'
+              DEFAULT: '#7c3aed',
+              foreground: '#ffffff',
+            },
+            border: '#e2e8f0',
+            muted: '#f8fafc',
+            destructive: {
+              DEFAULT: '#ef4444',
+              foreground: '#ffffff',
             }
           },
-          fontFamily: {
-            'display': ['Montserrat', 'sans-serif'],
-            'body': ['Inter', 'sans-serif'],
+          animation: {
+            'fade-in': 'fadeIn 0.3s ease-out',
+            'spin-slow': 'spin 2s linear infinite',
           },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            }
+          }
         }
       }
     }
   </script>
-  
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="/favicon.ico">
-  
-  <!-- Chart.js for analytics -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+  <!-- Custom Styles -->
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafb;
+    }
+    
+    .sidebar-item {
+      transition: all 0.2s ease;
+    }
+    
+    .sidebar-item:hover {
+      background-color: rgba(124, 58, 237, 0.08);
+    }
+    
+    .sidebar-item.active {
+      background-color: rgba(124, 58, 237, 0.12);
+      border-right: 3px solid #7c3aed;
+    }
+    
+    .toast {
+      animation: slideIn 0.3s forwards;
+    }
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 
-<body class="bg-gray-100 font-body">
-  <div id="dashboard-app">
-    <!-- Main Dashboard Layout -->
-    <div class="flex h-screen overflow-hidden">
-      <!-- Sidebar - Hidden on mobile, shown on larger screens -->
-      <div id="sidebar" class="hidden lg:flex lg:flex-shrink-0">
-        <div class="flex flex-col w-64 border-r border-gray-200 bg-white">
-          <div class="flex items-center justify-center h-16 px-4 border-b border-gray-200">
-            <h1 class="text-xl font-bold text-primary">PromoGenie Studio</h1>
-          </div>
-          <div class="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto">
-            <nav class="mt-5 flex-1 px-4 space-y-1">
-              <a href="#dashboard" class="bg-purple-50 text-primary group flex items-center px-4 py-2 text-sm font-medium rounded-md" onclick="showTab('dashboard')">
-                <svg class="mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                Dashboard
-              </a>
-              <a href="#influencers" class="text-gray-600 hover:bg-gray-50 hover:text-primary group flex items-center px-4 py-2 text-sm font-medium rounded-md" onclick="showTab('influencers')">
-                <svg class="mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-                Virtual Influencers
-              </a>
-              <a href="#content" class="text-gray-600 hover:bg-gray-50 hover:text-primary group flex items-center px-4 py-2 text-sm font-medium rounded-md" onclick="showTab('content')">
-                <svg class="mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-                Content Generator
-              </a>
-              <a href="#analytics" class="text-gray-600 hover:bg-gray-50 hover:text-primary group flex items-center px-4 py-2 text-sm font-medium rounded-md" onclick="showTab('analytics')">
-                <svg class="mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-                Analytics
-              </a>
-              <a href="#campaigns" class="text-gray-600 hover:bg-gray-50 hover:text-primary group flex items-center px-4 py-2 text-sm font-medium rounded-md" onclick="showTab('campaigns')">
-                <svg class="mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                Campaigns
-              </a>
-              <a href="#settings" class="text-gray-600 hover:bg-gray-50 hover:text-primary group flex items-center px-4 py-2 text-sm font-medium rounded-md" onclick="showTab('settings')">
-                <svg class="mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                Settings
-              </a>
-            </nav>
-          </div>
-          <div class="p-4 border-t border-gray-200">
-            <a href="#" id="logoutBtn" class="text-gray-600 hover:text-primary flex items-center px-4 py-2 text-sm font-medium rounded-md">
-              <svg class="mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
-              Log Out
-            </a>
-          </div>
+<body class="min-h-screen bg-gray-100 flex flex-col md:flex-row">
+  <!-- Sidebar -->
+  <aside class="bg-white w-full md:w-64 md:min-h-screen shadow-sm border-r border-border">
+    <div class="p-4 border-b">
+      <a href="index.html" class="flex items-center space-x-2">
+        <div class="h-8 w-8 bg-promogenie-600 rounded-lg flex items-center justify-center">
+          <span class="text-white font-bold text-xl">P</span>
         </div>
-      </div>
-
-      <!-- Mobile sidebar & main content -->
-      <div class="flex flex-col w-0 flex-1 overflow-hidden">
-        <!-- Top navigation -->
-        <div class="relative z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200">
-          <button id="sidebarToggle" class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:bg-gray-100 focus:text-gray-600 lg:hidden">
-            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+        <span class="font-bold text-xl text-promogenie-600">PromoGenie</span>
+      </a>
+    </div>
+    
+    <nav class="p-4">
+      <ul class="space-y-1">
+        <li>
+          <button class="sidebar-item active flex items-center w-full p-2 rounded-md text-gray-900" data-tab="influencerVideos">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3 text-promogenie-600">
+              <polygon points="23 7 16 12 23 17 23 7"></polygon>
+              <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
             </svg>
+            <span>Create Media</span>
           </button>
-          <div class="flex-1 px-4 flex justify-between">
-            <div class="flex-1 flex items-center">
-              <div class="lg:hidden font-bold text-primary">PromoGenie Studio</div>
-            </div>
-            <div class="ml-4 flex items-center md:ml-6">
-              <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                </svg>
-              </button>
-              <div class="ml-3 relative">
-                <div id="userProfile" class="flex items-center">
-                  <img src="https://randomuser.me/api/portraits/men/77.jpg" alt="User profile" class="h-8 w-8 rounded-full cursor-pointer">
-                  <span class="ml-2 text-sm font-medium text-gray-700 hidden md:block">Demo User</span>
-                  <svg class="ml-1 h-5 w-5 text-gray-400 hidden md:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                  </svg>
-                </div>
-                <!-- Profile dropdown panel -->
-                <div id="userDropdown" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 z-50">
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account Settings</a>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Subscription</a>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" id="mobileLogout">Log Out</a>
-                </div>
-              </div>
-            </div>
-          </div>
+        </li>
+        <li>
+          <button class="sidebar-item flex items-center w-full p-2 rounded-md text-gray-600" data-tab="creations">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+            <span>My Creations</span>
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-item flex items-center w-full p-2 rounded-md text-gray-600" data-tab="settings">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+            <span>Settings</span>
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-item flex items-center w-full p-2 rounded-md text-gray-600" data-tab="help">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <span>Help & Support</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+    
+    <div class="p-4 border-t mt-auto">
+      <div class="flex items-center mb-3">
+        <div class="h-6 w-6 rounded-full bg-promogenie-100 flex items-center justify-center mr-2">
+          <span class="text-xs font-semibold text-promogenie-600">10</span>
         </div>
-
-        <!-- Mobile sidebar menu (hidden by default) -->
-        <div id="mobileSidebar" class="fixed inset-0 flex z-40 lg:hidden hidden">
-          <div class="fixed inset-0 bg-gray-600 bg-opacity-75"></div>
-          <div class="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-white">
-            <div class="absolute top-0 right-0 -mr-12 pt-2">
-              <button id="closeSidebar" class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                <span class="sr-only">Close sidebar</span>
-                <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <div class="flex-shrink-0 flex items-center px-4">
-              <h1 class="text-xl font-bold text-primary">PromoGenie Studio</h1>
-            </div>
-            <div class="mt-5 flex-1 h-0 overflow-y-auto">
-              <nav class="px-2 space-y-1">
-                <a href="#dashboard" class="bg-purple-50 text-primary group flex items-center px-3 py-2 text-base font-medium rounded-md" onclick="showTab('dashboard'); closeMobileSidebar();">
-                  <svg class="mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
-                  Dashboard
-                </a>
-                <a href="#influencers" class="text-gray-600 hover:bg-gray-50 hover:text-primary group flex items-center px-3 py-2 text-base font-medium rounded-md" onclick="showTab('influencers'); closeMobileSidebar();">
-                  <svg class="mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
-                  Virtual Influencers
-                </a>
-                <a href="#content" class="text-gray-600 hover:bg-gray-50 hover:text-primary group flex items-center px-3 py-2 text-base font-medium rounded-md" onclick="showTab('content'); closeMobileSidebar();">
-                  <svg class="mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                  </svg>
-                  Content Generator
-                </a>
-                <a href="#analytics" class="text-gray-600 hover:bg-gray-50 hover:text-primary group flex items-center px-3 py-2 text-base font-medium rounded-md" onclick="showTab('analytics'); closeMobileSidebar();">
-                  <svg class="mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                  Analytics
-                </a>
-                <a href="#campaigns" class="text-gray-600 hover:bg-gray-50 hover:text-primary group flex items-center px-3 py-2 text-base font-medium rounded-md" onclick="showTab('campaigns'); closeMobileSidebar();">
-                  <svg class="mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  Campaigns
-                </a>
-                <a href="#settings" class="text-gray-600 hover:bg-gray-50 hover:text-primary group flex items-center px-3 py-2 text-base font-medium rounded-md" onclick="showTab('settings'); closeMobileSidebar();">
-                  <svg class="mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  Settings
-                </a>
-              </nav>
-            </div>
-          </div>
-          <div class="flex-shrink-0 w-14" aria-hidden="true">
-            <!-- Dummy element to force sidebar to shrink to fit close icon -->
-          </div>
-        </div>
-
-        <!-- Main content area -->
-        <main class="flex-1 relative z-0 overflow-y-auto focus:outline-none">
-          <!-- Login Form (initially shown, hidden after login) -->
-          <div id="loginForm" class="flex min-h-screen items-center justify-center bg-gray-50">
-            <div class="w-full max-w-md">
-              <div class="bg-white py-8 px-6 shadow rounded-lg sm:px-10">
-                <div class="text-center mb-8">
-                  <h2 class="text-2xl font-bold text-gray-900">Welcome to PromoGenie Studio</h2>
-                  <p class="mt-2 text-gray-600">Sign in to your account</p>
-                </div>
-                <form class="space-y-6" id="loginFormElement">
-                  <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
-                    <div class="mt-1">
-                      <input id="email" name="email" type="email" autocomplete="email" required class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary">
-                    </div>
-                  </div>
-
-                  <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <div class="mt-1">
-                      <input id="password" name="password" type="password" autocomplete="current-password" required class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary">
-                    </div>
-                  </div>
-
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                      <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
-                      <label for="remember-me" class="ml-2 block text-sm text-gray-900">Remember me</label>
-                    </div>
-                    <div class="text-sm">
-                      <a href="#" class="font-medium text-primary hover:text-primary-dark">Forgot your password?</a>
-                    </div>
-                  </div>
-
-                  <div>
-                    <button type="button" onclick="handleLogin()" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">Sign in</button>
-                  </div>
-                  
-                  <div class="text-sm text-center text-gray-600">
-                    Demo credentials: <span class="font-medium text-primary">test@promogenie.co</span> / <span class="font-medium text-primary">prmgn2025*</span>
-                  </div>
-                </form>
-                <div class="mt-6">
-                  <div class="relative">
-                    <div class="absolute inset-0 flex items-center">
-                      <div class="w-full border-t border-gray-300"></div>
-                    </div>
-                    <div class="relative flex justify-center text-sm">
-                      <span class="px-2 bg-white text-gray-500">Or continue with</span>
-                    </div>
-                  </div>
-
-                  <div class="mt-6 grid grid-cols-3 gap-3">
-                    <div>
-                      <a href="#" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fill-rule="evenodd" d="M20 10c0-5.523-4.477-10-10-10S0 4.477 0 10c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V10h2.54V7.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V10h2.773l-.443 2.89h-2.33v6.988C16.343 19.128 20 14.991 20 10z" clip-rule="evenodd" />
-                        </svg>
-                      </a>
-                    </div>
-
-                    <div>
-                      <a href="#" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
-                        </svg>
-                      </a>
-                    </div>
-
-                    <div>
-                      <a href="#" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd" />
-                        </svg>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="mt-6 text-center">
-                  <p class="text-sm text-gray-600">
-                    Don't have an account? <a href="index.html#pricing" class="font-medium text-primary hover:text-primary-dark">Sign up</a>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Dashboard Content (hidden initially, shown after login) -->
-          <div id="dashboardContent" class="hidden">
-            <!-- Dashboard Tab -->
-            <div id="dashboard-tab" class="tab-content">
-              <div class="py-6">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  <h1 class="text-2xl font-semibold text-gray-900">Dashboard</h1>
-                </div>
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  <!-- Overview cards -->
-                  <div class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                    <div class="bg-white overflow-hidden shadow rounded-lg">
-                      <div class="p-5">
-                        <div class="flex items-center">
-                          <div class="flex-shrink-0 bg-purple-100 rounded-md p-3">
-                            <svg class="h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
-                          </div>
-                          <div class="ml-5 w-0 flex-1">
-                            <dl>
-                              <dt class="text-sm font-medium text-gray-500 truncate">Virtual Influencers</dt>
-                              <dd class="flex items-baseline">
-                                <div class="text-2xl font-semibold text-gray-900">3</div>
-                                <div class="ml-2 flex items-baseline text-sm font-semibold text-green-600">
-                                  <svg class="self-center flex-shrink-0 h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                                  </svg>
-                                  <span class="sr-only">Increased by</span>
-                                  1
-                                </div>
-                              </dd>
-                            </dl>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="bg-gray-50 px-5 py-3">
-                        <div class="text-sm">
-                          <a href="#influencers" onclick="showTab('influencers')" class="font-medium text-primary hover:text-primary-dark">View all</a>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="bg-white overflow-hidden shadow rounded-lg">
-                      <div class="p-5">
-                        <div class="flex items-center">
-                          <div class="flex-shrink-0 bg-purple-100 rounded-md p-3">
-                            <svg class="h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
-                          </div>
-                          <div class="ml-5 w-0 flex-1">
-                            <dl>
-                              <dt class="text-sm font-medium text-gray-500 truncate">AI Content Generated</dt>
-                              <dd class="flex items-baseline">
-                                <div class="text-2xl font-semibold text-gray-900">128</div>
-                                <div class="ml-2 flex items-baseline text-sm font-semibold text-green-600">
-                                  <svg class="self-center flex-shrink-0 h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                                  </svg>
-                                  <span class="sr-only">Increased by</span>
-                                  12%
-                                </div>
-                              </dd>
-                            </dl>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="bg-gray-50 px-5 py-3">
-                        <div class="text-sm">
-                          <a href="#content" onclick="showTab('content')" class="font-medium text-primary hover:text-primary-dark">View all</a>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="bg-white overflow-hidden shadow rounded-lg">
-                      <div class="p-5">
-                        <div class="flex items-center">
-                          <div class="flex-shrink-0 bg-purple-100 rounded-md p-3">
-                            <svg class="h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
-                            </svg>
-                          </div>
-                          <div class="ml-5 w-0 flex-1">
-                            <dl>
-                              <dt class="text-sm font-medium text-gray-500 truncate">Engagement Rate</dt>
-                              <dd class="flex items-baseline">
-                                <div class="text-2xl font-semibold text-gray-900">5.28%</div>
-                                <div class="ml-2 flex items-baseline text-sm font-semibold text-green-600">
-                                  <svg class="self-center flex-shrink-0 h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                                  </svg>
-                                  <span class="sr-only">Increased by</span>
-                                  0.8%
-                                </div>
-                              </dd>
-                            </dl>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="bg-gray-50 px-5 py-3">
-                        <div class="text-sm">
-                          <a href="#analytics" onclick="showTab('analytics')" class="font-medium text-primary hover:text-primary-dark">View details</a>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="bg-white overflow-hidden shadow rounded-lg">
-                      <div class="p-5">
-                        <div class="flex items-center">
-                          <div class="flex-shrink-0 bg-purple-100 rounded-md p-3">
-                            <svg class="h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                          </div>
-                          <div class="ml-5 w-0 flex-1">
-                            <dl>
-                              <dt class="text-sm font-medium text-gray-500 truncate">Active Campaigns</dt>
-                              <dd class="flex items-baseline">
-                                <div class="text-2xl font-semibold text-gray-900">4</div>
-                                <div class="ml-2 flex items-baseline text-sm font-semibold text-gray-600">
-                                  <span class="sr-only">Unchanged</span>
-                                  -
-                                </div>
-                              </dd>
-                            </dl>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="bg-gray-50 px-5 py-3">
-                        <div class="text-sm">
-                          <a href="#campaigns" onclick="showTab('campaigns')" class="font-medium text-primary hover:text-primary-dark">View all</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Charts -->
-                  <div class="mt-8">
-                    <div class="bg-white shadow rounded-lg">
-                      <div class="px-5 py-6 border-b border-gray-200">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900">Performance Overview</h3>
-                      </div>
-                      <div class="p-5">
-                        <div class="h-80">
-                          <canvas id="performanceChart"></canvas>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Recent Activity -->
-                  <div class="mt-8">
-                    <div class="bg-white shadow rounded-lg">
-                      <div class="px-5 py-6 border-b border-gray-200">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900">Recent Activity</h3>
-                      </div>
-                      <div class="px-5 py-6">
-                        <ul class="divide-y divide-gray-200">
-                          <li class="py-4">
-                            <div class="flex space-x-3">
-                              <div class="flex-shrink-0">
-                                <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/43.jpg" alt="">
-                              </div>
-                              <div class="min-w-0 flex-1">
-                                <p class="text-sm font-medium text-gray-900">
-                                  <a href="#" class="hover:underline">Sophia Virtual Influencer</a>
-                                </p>
-                                <p class="text-sm text-gray-500">
-                                  Generated 3 new Instagram posts about summer fashion trends.
-                                </p>
-                              </div>
-                              <div class="flex-shrink-0 whitespace-nowrap text-sm text-gray-500">
-                                1h ago
-                              </div>
-                            </div>
-                          </li>
-                          <li class="py-4">
-                            <div class="flex space-x-3">
-                              <div class="flex-shrink-0">
-                                <div class="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
-                                  <svg class="h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                  </svg>
-                                </div>
-                              </div>
-                              <div class="min-w-0 flex-1">
-                                <p class="text-sm font-medium text-gray-900">
-                                  <a href="#" class="hover:underline">Summer Sale Campaign</a>
-                                </p>
-                                <p class="text-sm text-gray-500">
-                                  Campaign started with 4 scheduled posts over 2 weeks.
-                                </p>
-                              </div>
-                              <div class="flex-shrink-0 whitespace-nowrap text-sm text-gray-500">
-                                3h ago
-                              </div>
-                            </div>
-                          </li>
-                          <li class="py-4">
-                            <div class="flex space-x-3">
-                              <div class="flex-shrink-0">
-                                <div class="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
-                                  <svg class="h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                  </svg>
-                                </div>
-                              </div>
-                              <div class="min-w-0 flex-1">
-                                <p class="text-sm font-medium text-gray-900">
-                                  <a href="#" class="hover:underline">Content Generator</a>
-                                </p>
-                                <p class="text-sm text-gray-500">
-                                  10 new product descriptions generated for the online store.
-                                </p>
-                              </div>
-                              <div class="flex-shrink-0 whitespace-nowrap text-sm text-gray-500">
-                                5h ago
-                              </div>
-                            </div>
-                          </li>
-                          <li class="py-4">
-                            <div class="flex space-x-3">
-                              <div class="flex-shrink-0">
-                                <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/35.jpg" alt="">
-                              </div>
-                              <div class="min-w-0 flex-1">
-                                <p class="text-sm font-medium text-gray-900">
-                                  <a href="#" class="hover:underline">Alex Virtual Influencer</a>
-                                </p>
-                                <p class="text-sm text-gray-500">
-                                  Created 2 new TikTok videos about tech gadget reviews.
-                                </p>
-                              </div>
-                              <div class="flex-shrink-0 whitespace-nowrap text-sm text-gray-500">
-                                8h ago
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Virtual Influencers Tab -->
-            <div id="influencers-tab" class="tab-content hidden">
-              <div class="py-6">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  <h1 class="text-2xl font-semibold text-gray-900">Virtual Influencers</h1>
-                  <p class="mt-2 text-gray-600">Create and manage your AI-powered virtual influencers.</p>
-
-                  <!-- Influencer Actions -->
-                  <div class="mt-6 flex flex-col sm:flex-row sm:items-center">
-                    <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                      <svg class="mr-2 -ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                      </svg>
-                      Create New Influencer
-                    </button>
-                    <div class="mt-4 sm:mt-0 sm:ml-4">
-                      <label for="influencer-filter" class="sr-only">Filter influencers</label>
-                      <select id="influencer-filter" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md">
-                        <option value="all" selected>All Influencers</option>
-                        <option value="active">Active</option>
-                        <option value="draft">Draft</option>
-                        <option value="archived">Archived</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <!-- Influencer Grid -->
-                  <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    <!-- Influencer Card 1 -->
-                    <div class="bg-white overflow-hidden shadow rounded-lg">
-                      <div class="relative">
-                        <img class="h-48 w-full object-cover" src="https://randomuser.me/api/portraits/women/43.jpg" alt="Sophia">
-                        <div class="absolute top-0 right-0 m-2">
-                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            Active
-                          </span>
-                        </div>
-                      </div>
-                      <div class="px-4 py-4">
-                        <h3 class="text-lg font-medium text-gray-900">Sophia</h3>
-                        <p class="mt-1 text-sm text-gray-600">Fashion & Lifestyle Influencer</p>
-                        <div class="mt-4 flex items-center justify-between">
-                          <div class="flex items-center">
-                            <svg class="h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
-                            <span class="ml-1 text-sm text-gray-600">8.5K views</span>
-                          </div>
-                          <div class="flex items-center">
-                            <svg class="h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                            </svg>
-                            <span class="ml-1 text-sm text-gray-600">452 likes</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="px-4 py-4 border-t border-gray-200 bg-gray-50">
-                        <div class="flex justify-between">
-                          <button class="text-sm text-primary hover:text-primary-dark">Edit</button>
-                          <button class="text-sm text-primary hover:text-primary-dark">View Analytics</button>
-                          <button class="text-sm text-primary hover:text-primary-dark">New Post</button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Influencer Card 2 -->
-                    <div class="bg-white overflow-hidden shadow rounded-lg">
-                      <div class="relative">
-                        <img class="h-48 w-full object-cover" src="https://randomuser.me/api/portraits/men/35.jpg" alt="Alex">
-                        <div class="absolute top-0 right-0 m-2">
-                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            Active
-                          </span>
-                        </div>
-                      </div>
-                      <div class="px-4 py-4">
-                        <h3 class="text-lg font-medium text-gray-900">Alex</h3>
-                        <p class="mt-1 text-sm text-gray-600">Tech & Gaming Influencer</p>
-                        <div class="mt-4 flex items-center justify-between">
-                          <div class="flex items-center">
-                            <svg class="h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
-                            <span class="ml-1 text-sm text-gray-600">12.3K views</span>
-                          </div>
-                          <div class="flex items-center">
-                            <svg class="h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                            </svg>
-                            <span class="ml-1 text-sm text-gray-600">785 likes</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="px-4 py-4 border-t border-gray-200 bg-gray-50">
-                        <div class="flex justify-between">
-                          <button class="text-sm text-primary hover:text-primary-dark">Edit</button>
-                          <button class="text-sm text-primary hover:text-primary-dark">View Analytics</button>
-                          <button class="text-sm text-primary hover:text-primary-dark">New Post</button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Influencer Card 3 -->
-                    <div class="bg-white overflow-hidden shadow rounded-lg">
-                      <div class="relative">
-                        <img class="h-48 w-full object-cover" src="https://randomuser.me/api/portraits/women/29.jpg" alt="Emma">
-                        <div class="absolute top-0 right-0 m-2">
-                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            Active
-                          </span>
-                        </div>
-                      </div>
-                      <div class="px-4 py-4">
-                        <h3 class="text-lg font-medium text-gray-900">Emma</h3>
-                        <p class="mt-1 text-sm text-gray-600">Fitness & Wellness Influencer</p>
-                        <div class="mt-4 flex items-center justify-between">
-                          <div class="flex items-center">
-                            <svg class="h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
-                            <span class="ml-1 text-sm text-gray-600">6.2K views</span>
-                          </div>
-                          <div class="flex items-center">
-                            <svg class="h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                            </svg>
-                            <span class="ml-1 text-sm text-gray-600">328 likes</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="px-4 py-4 border-t border-gray-200 bg-gray-50">
-                        <div class="flex justify-between">
-                          <button class="text-sm text-primary hover:text-primary-dark">Edit</button>
-                          <button class="text-sm text-primary hover:text-primary-dark">View Analytics</button>
-                          <button class="text-sm text-primary hover:text-primary-dark">New Post</button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Create New Influencer Card -->
-                    <div class="bg-white overflow-hidden shadow rounded-lg border-2 border-dashed border-gray-300">
-                      <div class="px-4 py-4 flex flex-col items-center justify-center h-64">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-purple-100">
-                          <svg class="h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                          </svg>
-                        </div>
-                        <div class="mt-3 text-center sm:mt-5">
-                          <h3 class="text-lg leading-6 font-medium text-gray-900">Create New Influencer</h3>
-                          <div class="mt-2">
-                            <p class="text-sm text-gray-500">Get started with a new virtual influencer for your brand.</p>
-                          </div>
-                        </div>
-                        <div class="mt-5 sm:mt-6">
-                          <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                            Start Creating
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Content Generator Tab -->
-            <div id="content-tab" class="tab-content hidden">
-              <div class="py-6">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  <h1 class="text-2xl font-semibold text-gray-900">Content Generator</h1>
-                  <p class="mt-2 text-gray-600">Generate AI-powered marketing content for your campaigns.</p>
-                  
-                  <div class="mt-8 bg-white shadow rounded-lg overflow-hidden">
-                    <div class="px-4 py-5 sm:p-6 border-b border-gray-200">
-                      <h3 class="text-lg leading-6 font-medium text-gray-900">Create New Content</h3>
-                      <p class="mt-1 text-sm text-gray-500">Choose a content type and provide details to generate content.</p>
-                    </div>
-                    
-                    <div class="px-4 py-5 sm:p-6">
-                      <div class="space-y-6">
-                        <div>
-                          <label for="content-type" class="block text-sm font-medium text-gray-700">Content Type</label>
-                          <select id="content-type" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md">
-                            <option value="social">Social Media Post</option>
-                            <option value="product">Product Description</option>
-                            <option value="email">Email Campaign</option>
-                            <option value="ad">Advertisement Copy</option>
-                            <option value="blog">Blog Post</option>
-                          </select>
-                        </div>
-                        
-                        <div>
-                          <label for="platform" class="block text-sm font-medium text-gray-700">Platform (for Social Media)</label>
-                          <select id="platform" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md">
-                            <option value="instagram">Instagram</option>
-                            <option value="facebook">Facebook</option>
-                            <option value="twitter">Twitter</option>
-                            <option value="linkedin">LinkedIn</option>
-                            <option value="tiktok">TikTok</option>
-                          </select>
-                        </div>
-                        
-                        <div>
-                          <label for="influencer" class="block text-sm font-medium text-gray-700">Influencer</label>
-                          <select id="influencer" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md">
-                            <option value="none">None (Brand Voice)</option>
-                            <option value="sophia">Sophia (Fashion & Lifestyle)</option>
-                            <option value="alex">Alex (Tech & Gaming)</option>
-                            <option value="emma">Emma (Fitness & Wellness)</option>
-                          </select>
-                        </div>
-                        
-                        <div>
-                          <label for="topic" class="block text-sm font-medium text-gray-700">Topic/Theme</label>
-                          <input type="text" id="topic" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" placeholder="Summer collection, Product launch, etc.">
-                        </div>
-                        
-                        <div>
-                          <label for="keywords" class="block text-sm font-medium text-gray-700">Keywords (comma separated)</label>
-                          <input type="text" id="keywords" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" placeholder="stylish, summer, casual, trendy">
-                        </div>
-                        
-                        <div>
-                          <label for="tone" class="block text-sm font-medium text-gray-700">Tone</label>
-                          <select id="tone" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md">
-                            <option value="casual">Casual & Friendly</option>
-                            <option value="professional">Professional</option>
-                            <option value="enthusiastic">Enthusiastic</option>
-                            <option value="humorous">Humorous</option>
-                            <option value="informative">Informative</option>
-                          </select>
-                        </div>
-                        
-                        <div>
-                          <label for="instructions" class="block text-sm font-medium text-gray-700">Additional Instructions</label>
-                          <textarea id="instructions" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" placeholder="Any specific details or requirements for the content..."></textarea>
-                        </div>
-                        
-                        <div class="flex justify-end">
-                          <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary mr-3">
-                            Save as Draft
-                          </button>
-                          <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                            Generate Content
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <!-- Recent Content -->
-                  <div class="mt-8">
-                    <h2 class="text-lg font-medium text-gray-900">Recent Content</h2>
-                    <div class="mt-4 bg-white shadow overflow-hidden rounded-lg">
-                      <ul class="divide-y divide-gray-200">
-                        <li class="px-4 py-4 sm:px-6">
-                          <div class="flex items-start justify-between">
-                            <div class="flex items-start">
-                              <div class="flex-shrink-0">
-                                <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/43.jpg" alt="Sophia">
-                              </div>
-                              <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-900">Summer Fashion Trends Instagram Post</p>
-                                <p class="mt-1 text-sm text-gray-600">Created 2 hours ago · Sophia · Instagram</p>
-                                <div class="mt-1 text-sm text-gray-800 bg-gray-50 p-3 rounded-md">
-                                  "Beat the heat in style! 💫 Our new summer collection features breathable fabrics that keep you cool while turning heads. Swipe to see my favorite pieces! #SummerStyle #FashionTips #StayCool"
-                                </div>
-                              </div>
-                            </div>
-                            <div class="flex flex-shrink-0 space-x-2">
-                              <button class="rounded bg-white text-gray-600 hover:text-gray-900">
-                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                </svg>
-                              </button>
-                              <button class="rounded bg-white text-gray-600 hover:text-gray-900">
-                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                                </svg>
-                              </button>
-                              <button class="rounded bg-white text-gray-600 hover:text-gray-900">
-                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
-                              </button>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="px-4 py-4 sm:px-6">
-                          <div class="flex items-start justify-between">
-                            <div class="flex items-start">
-                              <div class="flex-shrink-0">
-                                <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/35.jpg" alt="Alex">
-                              </div>
-                              <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-900">New Gadget Review Post</p>
-                                <p class="mt-1 text-sm text-gray-600">Created 5 hours ago · Alex · TikTok</p>
-                                <div class="mt-1 text-sm text-gray-800 bg-gray-50 p-3 rounded-md">
-                                  "This new smartwatch is a GAME CHANGER! 🔥 Battery lasts for days, tracks everything, and looks great doing it. Is it worth the price? Watch till the end to find out! #TechReview #GadgetTalk #SmartTech"
-                                </div>
-                              </div>
-                            </div>
-                            <div class="flex flex-shrink-0 space-x-2">
-                              <button class="rounded bg-white text-gray-600 hover:text-gray-900">
-                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                </svg>
-                              </button>
-                              <button class="rounded bg-white text-gray-600 hover:text-gray-900">
-                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                                </svg>
-                              </button>
-                              <button class="rounded bg-white text-gray-600 hover:text-gray-900">
-                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
-                              </button>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="px-4 py-4 sm:px-6">
-                          <div class="flex items-start justify-between">
-                            <div class="flex items-start">
-                              <div class="flex-shrink-0">
-                                <div class="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
-                                  <span class="text-sm font-medium text-primary">B</span>
-                                </div>
-                              </div>
-                              <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-900">Summer Sale Email Campaign</p>
-                                <p class="mt-1 text-sm text-gray-600">Created 1 day ago · Brand Voice · Email</p>
-                                <div class="mt-1 text-sm text-gray-800 bg-gray-50 p-3 rounded-md">
-                                  "Subject: Summer SALE - Up to 50% OFF Your Favorite Styles!
-
-                                  Hello {First_Name},
-
-                                  Summer is here and so are the SAVINGS! For a limited time, enjoy up to 50% off our entire summer collection. From breezy tops to stylish accessories, find everything you need to complete your summer wardrobe.
-
-                                  Shop now before your favorites sell out!
-
-                                  Best,
-                                  The [Brand] Team"
-                                </div>
-                              </div>
-                            </div>
-                            <div class="flex flex-shrink-0 space-x-2">
-                              <button class="rounded bg-white text-gray-600 hover:text-gray-900">
-                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                </svg>
-                              </button>
-                              <button class="rounded bg-white text-gray-600 hover:text-gray-900">
-                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                                </svg>
-                              </button>
-                              <button class="rounded bg-white text-gray-600 hover:text-gray-900">
-                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
-                              </button>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Analytics Tab -->
-            <div id="analytics-tab" class="tab-content hidden">
-              <div class="py-6">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                    <div>
-                      <h1 class="text-2xl font-semibold text-gray-900">Analytics</h1>
-                      <p class="mt-2 text-sm text-gray-600">Track performance metrics across all your marketing efforts.</p>
-                    </div>
-                    <div class="mt-4 md:mt-0 flex space-x-3">
-                      <div>
-                        <label for="analytics-date-range" class="sr-only">Date range</label>
-                        <select id="analytics-date-range" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md">
-                          <option value="7">Last 7 days</option>
-                          <option value="30" selected>Last 30 days</option>
-                          <option value="90">Last 3 months</option>
-                          <option value="365">Last year</option>
-                          <option value="custom">Custom range</option>
-                        </select>
-                      </div>
-                      <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                        <svg class="h-5 w-5 text-gray-400 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 16v4a2 2 0 002 2h14a2 2 0 002-2v-4M3 16l4-4m0 0l4 4m-4-4v13m12-13v13" />
-                        </svg>
-                        Export
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- KPI Cards -->
-                  <div class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                    <div class="bg-white overflow-hidden shadow rounded-lg">
-                      <div class="p-5">
-                        <div class="flex items-center">
-                          <div class="flex-shrink-0">
-                            <svg class="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
-                          </div>
-                          <div class="ml-5 w-0 flex-1">
-                            <dl>
-                              <dt class="text-sm font-medium text-gray-500 truncate">Total Views</dt>
-                              <dd>
-                                <div class="text-lg font-medium text-gray-900">28,429</div>
-                              </dd>
-                            </dl>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="bg-gray-50 px-5 py-3">
-                        <div class="text-sm">
-                          <span class="font-medium text-green-600">+14.6%</span>
-                          <span class="text-gray-500"> vs. previous period</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="bg-white overflow-hidden shadow rounded-lg">
-                      <div class="p-5">
-                        <div class="flex items-center">
-                          <div class="flex-shrink-0">
-                            <svg class="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                            </svg>
-                          </div>
-                          <div class="ml-5 w-0 flex-1">
-                            <dl>
-                              <dt class="text-sm font-medium text-gray-500 truncate">Total Engagements</dt>
-                              <dd>
-                                <div class="text-lg font-medium text-gray-900">1,563</div>
-                              </dd>
-                            </dl>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="bg-gray-50 px-5 py-3">
-                        <div class="text-sm">
-                          <span class="font-medium text-green-600">+7.2%</span>
-                          <span class="text-gray-500"> vs. previous period</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="bg-white overflow-hidden shadow rounded-lg">
-                      <div class="p-5">
-                        <div class="flex items-center">
-                          <div class="flex-shrink-0">
-                            <svg class="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                          </div>
-                          <div class="ml-5 w-0 flex-1">
-                            <dl>
-                              <dt class="text-sm font-medium text-gray-500 truncate">New Followers</dt>
-                              <dd>
-                                <div class="text-lg font-medium text-gray-900">385</div>
-                              </dd>
-                            </dl>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="bg-gray-50 px-5 py-3">
-                        <div class="text-sm">
-                          <span class="font-medium text-green-600">+12.8%</span>
-                          <span class="text-gray-500"> vs. previous period</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="bg-white overflow-hidden shadow rounded-lg">
-                      <div class="p-5">
-                        <div class="flex items-center">
-                          <div class="flex-shrink-0">
-                            <svg class="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                          </div>
-                          <div class="ml-5 w-0 flex-1">
-                            <dl>
-                              <dt class="text-sm font-medium text-gray-500 truncate">Conversions</dt>
-                              <dd>
-                                <div class="text-lg font-medium text-gray-900">94</div>
-                              </dd>
-                            </dl>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="bg-gray-50 px-5 py-3">
-                        <div class="text-sm">
-                          <span class="font-medium text-red-600">-3.2%</span>
-                          <span class="text-gray-500"> vs. previous period</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Engagement Chart -->
-                  <div class="mt-8">
-                    <div class="bg-white shadow rounded-lg overflow-hidden">
-                      <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900">Engagement Metrics</h3>
-                      </div>
-                      <div class="p-5">
-                        <div class="h-80">
-                          <canvas id="engagementChart"></canvas>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Platform Breakdown -->
-                  <div class="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2">
-                    <div class="bg-white shadow rounded-lg overflow-hidden">
-                      <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900">Platform Breakdown</h3>
-                      </div>
-                      <div class="p-5">
-                        <div class="h-64">
-                          <canvas id="platformChart"></canvas>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="bg-white shadow rounded-lg overflow-hidden">
-                      <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900">Demographics</h3>
-                      </div>
-                      <div class="p-5">
-                        <div class="h-64">
-                          <canvas id="demographicsChart"></canvas>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Content Performance -->
-                  <div class="mt-8">
-                    <div class="bg-white shadow rounded-lg">
-                      <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900">Top Performing Content</h3>
-                      </div>
-                      <div class="flex flex-col">
-                        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                          <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                            <div class="overflow-hidden">
-                              <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                  <tr>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Content</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Platform</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Views</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Engagement</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Conversions</th>
-                                    <th scope="col" class="relative px-6 py-3">
-                                      <span class="sr-only">View</span>
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                  <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10">
-                                          <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/43.jpg" alt="Sophia">
-                                        </div>
-                                        <div class="ml-4">
-                                          <div class="text-sm font-medium text-gray-900">Summer Fashion Tips</div>
-                                          <div class="text-sm text-gray-500">June 15, 2023</div>
-                                        </div>
-                                      </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="text-sm text-gray-900">Instagram</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="text-sm text-gray-900">4,285</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="text-sm text-gray-900">8.7%</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="text-sm text-gray-900">24</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                      <a href="#" class="text-primary hover:text-primary-dark">View</a>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10">
-                                          <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/35.jpg" alt="Alex">
-                                        </div>
-                                        <div class="ml-4">
-                                          <div class="text-sm font-medium text-gray-900">Latest Gadget Review</div>
-                                          <div class="text-sm text-gray-500">June 12, 2023</div>
-                                        </div>
-                                      </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="text-sm text-gray-900">TikTok</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="text-sm text-gray-900">8,192</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="text-sm text-gray-900">6.3%</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="text-sm text-gray-900">18</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                      <a href="#" class="text-primary hover:text-primary-dark">View</a>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10">
-                                          <div class="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
-                                            <span class="text-sm font-medium text-primary">B</span>
-                                          </div>
-                                        </div>
-                                        <div class="ml-4">
-                                          <div class="text-sm font-medium text-gray-900">Summer Sale Email</div>
-                                          <div class="text-sm text-gray-500">June 10, 2023</div>
-                                        </div>
-                                      </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="text-sm text-gray-900">Email</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="text-sm text-gray-900">5,628</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="text-sm text-gray-900">4.8%</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="text-sm text-gray-900">32</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                      <a href="#" class="text-primary hover:text-primary-dark">View</a>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10">
-                                          <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/29.jpg" alt="Emma">
-                                        </div>
-                                        <div class="ml-4">
-                                          <div class="text-sm font-medium text-gray-900">5-Minute Morning Workout</div>
-                                          <div class="text-sm text-gray-500">June 8, 2023</div>
-                                        </div>
-                                      </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="text-sm text-gray-900">Instagram</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="text-sm text-gray-900">3,924</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="text-sm text-gray-900">7.2%</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                      <div class="text-sm text-gray-900">12</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                      <a href="#" class="text-primary hover:text-primary-dark">View</a>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Campaigns Tab -->
-            <div id="campaigns-tab" class="tab-content hidden">
-              <div class="py-6">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  <div class="md:flex md:items-center md:justify-between">
-                    <div class="flex-1 min-w-0">
-                      <h1 class="text-2xl font-semibold text-gray-900">Campaigns</h1>
-                      <p class="mt-2 text-sm text-gray-600">Plan, launch, and manage your marketing campaigns.</p>
-                    </div>
-                    <div class="mt-4 md:mt-0">
-                      <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                        Create Campaign
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- Campaign filter tabs -->
-                  <div class="mt-4 border-b border-gray-200">
-                    <nav class="-mb-px flex space-x-8">
-                      <a href="#" class="border-primary text-primary py-4 px-1 border-b-2 font-medium text-sm" aria-current="page">
-                        Active (4)
-                      </a>
-                      <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-4 px-1 border-b-2 font-medium text-sm">
-                        Scheduled (2)
-                      </a>
-                      <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-4 px-1 border-b-2 font-medium text-sm">
-                        Completed (8)
-                      </a>
-                      <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-4 px-1 border-b-2 font-medium text-sm">
-                        Draft (3)
-                      </a>
-                    </nav>
-                  </div>
-
-                  <!-- Campaigns list -->
-                  <div class="mt-6">
-                    <ul class="space-y-4">
-                      <!-- Campaign 1 -->
-                      <li class="bg-white shadow overflow-hidden rounded-lg">
-                        <div class="px-4 py-5 sm:px-6">
-                          <div class="flex items-center justify-between">
-                            <div>
-                              <h3 class="text-lg leading-6 font-medium text-gray-900">Summer Collection Launch</h3>
-                              <p class="mt-1 max-w-2xl text-sm text-gray-500">June 15 - July 15, 2023</p>
-                            </div>
-                            <div>
-                              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                Active
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-                          <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
-                            <div class="sm:col-span-1">
-                              <dt class="text-sm font-medium text-gray-500">Platforms</dt>
-                              <dd class="mt-1 text-sm text-gray-900">Instagram, TikTok, Email</dd>
-                            </div>
-                            <div class="sm:col-span-1">
-                              <dt class="text-sm font-medium text-gray-500">Total Budget</dt>
-                              <dd class="mt-1 text-sm text-gray-900">$1,500</dd>
-                            </div>
-                            <div class="sm:col-span-1">
-                              <dt class="text-sm font-medium text-gray-500">Engagement Rate</dt>
-                              <dd class="mt-1 text-sm text-gray-900">6.8%</dd>
-                            </div>
-                            <div class="sm:col-span-1">
-                              <dt class="text-sm font-medium text-gray-500">Status</dt>
-                              <dd class="mt-1 text-sm font-semibold text-green-600">On Track</dd>
-                            </div>
-                          </dl>
-                        </div>
-                        <div class="border-t border-gray-200 px-4 py-4 sm:px-6 bg-gray-50">
-                          <div class="flex justify-between items-center">
-                            <div class="flex items-center">
-                              <div class="text-sm text-gray-500">21 of 45 posts scheduled</div>
-                              <div class="ml-4 w-48 bg-gray-200 rounded-full h-2">
-                                <div class="bg-primary h-2 rounded-full" style="width: 45%"></div>
-                              </div>
-                            </div>
-                            <div>
-                              <a href="#" class="text-sm text-primary hover:text-primary-dark font-medium">View Details</a>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-
-                      <!-- Campaign 2 -->
-                      <li class="bg-white shadow overflow-hidden rounded-lg">
-                        <div class="px-4 py-5 sm:px-6">
-                          <div class="flex items-center justify-between">
-                            <div>
-                              <h3 class="text-lg leading-6 font-medium text-gray-900">Tech Product Launch</h3>
-                              <p class="mt-1 max-w-2xl text-sm text-gray-500">June 1 - June 30, 2023</p>
-                            </div>
-                            <div>
-                              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                Active
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-                          <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
-                            <div class="sm:col-span-1">
-                              <dt class="text-sm font-medium text-gray-500">Platforms</dt>
-                              <dd class="mt-1 text-sm text-gray-900">TikTok, YouTube, Twitter</dd>
-                            </div>
-                            <div class="sm:col-span-1">
-                              <dt class="text-sm font-medium text-gray-500">Total Budget</dt>
-                              <dd class="mt-1 text-sm text-gray-900">$2,200</dd>
-                            </div>
-                            <div class="sm:col-span-1">
-                              <dt class="text-sm font-medium text-gray-500">Engagement Rate</dt>
-                              <dd class="mt-1 text-sm text-gray-900">5.3%</dd>
-                            </div>
-                            <div class="sm:col-span-1">
-                              <dt class="text-sm font-medium text-gray-500">Status</dt>
-                              <dd class="mt-1 text-sm font-semibold text-yellow-600">Needs Attention</dd>
-                            </div>
-                          </dl>
-                        </div>
-                        <div class="border-t border-gray-200 px-4 py-4 sm:px-6 bg-gray-50">
-                          <div class="flex justify-between items-center">
-                            <div class="flex items-center">
-                              <div class="text-sm text-gray-500">18 of 32 posts scheduled</div>
-                              <div class="ml-4 w-48 bg-gray-200 rounded-full h-2">
-                                <div class="bg-primary h-2 rounded-full" style="width: 56%"></div>
-                              </div>
-                            </div>
-                            <div>
-                              <a href="#" class="text-sm text-primary hover:text-primary-dark font-medium">View Details</a>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-
-                      <!-- Campaign 3 -->
-                      <li class="bg-white shadow overflow-hidden rounded-lg">
-                        <div class="px-4 py-5 sm:px-6">
-                          <div class="flex items-center justify-between">
-                            <div>
-                              <h3 class="text-lg leading-6 font-medium text-gray-900">Fitness Challenge</h3>
-                              <p class="mt-1 max-w-2xl text-sm text-gray-500">May 20 - June 20, 2023</p>
-                            </div>
-                            <div>
-                              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                Active
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-                          <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
-                            <div class="sm:col-span-1">
-                              <dt class="text-sm font-medium text-gray-500">Platforms</dt>
-                              <dd class="mt-1 text-sm text-gray-900">Instagram, Facebook</dd>
-                            </div>
-                            <div class="sm:col-span-1">
-                              <dt class="text-sm font-medium text-gray-500">Total Budget</dt>
-                              <dd class="mt-1 text-sm text-gray-900">$900</dd>
-                            </div>
-                            <div class="sm:col-span-1">
-                              <dt class="text-sm font-medium text-gray-500">Engagement Rate</dt>
-                              <dd class="mt-1 text-sm text-gray-900">8.9%</dd>
-                            </div>
-                            <div class="sm:col-span-1">
-                              <dt class="text-sm font-medium text-gray-500">Status</dt>
-                              <dd class="mt-1 text-sm font-semibold text-green-600">On Track</dd>
-                            </div>
-                          </dl>
-                        </div>
-                        <div class="border-t border-gray-200 px-4 py-4 sm:px-6 bg-gray-50">
-                          <div class="flex justify-between items-center">
-                            <div class="flex items-center">
-                              <div class="text-sm text-gray-500">25 of 30 posts scheduled</div>
-                              <div class="ml-4 w-48 bg-gray-200 rounded-full h-2">
-                                <div class="bg-primary h-2 rounded-full" style="width: 83%"></div>
-                              </div>
-                            </div>
-                            <div>
-                              <a href="#" class="text-sm text-primary hover:text-primary-dark font-medium">View Details</a>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-
-                      <!-- Campaign 4 -->
-                      <li class="bg-white shadow overflow-hidden rounded-lg">
-                        <div class="px-4 py-5 sm:px-6">
-                          <div class="flex items-center justify-between">
-                            <div>
-                              <h3 class="text-lg leading-6 font-medium text-gray-900">Flash Sale</h3>
-                              <p class="mt-1 max-w-2xl text-sm text-gray-500">June 18 - June 22, 2023</p>
-                            </div>
-                            <div>
-                              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                Active
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-                          <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
-                            <div class="sm:col-span-1">
-                              <dt class="text-sm font-medium text-gray-500">Platforms</dt>
-                              <dd class="mt-1 text-sm text-gray-900">Email, SMS, Instagram</dd>
-                            </div>
-                            <div class="sm:col-span-1">
-                              <dt class="text-sm font-medium text-gray-500">Total Budget</dt>
-                              <dd class="mt-1 text-sm text-gray-900">$700</dd>
-                            </div>
-                            <div class="sm:col-span-1">
-                              <dt class="text-sm font-medium text-gray-500">Engagement Rate</dt>
-                              <dd class="mt-1 text-sm text-gray-900">4.2%</dd>
-                            </div>
-                            <div class="sm:col-span-1">
-                              <dt class="text-sm font-medium text-gray-500">Status</dt>
-                              <dd class="mt-1 text-sm font-semibold text-green-600">On Track</dd>
-                            </div>
-                          </dl>
-                        </div>
-                        <div class="border-t border-gray-200 px-4 py-4 sm:px-6 bg-gray-50">
-                          <div class="flex justify-between items-center">
-                            <div class="flex items-center">
-                              <div class="text-sm text-gray-500">8 of 12 posts scheduled</div>
-                              <div class="ml-4 w-48 bg-gray-200 rounded-full h-2">
-                                <div class="bg-primary h-2 rounded-full" style="width: 67%"></div>
-                              </div>
-                            </div>
-                            <div>
-                              <a href="#" class="text-sm text-primary hover:text-primary-dark font-medium">View Details</a>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Settings Tab -->
-            <div id="settings-tab" class="tab-content hidden">
-              <div class="py-6">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  <h1 class="text-2xl font-semibold text-gray-900">Settings</h1>
-                  <p class="mt-2 text-gray-600">Manage your account settings and preferences.</p>
-
-                  <!-- Settings Tabs -->
-                  <div class="mt-6">
-                    <div class="border-b border-gray-200">
-                      <nav class="-mb-px flex space-x-8">
-                        <a href="#" class="border-primary text-primary py-4 px-1 border-b-2 font-medium text-sm">
-                          Profile
-                        </a>
-                        <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-4 px-1 border-b-2 font-medium text-sm">
-                          Team
-                        </a>
-                        <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-4 px-1 border-b-2 font-medium text-sm">
-                          Subscription
-                        </a>
-                        <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-4 px-1 border-b-2 font-medium text-sm">
-                          Integrations
-                        </a>
-                        <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-4 px-1 border-b-2 font-medium text-sm">
-                          Notifications
-                        </a>
-                        <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-4 px-1 border-b-2 font-medium text-sm">
-                          Security
-                        </a>
-                      </nav>
-                    </div>
-                  </div>
-
-                  <!-- Profile Settings -->
-                  <div class="mt-6 bg-white shadow rounded-lg divide-y divide-gray-200">
-                    <div class="px-4 py-5 sm:px-6">
-                      <h3 class="text-lg leading-6 font-medium text-gray-900">Personal Information</h3>
-                      <p class="mt-1 text-sm text-gray-500">Update your personal details and profile picture.</p>
-                    </div>
-                    <div class="px-4 py-5 sm:p-6">
-                      <form class="space-y-8">
-                        <div class="flex items-center">
-                          <div class="relative h-20 w-20 rounded-full overflow-hidden">
-                            <img src="https://randomuser.me/api/portraits/men/77.jpg" alt="Profile Picture" class="h-full w-full object-cover">
-                            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                              <button type="button" class="text-white text-sm">Change</button>
-                            </div>
-                          </div>
-                          <div class="ml-5">
-                            <button type="button" class="bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                              Upload new image
-                            </button>
-                            <button type="button" class="ml-2 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                              Remove
-                            </button>
-                          </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                          <div class="sm:col-span-3">
-                            <label for="first-name" class="block text-sm font-medium text-gray-700">First name</label>
-                            <div class="mt-1">
-                              <input type="text" name="first-name" id="first-name" autocomplete="given-name" value="John" class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md">
-                            </div>
-                          </div>
-
-                          <div class="sm:col-span-3">
-                            <label for="last-name" class="block text-sm font-medium text-gray-700">Last name</label>
-                            <div class="mt-1">
-                              <input type="text" name="last-name" id="last-name" autocomplete="family-name" value="Smith" class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md">
-                            </div>
-                          </div>
-
-                          <div class="sm:col-span-3">
-                            <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
-                            <div class="mt-1">
-                              <input id="email-settings" name="email" type="email" autocomplete="email" value="john@example.com" class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md">
-                            </div>
-                          </div>
-
-                          <div class="sm:col-span-3">
-                            <label for="phone" class="block text-sm font-medium text-gray-700">Phone number</label>
-                            <div class="mt-1">
-                              <input type="tel" name="phone" id="phone" autocomplete="tel" value="+1 (555) 123-4567" class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md">
-                            </div>
-                          </div>
-
-                          <div class="sm:col-span-6">
-                            <label for="company" class="block text-sm font-medium text-gray-700">Company</label>
-                            <div class="mt-1">
-                              <input type="text" name="company" id="company" value="Acme Inc." class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md">
-                            </div>
-                          </div>
-
-                          <div class="sm:col-span-6">
-                            <label for="bio" class="block text-sm font-medium text-gray-700">Bio</label>
-                            <div class="mt-1">
-                              <textarea id="bio" name="bio" rows="4" class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md">Marketing Director at Acme Inc. with over 10 years of experience in digital marketing and brand development.</textarea>
-                            </div>
-                            <p class="mt-2 text-sm text-gray-500">Brief description for your profile.</p>
-                          </div>
-                        </div>
-
-                        <div class="pt-5">
-                          <div class="flex justify-end">
-                            <button type="button" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                              Cancel
-                            </button>
-                            <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                              Save
-                            </button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-
-                  <!-- Password Settings -->
-                  <div class="mt-6 bg-white shadow rounded-lg divide-y divide-gray-200">
-                    <div class="px-4 py-5 sm:px-6">
-                      <h3 class="text-lg leading-6 font-medium text-gray-900">Change Password</h3>
-                      <p class="mt-1 text-sm text-gray-500">Update your password to keep your account secure.</p>
-                    </div>
-                    <div class="px-4 py-5 sm:p-6">
-                      <form class="space-y-6">
-                        <div>
-                          <label for="current-password" class="block text-sm font-medium text-gray-700">Current password</label>
-                          <div class="mt-1">
-                            <input id="current-password" name="current-password" type="password" autocomplete="current-password" class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md">
-                          </div>
-                        </div>
-
-                        <div>
-                          <label for="new-password" class="block text-sm font-medium text-gray-700">New password</label>
-                          <div class="mt-1">
-                            <input id="new-password" name="new-password" type="password" autocomplete="new-password" class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md">
-                          </div>
-                        </div>
-
-                        <div>
-                          <label for="confirm-password" class="block text-sm font-medium text-gray-700">Confirm password</label>
-                          <div class="mt-1">
-                            <input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" class="shadow-sm focus:ring-primary focus:border-primary block w-full sm:text-sm border-gray-300 rounded-md">
-                          </div>
-                        </div>
-
-                        <div class="flex justify-end">
-                          <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                            Update Password
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </main>
+        <span class="text-sm">Wishes remaining</span>
       </div>
+      <a href="#" class="text-xs text-promogenie-600 hover:underline">Upgrade plan</a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-grow">
+    <!-- Header -->
+    <header class="bg-white shadow-sm py-4 px-6 flex justify-between items-center sticky top-0 z-10 border-b border-border">
+      <h1 class="text-xl font-bold text-promogenie-700">PromoGenie Studio</h1>
+      
+      <div class="flex items-center space-x-4">
+        <!-- Wishes Counter -->
+        <div class="hidden md:flex items-center">
+          <div class="h-6 w-6 rounded-full bg-promogenie-100 flex items-center justify-center mr-2">
+            <span class="text-xs font-semibold text-promogenie-600">10</span>
+          </div>
+          <span class="text-sm">Wishes</span>
+        </div>
+        
+        <!-- Notifications -->
+        <div class="relative">
+          <button id="notificationBtn" class="p-1 rounded-md text-gray-500 hover:bg-gray-100 relative">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <div class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 text-[10px] flex items-center justify-center">2</div>
+          </button>
+          
+          <!-- Notifications Dropdown (hidden by default) -->
+          <div id="notificationsDropdown" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg p-2 border border-gray-200 z-10">
+            <div class="flex items-center justify-between pb-2 border-b">
+              <h3 class="font-medium">Notifications</h3>
+              <button class="text-xs text-promogenie-600 hover:underline">Mark all as read</button>
+            </div>
+            <div class="max-h-80 overflow-y-auto">
+              <div class="p-2 hover:bg-gray-50 rounded-md mt-1 border-l-2 border-promogenie-500">
+                <p class="font-medium text-sm">Image Generation Complete</p>
+                <p class="text-gray-600 text-xs">Your product image has been successfully generated.</p>
+                <p class="text-gray-400 text-xs mt-1">2 minutes ago</p>
+              </div>
+              <div class="p-2 hover:bg-gray-50 rounded-md mt-1 border-l-2 border-promogenie-500">
+                <p class="font-medium text-sm">New Feature Added</p>
+                <p class="text-gray-600 text-xs">Try our new AI influencer generation feature!</p>
+                <p class="text-gray-400 text-xs mt-1">1 day ago</p>
+              </div>
+              <div class="p-2 hover:bg-gray-50 rounded-md mt-1">
+                <p class="font-medium text-sm">Welcome to PromoGenie</p>
+                <p class="text-gray-600 text-xs">Get started with our quick tutorial.</p>
+                <p class="text-gray-400 text-xs mt-1">3 days ago</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Profile -->
+        <div class="relative">
+          <button id="profileBtn" class="h-8 w-8 rounded-full bg-promogenie-100 flex items-center justify-center">
+            <span class="font-medium text-promogenie-600">U</span>
+          </button>
+          
+          <!-- Profile Dropdown (hidden by default) -->
+          <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 border border-gray-200 z-10">
+            <div class="px-4 py-2 border-b">
+              <p class="font-medium">User</p>
+              <p class="text-sm text-gray-500 truncate">user@example.com</p>
+            </div>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100 text-sm">Profile Settings</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100 text-sm">Billing</a>
+            <div class="border-t">
+              <a href="index.html" class="block px-4 py-2 hover:bg-gray-100 text-sm text-red-600">Sign Out</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <div class="p-6">
+      <div class="w-full max-w-6xl mx-auto bg-white rounded-xl p-6 shadow-lg">
+        <!-- Create Media Tab Content -->
+        <div id="influencerVideosTab" class="animate-fade-in">
+          <!-- Step 1: Select Influencer & Upload Product -->
+          <div id="step1" class="block">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-bold">Create New Ad</h2>
+              <div class="flex items-center space-x-2 text-sm">
+                <span class="font-medium text-promogenie-600">Step 1</span>
+                <span class="text-gray-400">/</span>
+                <span class="text-gray-400">3</span>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div>
+                <h3 class="text-lg font-medium mb-3">Select Virtual Influencer</h3>
+                <div class="grid grid-cols-2 gap-4">
+                  <div data-influencer="tyler" class="influencer-card hover:border-promogenie-400 cursor-pointer border-2 border-transparent rounded-lg overflow-hidden">
+                    <div class="relative">
+                      <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-full h-40 object-cover" alt="TechyTyler">
+                      <div class="absolute top-2 right-2 bg-promogenie-600 text-white py-0.5 px-2 rounded text-xs font-medium">
+                        TECH
+                      </div>
+                    </div>
+                    <div class="p-3">
+                      <h4 class="font-medium">@TechyTyler</h4>
+                      <p class="text-xs text-gray-500">Gadget reviews & tech</p>
+                    </div>
+                  </div>
+                  
+                  <div data-influencer="lena" class="influencer-card hover:border-promogenie-400 cursor-pointer border-2 border-transparent rounded-lg overflow-hidden">
+                    <div class="relative">
+                      <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-full h-40 object-cover" alt="LuxeLena">
+                      <div class="absolute top-2 right-2 bg-pink-500 text-white py-0.5 px-2 rounded text-xs font-medium">
+                        BEAUTY
+                      </div>
+                    </div>
+                    <div class="p-3">
+                      <h4 class="font-medium">@LuxeLena</h4>
+                      <p class="text-xs text-gray-500">Lifestyle & beauty expert</p>
+                    </div>
+                  </div>
+                  
+                  <div data-influencer="max" class="influencer-card hover:border-promogenie-400 cursor-pointer border-2 border-transparent rounded-lg overflow-hidden">
+                    <div class="relative">
+                      <img src="https://randomuser.me/api/portraits/men/55.jpg" class="w-full h-40 object-cover" alt="FitnessMax">
+                      <div class="absolute top-2 right-2 bg-green-500 text-white py-0.5 px-2 rounded text-xs font-medium">
+                        FITNESS
+                      </div>
+                    </div>
+                    <div class="p-3">
+                      <h4 class="font-medium">@FitnessMax</h4>
+                      <p class="text-xs text-gray-500">Health & fitness coach</p>
+                    </div>
+                  </div>
+                  
+                  <div class="border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center h-full aspect-[3/4] bg-gray-50 text-gray-400">
+                    <div class="text-center">
+                      <div class="mb-1 flex justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="12" y1="8" x2="12" y2="16"></line>
+                          <line x1="8" y1="12" x2="16" y2="12"></line>
+                        </svg>
+                      </div>
+                      <span class="text-sm">Pro Plan Feature</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h3 class="text-lg font-medium mb-3">Upload Product Image</h3>
+                <div id="imageDropArea" class="h-64 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center hover:border-promogenie-400 transition-colors cursor-pointer bg-gray-50">
+                  <div class="text-center p-4">
+                    <div class="mb-3 flex justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                      </svg>
+                    </div>
+                    <p class="text-gray-600 mb-2">Drag & drop your product image here</p>
+                    <p class="text-gray-500 text-sm mb-3">or</p>
+                    <button id="browseBtn" class="bg-promogenie-600 hover:bg-promogenie-700 text-white font-medium py-2 px-4 rounded text-sm transition-colors">
+                      Browse Files
+                    </button>
+                    <input type="file" id="fileInput" class="hidden" accept="image/*" />
+                    <p class="text-xs text-gray-500 mt-3">PNG, JPG or WEBP up to 10MB</p>
+                  </div>
+                </div>
+                
+                <div id="uploadedImagePreview" class="hidden mt-4">
+                  <div class="bg-gray-50 p-3 rounded-lg border flex items-center">
+                    <div class="h-12 w-12 bg-gray-200 rounded overflow-hidden flex-shrink-0 mr-3">
+                      <img id="previewImage" class="w-full h-full object-cover" src="" alt="Preview">
+                    </div>
+                    <div class="flex-grow">
+                      <p id="fileName" class="text-sm font-medium truncate"></p>
+                      <p id="fileSize" class="text-xs text-gray-500"></p>
+                    </div>
+                    <button id="removeImageBtn" class="text-gray-500 hover:text-gray-700 ml-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="mt-5">
+                  <h3 class="text-lg font-medium mb-3">Product Description</h3>
+                  <textarea id="promptInput" class="w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-promogenie-500 focus:border-promogenie-500 min-h-[100px]" placeholder="Describe your product or write a prompt for the image generation..."></textarea>
+                  <div class="flex justify-between text-xs text-gray-500 mt-1">
+                    <span>Be specific about features you want highlighted</span>
+                    <span id="promptCounter">0/200</span>
+                  </div>
+                </div>
+                
+                <div class="mt-4">
+                  <h3 class="text-lg font-medium mb-3">Aspect Ratio</h3>
+                  <div class="flex flex-wrap gap-3">
+                    <button data-aspect="16:9" class="aspect-ratio-btn bg-white border border-gray-300 rounded-md py-1 px-3 text-sm hover:border-promogenie-400 focus:outline-none">
+                      16:9 (Landscape)
+                    </button>
+                    <button data-aspect="9:16" class="aspect-ratio-btn bg-white border border-gray-300 rounded-md py-1 px-3 text-sm hover:border-promogenie-400 focus:outline-none">
+                      9:16 (Portrait)
+                    </button>
+                    <button data-aspect="1:1" class="aspect-ratio-btn bg-white border border-gray-300 rounded-md py-1 px-3 text-sm hover:border-promogenie-400 focus:outline-none">
+                      1:1 (Square)
+                    </button>
+                    <button data-aspect="4:5" class="aspect-ratio-btn bg-white border border-gray-300 rounded-md py-1 px-3 text-sm hover:border-promogenie-400 focus:outline-none">
+                      4:5 (Instagram)
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex justify-end mt-8">
+              <button id="step1NextBtn" class="bg-promogenie-600 hover:bg-promogenie-700 text-white font-medium py-2 px-6 rounded flex items-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                Next Step
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Step 2: Generate Video -->
+          <div id="step2" class="hidden animate-fade-in">
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center">
+                <button id="backToStep1" class="mr-3 p-1 rounded-full hover:bg-gray-100">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                  </svg>
+                </button>
+                <h2 class="text-2xl font-bold">Generate Video</h2>
+              </div>
+              <div class="flex items-center space-x-2 text-sm">
+                <span class="text-gray-400">Step 1</span>
+                <span class="text-gray-400">/</span>
+                <span class="font-medium text-promogenie-600">2</span>
+                <span class="text-gray-400">/</span>
+                <span class="text-gray-400">3</span>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div>
+                <div id="generatedImageContainer" class="mb-6 rounded-lg overflow-hidden shadow-md">
+                  <img id="generatedImage" src="https://placehold.co/600x400/7c3aed/white?text=Generated+Image" alt="Generated Image" class="w-full">
+                </div>
+                
+                <div class="flex justify-between items-center mb-4">
+                  <h3 class="text-lg font-medium">Generated Image</h3>
+                  <button class="text-promogenie-600 hover:text-promogenie-700 text-sm font-medium focus:outline-none">
+                    Regenerate
+                  </button>
+                </div>
+                
+                <div class="flex flex-col space-y-3">
+                  <div>
+                    <label class="flex items-center cursor-pointer">
+                      <input type="radio" name="videoLength" class="h-4 w-4 text-promogenie-600 focus:ring-promogenie-500" value="6" checked>
+                      <span class="ml-2 text-gray-700">6 second video</span>
+                    </label>
+                  </div>
+                  <div>
+                    <label class="flex items-center cursor-pointer">
+                      <input type="radio" name="videoLength" class="h-4 w-4 text-promogenie-600 focus:ring-promogenie-500" value="12">
+                      <span class="ml-2 text-gray-700">12 second video <span class="text-xs text-promogenie-600">(Pro plan)</span></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h3 class="text-lg font-medium mb-3">Script & Voice</h3>
+                <textarea id="scriptInput" class="w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-promogenie-500 focus:border-promogenie-500 min-h-[120px]" placeholder="Write your script for the voiceover..."></textarea>
+                <div class="flex justify-between text-xs text-gray-500 mt-1 mb-4">
+                  <span>Keep it concise for short videos</span>
+                  <span id="scriptCounter">0/300</span>
+                </div>
+                
+                <h4 class="font-medium mb-2">Voice Selection</h4>
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                  <div class="voice-option border border-gray-300 hover:border-promogenie-400 rounded-md p-3 cursor-pointer">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Professional</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-promogenie-600">
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                      </svg>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Clear, articulate, trustworthy</p>
+                  </div>
+                  
+                  <div class="voice-option border border-gray-300 hover:border-promogenie-400 rounded-md p-3 cursor-pointer">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Enthusiastic</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-promogenie-600">
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                      </svg>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Energetic, upbeat, engaging</p>
+                  </div>
+                  
+                  <div class="voice-option border border-gray-300 hover:border-promogenie-400 rounded-md p-3 cursor-pointer">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Conversational</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-promogenie-600">
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                      </svg>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Friendly, relaxed, authentic</p>
+                  </div>
+                  
+                  <div class="voice-option border border-gray-300 hover:border-promogenie-400 rounded-md p-3 cursor-pointer">
+                    <div class="flex justify-between">
+                      <span class="font-medium">Dramatic</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-promogenie-600">
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                      </svg>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Intense, emotional, captivating</p>
+                  </div>
+                </div>
+                
+                <div class="mt-2">
+                  <button id="previewAudioBtn" class="inline-flex items-center bg-white border border-gray-300 rounded-md px-3 py-1.5 text-sm hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Preview Audio
+                  </button>
+                  
+                  <div id="audioPreview" class="hidden mt-3 p-3 bg-gray-50 rounded-md">
+                    <div class="flex items-center">
+                      <button id="audioPlayPauseBtn" class="mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                      </button>
+                      <div class="flex-grow">
+                        <div class="h-2 bg-gray-200 rounded-full">
+                          <div class="h-2 bg-promogenie-500 rounded-full w-0" id="audioProgress"></div>
+                        </div>
+                      </div>
+                      <span class="ml-3 text-xs" id="audioDuration">0:00</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex justify-end mt-8">
+              <button id="step2NextBtn" class="bg-promogenie-600 hover:bg-promogenie-700 text-white font-medium py-2 px-6 rounded flex items-center transition-colors">
+                Generate Video
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Step 3: Download & Share -->
+          <div id="step3" class="hidden animate-fade-in">
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center">
+                <button id="backToStep2" class="mr-3 p-1 rounded-full hover:bg-gray-100">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                  </svg>
+                </button>
+                <h2 class="text-2xl font-bold">Video Ready</h2>
+              </div>
+              <div class="flex items-center space-x-2 text-sm">
+                <span class="text-gray-400">Step 1</span>
+                <span class="text-gray-400">/</span>
+                <span class="text-gray-400">2</span>
+                <span class="text-gray-400">/</span>
+                <span class="font-medium text-promogenie-600">3</span>
+              </div>
+            </div>
+            
+            <div class="text-center mb-8">
+              <div class="inline-flex items-center bg-green-50 text-green-800 px-3 py-1 rounded-full text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <span>Video successfully generated</span>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div>
+                <div class="aspect-video bg-gray-900 rounded-lg overflow-hidden relative">
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <button id="videoPlayBtn" class="h-16 w-16 rounded-full bg-white bg-opacity-30 border-2 border-white flex items-center justify-center hover:bg-opacity-40 transition-colors">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white ml-1">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="mt-4 flex justify-between items-center">
+                  <h3 class="text-lg font-medium">Final Video</h3>
+                  <div class="flex items-center">
+                    <button class="inline-flex items-center bg-white border border-gray-300 rounded-md px-3 py-1.5 text-sm hover:bg-gray-50 mr-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="12" y1="18" x2="12" y2="12"></line>
+                        <line x1="9" y1="15" x2="15" y2="15"></line>
+                      </svg>
+                      Save to Library
+                    </button>
+                    <button class="inline-flex items-center bg-promogenie-600 text-white rounded-md px-3 py-1.5 text-sm hover:bg-promogenie-700">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                      </svg>
+                      Download
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <h3 class="text-lg font-medium mb-4">Share Options</h3>
+                <div class="grid grid-cols-2 gap-4">
+                  <button class="flex items-center justify-center p-4 border border-gray-300 rounded-lg hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E4405F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    <span>Instagram</span>
+                  </button>
+                  
+                  <button class="flex items-center justify-center p-4 border border-gray-300 rounded-lg hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00F2EA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <path d="M9 18V5l12-2v13"></path>
+                      <circle cx="6" cy="18" r="3"></circle>
+                      <circle cx="18" cy="16" r="3"></circle>
+                    </svg>
+                    <span>TikTok</span>
+                  </button>
+                  
+                  <button class="flex items-center justify-center p-4 border border-gray-300 rounded-lg hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                      <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                    </svg>
+                    <span>YouTube</span>
+                  </button>
+                  
+                  <button class="flex items-center justify-center p-4 border border-gray-300 rounded-lg hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1877F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                    </svg>
+                    <span>Facebook</span>
+                  </button>
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-3">Copy Link</h4>
+                  <div class="flex">
+                    <input type="text" value="https://share.promogenie.com/v/abc123" class="flex-grow px-3 py-2 border border-gray-300 rounded-l-md text-sm focus:outline-none focus:ring-1 focus:ring-promogenie-500" readonly>
+                    <button id="copyLinkBtn" class="bg-gray-100 border border-l-0 border-gray-300 px-3 rounded-r-md hover:bg-gray-200 transition-colors">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex justify-between mt-8">
+              <button id="createNewBtn" class="inline-flex items-center bg-white border border-promogenie-600 text-promogenie-600 font-medium py-2 px-6 rounded hover:bg-promogenie-50 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="16"></line>
+                  <line x1="8" y1="12" x2="16" y2="12"></line>
+                </svg>
+                Create New
+              </button>
+              <button id="viewCreationsBtn" class="bg-promogenie-600 hover:bg-promogenie-700 text-white font-medium py-2 px-6 rounded flex items-center transition-colors">
+                View All Creations
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- My Creations Tab Content -->
+        <div id="creationsTab" class="hidden animate-fade-in">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold">My Creations</h2>
+            <button class="bg-promogenie-600 hover:bg-promogenie-700 text-white font-medium py-2 px-4 rounded flex items-center transition-colors" id="newCreationBtn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+              </svg>
+              New Creation
+            </button>
+          </div>
+          
+          <div class="mb-6">
+            <div class="flex space-x-2">
+              <button class="filter-btn active py-1.5 px-4 rounded-md text-sm font-medium" data-filter="all">All (5)</button>
+              <button class="filter-btn py-1.5 px-4 rounded-md text-sm font-medium" data-filter="videos">Videos (3)</button>
+              <button class="filter-btn py-1.5 px-4 rounded-md text-sm font-medium" data-filter="images">Images (2)</button>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Video 1 -->
+            <div class="creation-item videos rounded-lg border bg-white overflow-hidden shadow-sm hover:shadow-md transition-all">
+              <div class="aspect-video bg-gray-100 relative">
+                <img src="https://placehold.co/600x400/7c3aed/white?text=Video+Thumbnail" alt="Video" class="w-full h-full object-cover">
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="h-10 w-10 rounded-full bg-white bg-opacity-30 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                  </div>
+                </div>
+                <div class="absolute bottom-2 right-2 bg-black bg-opacity-60 text-white text-xs px-1.5 py-0.5 rounded">
+                  0:12
+                </div>
+              </div>
+              <div class="p-3">
+                <div class="flex justify-between items-center mb-2">
+                  <h3 class="font-medium">Tech Product Video</h3>
+                  <span class="text-xs bg-promogenie-100 text-promogenie-700 px-2 py-0.5 rounded">@TechyTyler</span>
+                </div>
+                <p class="text-xs text-gray-500 mb-3">Created 2 days ago</p>
+                <div class="flex justify-between">
+                  <div class="flex space-x-2">
+                    <button class="text-gray-500 hover:text-promogenie-600">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                      </svg>
+                    </button>
+                    <button class="text-gray-500 hover:text-promogenie-600">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                      </svg>
+                    </button>
+                  </div>
+                  <button class="text-gray-500 hover:text-red-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Image 1 -->
+            <div class="creation-item images rounded-lg border bg-white overflow-hidden shadow-sm hover:shadow-md transition-all">
+              <div class="aspect-square bg-gray-100">
+                <img src="https://placehold.co/400x400/7c3aed/white?text=Generated+Image" alt="Image" class="w-full h-full object-cover">
+              </div>
+              <div class="p-3">
+                <div class="flex justify-between items-center mb-2">
+                  <h3 class="font-medium">Product Showcase</h3>
+                  <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">Image</span>
+                </div>
+                <p class="text-xs text-gray-500 mb-3">Created 3 days ago</p>
+                <div class="flex justify-between">
+                  <div class="flex space-x-2">
+                    <button class="text-gray-500 hover:text-promogenie-600">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                      </svg>
+                    </button>
+                    <button class="text-gray-500 hover:text-promogenie-600">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                      </svg>
+                    </button>
+                  </div>
+                  <button class="text-gray-500 hover:text-red-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- More items would be here -->
+          </div>
+          
+          <div class="mt-8 flex justify-center">
+            <button class="bg-white border border-gray-300 text-gray-700 font-medium py-2 px-4 rounded hover:bg-gray-50 transition-colors">
+              Load More
+            </button>
+          </div>
+        </div>
+        
+        <!-- Settings Tab Content -->
+        <div id="settingsTab" class="hidden animate-fade-in">
+          <h2 class="text-2xl font-bold mb-6">Account Settings</h2>
+          
+          <div class="space-y-8">
+            <!-- Profile Settings -->
+            <div class="bg-gray-50 p-6 rounded-lg border">
+              <h3 class="text-lg font-medium mb-4">Profile</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                  <input type="text" value="User" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-promogenie-500">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <input type="email" value="user@example.com" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-promogenie-500">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Company (Optional)</label>
+                  <input type="text" value="" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-promogenie-500">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Profile Picture</label>
+                  <div class="flex items-center">
+                    <div class="h-12 w-12 rounded-full bg-promogenie-100 flex items-center justify-center mr-4">
+                      <span class="font-medium text-promogenie-600">U</span>
+                    </div>
+                    <button class="bg-white border border-gray-300 text-gray-700 text-sm py-1 px-3 rounded-md hover:bg-gray-50 transition-colors">
+                      Change
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mt-6">
+                <button class="bg-promogenie-600 hover:bg-promogenie-700 text-white font-medium py-2 px-4 rounded transition-colors">
+                  Update Profile
+                </button>
+              </div>
+            </div>
+            
+            <!-- Subscription -->
+            <div class="bg-gray-50 p-6 rounded-lg border">
+              <div class="flex justify-between items-start mb-4">
+                <h3 class="text-lg font-medium">Subscription</h3>
+                <span class="bg-green-100 text-green-700 text-xs font-medium py-0.5 px-2 rounded">Active</span>
+              </div>
+              
+              <div class="flex items-center justify-between p-4 bg-white rounded-md border">
+                <div>
+                  <h4 class="font-medium">Starter Plan</h4>
+                  <p class="text-sm text-gray-500 mt-1">10 wishes per month</p>
+                </div>
+                <div class="text-right">
+                  <p class="font-medium">$19 / month</p>
+                  <p class="text-xs text-gray-500 mt-1">Next renewal: July 15, 2023</p>
+                </div>
+              </div>
+              
+              <div class="mt-6 flex space-x-3">
+                <button class="bg-promogenie-600 hover:bg-promogenie-700 text-white font-medium py-2 px-4 rounded transition-colors">
+                  Upgrade Plan
+                </button>
+                <button class="bg-white border border-gray-300 text-gray-700 font-medium py-2 px-4 rounded hover:bg-gray-50 transition-colors">
+                  Manage Subscription
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Help & Support Tab Content -->
+        <div id="helpTab" class="hidden animate-fade-in">
+          <h2 class="text-2xl font-bold mb-6">Help & Support</h2>
+          
+          <div class="space-y-6">
+            <div class="bg-gray-50 p-6 rounded-lg border">
+              <h3 class="text-lg font-medium mb-4">Quick Help</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a href="#" class="flex p-4 bg-white rounded-lg border hover:shadow-sm transition-all">
+                  <div class="mr-3 text-promogenie-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="font-medium">FAQs</h4>
+                    <p class="text-sm text-gray-600 mt-1">Quick answers to common questions</p>
+                  </div>
+                </a>
+                
+                <a href="#" class="flex p-4 bg-white rounded-lg border hover:shadow-sm transition-all">
+                  <div class="mr-3 text-promogenie-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                      <line x1="16" y1="13" x2="8" y2="13"></line>
+                      <line x1="16" y1="17" x2="8" y2="17"></line>
+                      <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="font-medium">Documentation</h4>
+                    <p class="text-sm text-gray-600 mt-1">Detailed guides and documentation</p>
+                  </div>
+                </a>
+                
+                <a href="#" class="flex p-4 bg-white rounded-lg border hover:shadow-sm transition-all">
+                  <div class="mr-3 text-promogenie-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="font-medium">Live Chat</h4>
+                    <p class="text-sm text-gray-600 mt-1">Chat with our support team</p>
+                  </div>
+                </a>
+                
+                <a href="#" class="flex p-4 bg-white rounded-lg border hover:shadow-sm transition-all">
+                  <div class="mr-3 text-promogenie-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline>
+                      <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="font-medium">Email Support</h4>
+                    <p class="text-sm text-gray-600 mt-1">Send us an email for assistance</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+            
+            <div class="bg-gray-50 p-6 rounded-lg border">
+              <h3 class="text-lg font-medium mb-4">Contact Support</h3>
+              <form>
+                <div class="mb-4">
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                  <input type="text" placeholder="How can we help you?" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-promogenie-500">
+                </div>
+                <div class="mb-4">
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                  <textarea placeholder="Describe your issue or question..." rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-promogenie-500"></textarea>
+                </div>
+                <button type="submit" class="bg-promogenie-600 hover:bg-promogenie-700 text-white font-medium py-2 px-4 rounded transition-colors">
+                  Submit
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 max-w-xs hidden transform transition-all duration-300 translate-y-2 opacity-0 z-50">
+    <div id="toastContent" class="flex items-center">
+      <svg class="text-green-500 mr-2" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+      <span id="toastMessage">Operation successful!</span>
     </div>
   </div>
 
-  <!-- Required script tag for GPT Engineer -->
-  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-
-  <!-- JavaScript for the dashboard -->
+  <!-- JavaScript -->
   <script>
-    // Main navigation functionality
-    let currentTab = 'dashboard';
-    const userLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+    // Tab Navigation
+    const tabButtons = document.querySelectorAll('.sidebar-item');
+    const tabs = {
+      influencerVideos: document.getElementById('influencerVideosTab'),
+      creations: document.getElementById('creationsTab'),
+      settings: document.getElementById('settingsTab'),
+      help: document.getElementById('helpTab')
+    };
     
-    // Function to show the appropriate tab content
-    function showTab(tabId) {
-      // Hide all tab content
-      document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.add('hidden');
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove active class from all buttons
+        tabButtons.forEach(btn => {
+          btn.classList.remove('active');
+          btn.classList.replace('text-gray-900', 'text-gray-600');
+        });
+        
+        // Add active class to clicked button
+        button.classList.add('active');
+        button.classList.replace('text-gray-600', 'text-gray-900');
+        
+        // Hide all tabs
+        Object.values(tabs).forEach(tab => {
+          tab.classList.add('hidden');
+        });
+        
+        // Show the corresponding tab
+        const tabName = button.getAttribute('data-tab');
+        tabs[tabName].classList.remove('hidden');
       });
-      
-      // Show the selected tab content
-      const selectedTab = document.getElementById(tabId + '-tab');
-      if (selectedTab) {
-        selectedTab.classList.remove('hidden');
-      }
-      
-      currentTab = tabId;
-      
-      // Update URL hash
-      window.location.hash = tabId;
-    }
+    });
     
-    // Mobile sidebar toggle functions
-    function toggleMobileSidebar() {
-      const mobileSidebar = document.getElementById('mobileSidebar');
-      mobileSidebar.classList.toggle('hidden');
-    }
+    // Step navigation for Create Media tab
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
     
-    function closeMobileSidebar() {
-      const mobileSidebar = document.getElementById('mobileSidebar');
-      mobileSidebar.classList.add('hidden');
-    }
+    document.getElementById('step1NextBtn').addEventListener('click', () => {
+      step1.classList.add('hidden');
+      step2.classList.remove('hidden');
+    });
     
-    // Login function
-    function handleLogin() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      
-      // For demo purposes only - in a real app, this would be handled securely
-      const testEmail = atob(localStorage.getItem('testEmail') || '');
-      const testPassword = atob(localStorage.getItem('testPassword') || '');
-      
-      if ((email === testEmail && password === testPassword) || 
-          (email === 'demo@promogenie.co' && password === 'demo123')) {
-        // Set login state
-        localStorage.setItem('userLoggedIn', 'true');
-        
-        // Hide login form, show dashboard
-        document.getElementById('loginForm').classList.add('hidden');
-        document.getElementById('dashboardContent').classList.remove('hidden');
-        
-        // Initialize charts after login
-        initializeCharts();
-      } else {
-        alert('Invalid credentials. Please try again or use the demo credentials.');
-      }
-    }
+    document.getElementById('backToStep1').addEventListener('click', () => {
+      step2.classList.add('hidden');
+      step1.classList.remove('hidden');
+    });
     
-    // Check login state on load
-    document.addEventListener('DOMContentLoaded', function() {
-      // Set up event listeners
-      document.getElementById('sidebarToggle').addEventListener('click', toggleMobileSidebar);
-      document.getElementById('closeSidebar').addEventListener('click', closeMobileSidebar);
-      
-      document.getElementById('userProfile').addEventListener('click', function() {
-        document.getElementById('userDropdown').classList.toggle('hidden');
+    document.getElementById('step2NextBtn').addEventListener('click', () => {
+      step2.classList.add('hidden');
+      step3.classList.remove('hidden');
+      showToast('Video generated successfully!');
+    });
+    
+    document.getElementById('backToStep2').addEventListener('click', () => {
+      step3.classList.add('hidden');
+      step2.classList.remove('hidden');
+    });
+    
+    document.getElementById('createNewBtn').addEventListener('click', () => {
+      step3.classList.add('hidden');
+      step1.classList.remove('hidden');
+    });
+    
+    document.getElementById('viewCreationsBtn').addEventListener('click', () => {
+      // Switch to the creations tab
+      tabButtons.forEach(btn => {
+        if (btn.getAttribute('data-tab') === 'creations') {
+          btn.click();
+        }
       });
-      
-      document.getElementById('logoutBtn').addEventListener('click', handleLogout);
-      document.getElementById('mobileLogout').addEventListener('click', handleLogout);
-      
-      // Check if user is logged in
-      if (userLoggedIn) {
-        document.getElementById('loginForm').classList.add('hidden');
-        document.getElementById('dashboardContent').classList.remove('hidden');
-        
-        // Get the tab from URL hash or default to dashboard
-        const tabId = window.location.hash.slice(1) || 'dashboard';
-        showTab(tabId);
-        
-        // Initialize charts
-        initializeCharts();
+    });
+    
+    // File upload handling
+    const fileInput = document.getElementById('fileInput');
+    const imageDropArea = document.getElementById('imageDropArea');
+    const uploadedImagePreview = document.getElementById('uploadedImagePreview');
+    const previewImage = document.getElementById('previewImage');
+    const fileName = document.getElementById('fileName');
+    const fileSize = document.getElementById('fileSize');
+    const browseBtn = document.getElementById('browseBtn');
+    const removeImageBtn = document.getElementById('removeImageBtn');
+    
+    browseBtn.addEventListener('click', () => {
+      fileInput.click();
+    });
+    
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        displayUploadedImage(e.target.files[0]);
       }
     });
     
-    // Logout function
-    function handleLogout(e) {
+    imageDropArea.addEventListener('dragover', (e) => {
       e.preventDefault();
-      localStorage.setItem('userLoggedIn', 'false');
-      document.getElementById('dashboardContent').classList.add('hidden');
-      document.getElementById('loginForm').classList.remove('hidden');
+      imageDropArea.classList.add('border-promogenie-600');
+      imageDropArea.classList.add('bg-promogenie-50');
+    });
+    
+    imageDropArea.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      imageDropArea.classList.remove('border-promogenie-600');
+      imageDropArea.classList.remove('bg-promogenie-50');
+    });
+    
+    imageDropArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      imageDropArea.classList.remove('border-promogenie-600');
+      imageDropArea.classList.remove('bg-promogenie-50');
+      
+      if (e.dataTransfer.files.length > 0) {
+        displayUploadedImage(e.dataTransfer.files[0]);
+      }
+    });
+    
+    function displayUploadedImage(file) {
+      // Display the preview
+      uploadedImagePreview.classList.remove('hidden');
+      
+      // Set the image source
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        previewImage.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+      
+      // Set the file name and size
+      fileName.textContent = file.name;
+      fileSize.textContent = formatFileSize(file.size);
     }
     
-    // Chart initialization
-    function initializeCharts() {
-      // Only initialize charts if the elements exist and the user is logged in
-      if (!userLoggedIn) return;
-      
-      // Performance chart
-      const performanceCtx = document.getElementById('performanceChart');
-      if (performanceCtx) {
-        new Chart(performanceCtx, {
-          type: 'line',
-          data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-            datasets: [
-              {
-                label: 'Views',
-                data: [3200, 4100, 3800, 5200, 4800, 6000],
-                borderColor: '#6d28d9',
-                backgroundColor: 'rgba(109, 40, 217, 0.1)',
-                fill: true,
-                tension: 0.4
-              },
-              {
-                label: 'Engagements',
-                data: [210, 280, 250, 340, 320, 380],
-                borderColor: '#a78bfa',
-                backgroundColor: 'rgba(167, 139, 250, 0.1)',
-                fill: true,
-                tension: 0.4
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                beginAtZero: true
-              }
-            }
-          }
-        });
-      }
-      
-      // Platform chart
-      const platformCtx = document.getElementById('platformChart');
-      if (platformCtx) {
-        new Chart(platformCtx, {
-          type: 'doughnut',
-          data: {
-            labels: ['Instagram', 'TikTok', 'Facebook', 'Twitter', 'Email'],
-            datasets: [{
-              data: [42, 28, 14, 10, 6],
-              backgroundColor: [
-                '#6d28d9', '#a78bfa', '#ddd6fe', '#8b5cf6', '#c4b5fd'
-              ]
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                position: 'bottom'
-              }
-            }
-          }
-        });
-      }
-      
-      // Demographics chart
-      const demographicsCtx = document.getElementById('demographicsChart');
-      if (demographicsCtx) {
-        new Chart(demographicsCtx, {
-          type: 'bar',
-          data: {
-            labels: ['18-24', '25-34', '35-44', '45-54', '55+'],
-            datasets: [
-              {
-                label: 'Female',
-                data: [22, 30, 18, 12, 8],
-                backgroundColor: '#a78bfa'
-              },
-              {
-                label: 'Male',
-                data: [18, 25, 15, 10, 6],
-                backgroundColor: '#6d28d9'
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              x: {
-                stacked: true
-              },
-              y: {
-                stacked: true,
-                beginAtZero: true
-              }
-            }
-          }
-        });
-      }
-      
-      // Engagement chart
-      const engagementCtx = document.getElementById('engagementChart');
-      if (engagementCtx) {
-        new Chart(engagementCtx, {
-          type: 'line',
-          data: {
-            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8'],
-            datasets: [
-              {
-                label: 'Likes',
-                data: [120, 150, 180, 220, 210, 240, 280, 310],
-                borderColor: '#6d28d9',
-                backgroundColor: 'rgba(0,0,0,0)',
-                tension: 0.4
-              },
-              {
-                label: 'Comments',
-                data: [30, 38, 45, 55, 58, 65, 80, 92],
-                borderColor: '#a78bfa',
-                backgroundColor: 'rgba(0,0,0,0)',
-                tension: 0.4
-              },
-              {
-                label: 'Shares',
-                data: [15, 22, 28, 32, 40, 48, 55, 65],
-                borderColor: '#c4b5fd',
-                backgroundColor: 'rgba(0,0,0,0)',
-                tension: 0.4
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                beginAtZero: true
-              }
-            }
-          }
-        });
-      }
+    removeImageBtn.addEventListener('click', () => {
+      uploadedImagePreview.classList.add('hidden');
+      fileInput.value = '';
+    });
+    
+    function formatFileSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+      else return (bytes / 1048576).toFixed(1) + ' MB';
     }
     
-    // Set up demo credentials
-    if (!localStorage.getItem('testEmail')) {
-      localStorage.setItem('testEmail', btoa('test@promogenie.co'));
-      localStorage.setItem('testPassword', btoa('prmgn2025*'));
+    // Influencer selection
+    const influencerCards = document.querySelectorAll('.influencer-card');
+    
+    influencerCards.forEach(card => {
+      card.addEventListener('click', () => {
+        // Remove selection from all cards
+        influencerCards.forEach(c => c.classList.remove('border-promogenie-400'));
+        
+        // Add selection to the clicked card
+        card.classList.add('border-promogenie-400');
+      });
+    });
+    
+    // Aspect ratio selection
+    const aspectRatioBtns = document.querySelectorAll('.aspect-ratio-btn');
+    
+    aspectRatioBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Remove selection from all buttons
+        aspectRatioBtns.forEach(b => b.classList.remove('bg-promogenie-100', 'border-promogenie-400'));
+        
+        // Add selection to the clicked button
+        btn.classList.add('bg-promogenie-100', 'border-promogenie-400');
+      });
+    });
+    
+    // Voice option selection
+    const voiceOptions = document.querySelectorAll('.voice-option');
+    
+    voiceOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        // Remove selection from all options
+        voiceOptions.forEach(o => o.classList.remove('border-promogenie-400'));
+        
+        // Add selection to the clicked option
+        option.classList.add('border-promogenie-400');
+      });
+    });
+    
+    // Audio preview
+    const previewAudioBtn = document.getElementById('previewAudioBtn');
+    const audioPreview = document.getElementById('audioPreview');
+    const audioPlayPauseBtn = document.getElementById('audioPlayPauseBtn');
+    const audioProgress = document.getElementById('audioProgress');
+    
+    previewAudioBtn.addEventListener('click', () => {
+      audioPreview.classList.toggle('hidden');
+      
+      if (!audioPreview.classList.contains('hidden')) {
+        // Simulate audio playback progress
+        let progress = 0;
+        audioProgress.style.width = '0%';
+        
+        // Change play button to pause
+        audioPlayPauseBtn.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="4" width="4" height="16"></rect>
+            <rect x="14" y="4" width="4" height="16"></rect>
+          </svg>
+        `;
+        
+        const progressInterval = setInterval(() => {
+          progress += 1;
+          audioProgress.style.width = `${progress}%`;
+          
+          if (progress >= 100) {
+            clearInterval(progressInterval);
+            
+            // Change pause button back to play
+            audioPlayPauseBtn.innerHTML = `
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+            `;
+          }
+        }, 30);
+      }
+    });
+    
+    // Video play button
+    const videoPlayBtn = document.getElementById('videoPlayBtn');
+    
+    videoPlayBtn.addEventListener('click', () => {
+      // Toggle play/pause
+      videoPlayBtn.classList.toggle('playing');
+      
+      if (videoPlayBtn.classList.contains('playing')) {
+        videoPlayBtn.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+            <rect x="6" y="4" width="4" height="16"></rect>
+            <rect x="14" y="4" width="4" height="16"></rect>
+          </svg>
+        `;
+      } else {
+        videoPlayBtn.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white ml-1">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+        `;
+      }
+    });
+    
+    // Text field character counters
+    const promptInput = document.getElementById('promptInput');
+    const promptCounter = document.getElementById('promptCounter');
+    
+    promptInput.addEventListener('input', () => {
+      const length = promptInput.value.length;
+      promptCounter.textContent = `${length}/200`;
+    });
+    
+    const scriptInput = document.getElementById('scriptInput');
+    const scriptCounter = document.getElementById('scriptCounter');
+    
+    scriptInput.addEventListener('input', () => {
+      const length = scriptInput.value.length;
+      scriptCounter.textContent = `${length}/300`;
+    });
+    
+    // Filter buttons in My Creations tab
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const creationItems = document.querySelectorAll('.creation-item');
+    
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Remove active class from all filter buttons
+        filterBtns.forEach(b => b.classList.remove('active', 'bg-promogenie-100', 'text-promogenie-700'));
+        
+        // Add active class to the clicked button
+        btn.classList.add('active', 'bg-promogenie-100', 'text-promogenie-700');
+        
+        const filter = btn.getAttribute('data-filter');
+        
+        // Filter the creation items
+        creationItems.forEach(item => {
+          if (filter === 'all' || item.classList.contains(filter)) {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+    
+    // New creation button
+    document.getElementById('newCreationBtn').addEventListener('click', () => {
+      // Switch to the influencer videos tab and reset to step 1
+      tabButtons.forEach(btn => {
+        if (btn.getAttribute('data-tab') === 'influencerVideos') {
+          btn.click();
+          step1.classList.remove('hidden');
+          step2.classList.add('hidden');
+          step3.classList.add('hidden');
+        }
+      });
+    });
+    
+    // Copy link button
+    document.getElementById('copyLinkBtn').addEventListener('click', () => {
+      // Create a temporary input element
+      const input = document.createElement('input');
+      input.value = 'https://share.promogenie.com/v/abc123';
+      document.body.appendChild(input);
+      
+      // Copy the text
+      input.select();
+      document.execCommand('copy');
+      
+      // Remove the input element
+      document.body.removeChild(input);
+      
+      // Show confirmation toast
+      showToast('Link copied to clipboard!');
+    });
+    
+    // Notifications dropdown
+    const notificationBtn = document.getElementById('notificationBtn');
+    const notificationsDropdown = document.getElementById('notificationsDropdown');
+    
+    notificationBtn.addEventListener('click', () => {
+      notificationsDropdown.classList.toggle('hidden');
+      profileDropdown.classList.add('hidden'); // Hide profile dropdown if open
+    });
+    
+    // Profile dropdown
+    const profileBtn = document.getElementById('profileBtn');
+    const profileDropdown = document.getElementById('profileDropdown');
+    
+    profileBtn.addEventListener('click', () => {
+      profileDropdown.classList.toggle('hidden');
+      notificationsDropdown.classList.add('hidden'); // Hide notifications dropdown if open
+    });
+    
+    // Close dropdowns when clicking elsewhere
+    document.addEventListener('click', (e) => {
+      if (!notificationBtn.contains(e.target) && !notificationsDropdown.contains(e.target)) {
+        notificationsDropdown.classList.add('hidden');
+      }
+      
+      if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+        profileDropdown.classList.add('hidden');
+      }
+    });
+    
+    // Toast notification
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+    
+    function showToast(message, type = 'success') {
+      toastMessage.textContent = message;
+      
+      if (type === 'error') {
+        toast.querySelector('svg').classList.replace('text-green-500', 'text-red-500');
+      } else {
+        toast.querySelector('svg').classList.replace('text-red-500', 'text-green-500');
+      }
+      
+      toast.classList.remove('hidden', 'translate-y-2', 'opacity-0');
+      
+      setTimeout(() => {
+        toast.classList.add('translate-y-2', 'opacity-0');
+        setTimeout(() => {
+          toast.classList.add('hidden');
+        }, 300);
+      }, 3000);
     }
   </script>
 </body>
