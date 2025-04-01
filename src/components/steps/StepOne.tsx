@@ -1,8 +1,16 @@
 
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, RefreshCw } from 'lucide-react';
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { useToast } from "@/hooks/use-toast";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
 
 // Sample influencers data
 const techInfluencer = "https://randomuser.me/api/portraits/men/32.jpg";
@@ -40,11 +48,15 @@ interface StepOneProps {
 }
 
 const StepOne: React.FC<StepOneProps> = ({ onNext, initialData = {} }) => {
+  const { toast } = useToast();
   const [selectedInfluencer, setSelectedInfluencer] = useState(initialData.selectedInfluencer || "");
   const [uploadedImages, setUploadedImages] = useState<File[]>(initialData.uploadedImages || []);
   const [uploadedImagePreviews, setUploadedImagePreviews] = useState<string[]>(initialData.uploadedImagePreviews || []);
   const [promptText, setPromptText] = useState(initialData.promptText || "");
   const [selectedAspectRatio, setSelectedAspectRatio] = useState(initialData.selectedAspectRatio || "16:9");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedImage, setGeneratedImage] = useState<string | null>(initialData.generatedImage || null);
+  const [showRegenerate, setShowRegenerate] = useState(false);
   
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -70,14 +82,56 @@ const StepOne: React.FC<StepOneProps> = ({ onNext, initialData = {} }) => {
     setUploadedImages(newImages);
     setUploadedImagePreviews(newPreviews);
   };
+
+  const handleGenerateImage = () => {
+    if (!selectedInfluencer || uploadedImagePreviews.length === 0 || !promptText || !selectedAspectRatio) {
+      toast({
+        title: "Missing information",
+        description: "Please select an influencer, upload at least one image, provide a description, and select a format.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsGenerating(true);
+    setGeneratedImage(null);
+    setShowRegenerate(false);
+    
+    // Simulate image generation
+    setTimeout(() => {
+      // In a real app, this would be an API call
+      setGeneratedImage("/lovable-uploads/5920f396-0660-48f6-8ae3-7895df22813d.png");
+      setIsGenerating(false);
+      setShowRegenerate(true);
+      
+      toast({
+        title: "Image Generated",
+        description: "Your image has been successfully generated."
+      });
+    }, 2000);
+  };
+
+  const handleRegenerate = () => {
+    handleGenerateImage();
+  };
   
   const handleContinue = () => {
+    if (!generatedImage) {
+      toast({
+        title: "Missing generated image",
+        description: "Please generate an image first before continuing.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     onNext({
       selectedInfluencer,
       uploadedImages,
       uploadedImagePreviews,
       promptText,
-      selectedAspectRatio
+      selectedAspectRatio,
+      selectedImage: generatedImage
     });
   };
 
@@ -167,11 +221,29 @@ const StepOne: React.FC<StepOneProps> = ({ onNext, initialData = {} }) => {
             <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Video Format</h3>
             <p className="text-sm text-gray-600 mb-3">Select the perfect format for your platform:</p>
             
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <div className="mb-4">
+              <Select
+                value={selectedAspectRatio}
+                onValueChange={setSelectedAspectRatio}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select a format" />
+                </SelectTrigger>
+                <SelectContent>
+                  {aspectRatios.map((ratio) => (
+                    <SelectItem key={ratio.id} value={ratio.id}>
+                      {ratio.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="grid grid-cols-5 gap-3 mt-4">
               {aspectRatios.map((ratio) => (
                 <button
                   key={ratio.id}
-                  className={`p-3 rounded-lg border ${
+                  className={`p-2 rounded-lg border ${
                     selectedAspectRatio === ratio.id 
                       ? 'border-promogenie-600 bg-promogenie-50' 
                       : 'border-gray-200 hover:border-promogenie-300'
@@ -188,7 +260,6 @@ const StepOne: React.FC<StepOneProps> = ({ onNext, initialData = {} }) => {
                       </div>
                     </AspectRatio>
                   </div>
-                  <p className="text-xs text-center font-medium">{ratio.label}</p>
                 </button>
               ))}
             </div>
@@ -205,48 +276,101 @@ const StepOne: React.FC<StepOneProps> = ({ onNext, initialData = {} }) => {
           </div>
         </div>
         
-        <div>
-          <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Pick Your Influencer</h3>
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Pick Your Influencer</h3>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+              {influencers.map(influencer => (
+                <div
+                  key={influencer.id}
+                  className={`rounded-lg overflow-hidden cursor-pointer transition-all ${
+                    selectedInfluencer === influencer.id 
+                      ? 'ring-4 ring-promogenie-400 transform scale-105' 
+                      : 'border border-promogenie-200 hover:border-promogenie-400'
+                  }`}
+                  onClick={() => setSelectedInfluencer(influencer.id)}
+                >
+                  <div className="aspect-square overflow-hidden">
+                    <img 
+                      src={influencer.image} 
+                      alt={influencer.name} 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="p-2 bg-white">
+                    <p className="text-promogenie-700 text-sm font-medium truncate">{influencer.name}</p>
+                    <p className="text-promogenie-500 text-xs">{influencer.category}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="flex justify-end items-center">
+              <p className="text-promogenie-500 italic mr-4">Create your own influencer... 
+                <span className="ml-1 text-promogenie-700 font-medium">Coming Soon</span>
+              </p>
+            </div>
+          </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-            {influencers.map(influencer => (
-              <div
-                key={influencer.id}
-                className={`rounded-lg overflow-hidden cursor-pointer transition-all ${
-                  selectedInfluencer === influencer.id 
-                    ? 'ring-4 ring-promogenie-400 transform scale-105' 
-                    : 'border border-promogenie-200 hover:border-promogenie-400'
-                }`}
-                onClick={() => setSelectedInfluencer(influencer.id)}
-              >
-                <div className="aspect-square overflow-hidden">
-                  <img 
-                    src={influencer.image} 
-                    alt={influencer.name} 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-2 bg-white">
-                  <p className="text-promogenie-700 text-sm font-medium truncate">{influencer.name}</p>
-                  <p className="text-promogenie-500 text-xs">{influencer.category}</p>
-                </div>
+          {/* Generated Image Preview */}
+          {generatedImage && (
+            <div className="mt-6">
+              <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Generated Image</h3>
+              <div className="bg-gray-50 rounded-lg p-4 flex justify-center">
+                <img 
+                  src={generatedImage} 
+                  alt="Generated" 
+                  className="rounded-lg max-h-80 object-contain"
+                />
               </div>
-            ))}
-          </div>
-          
-          <div className="flex justify-end items-center">
-            <p className="text-promogenie-500 italic mr-4">Create your own influencer... 
-              <span className="ml-1 text-promogenie-700 font-medium">Coming Soon</span>
-            </p>
-          </div>
+            </div>
+          )}
         </div>
       </div>
       
-      <div className="flex justify-end pt-6 border-t border-gray-200">
+      <div className="flex justify-between items-center pt-6 border-t border-gray-200">
+        <div>
+          {!generatedImage ? (
+            <Button 
+              className="bg-promogenie-600 hover:bg-promogenie-700 text-white px-8"
+              onClick={handleGenerateImage}
+              disabled={isGenerating || !selectedInfluencer || uploadedImagePreviews.length === 0 || !promptText || !selectedAspectRatio}
+            >
+              {isGenerating ? (
+                <>
+                  <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+                  Generating...
+                </>
+              ) : (
+                "Generate Image"
+              )}
+            </Button>
+          ) : (
+            <Button 
+              variant="outline"
+              className="border-promogenie-300 text-promogenie-700"
+              onClick={handleRegenerate}
+              disabled={isGenerating}
+            >
+              {isGenerating ? (
+                <>
+                  <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+                  Regenerating...
+                </>
+              ) : (
+                <>
+                  <RefreshCw className="mr-2 h-4 w-4" />
+                  Regenerate
+                </>
+              )}
+            </Button>
+          )}
+        </div>
         <Button 
           className="bg-promogenie-600 hover:bg-promogenie-700 text-white px-8"
           onClick={handleContinue}
-          disabled={!selectedInfluencer || uploadedImagePreviews.length === 0}
+          disabled={!generatedImage}
         >
           Continue
           <ChevronRight className="ml-2 h-4 w-4" />
