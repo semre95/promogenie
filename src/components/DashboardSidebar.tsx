@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   Settings,
@@ -6,7 +7,8 @@ import {
   User,
   Download,
   HelpCircle,
-  Video
+  Video,
+  LayoutGrid  // Add this import
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
