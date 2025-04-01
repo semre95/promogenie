@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from 'lucide-react';
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 // Sample influencers data
 const techInfluencer = "https://randomuser.me/api/portraits/men/32.jpg";
@@ -24,6 +25,15 @@ const influencers = [
   { id: "lifestyle1", name: "LifestyleLinda", image: lifestyleInfluencer, category: "Lifestyle" }
 ];
 
+// Available aspect ratios
+const aspectRatios = [
+  { id: "1:1", label: "Square (1:1)", value: 1 / 1 },
+  { id: "3:4", label: "Portrait (3:4)", value: 3 / 4 },
+  { id: "9:16", label: "Portrait (9:16)", value: 9 / 16 },
+  { id: "16:9", label: "Landscape (16:9)", value: 16 / 9 },
+  { id: "4:3", label: "Landscape (4:3)", value: 4 / 3 }
+];
+
 interface StepOneProps {
   onNext: (data: any) => void;
   initialData?: any;
@@ -34,6 +44,7 @@ const StepOne: React.FC<StepOneProps> = ({ onNext, initialData = {} }) => {
   const [uploadedImages, setUploadedImages] = useState<File[]>(initialData.uploadedImages || []);
   const [uploadedImagePreviews, setUploadedImagePreviews] = useState<string[]>(initialData.uploadedImagePreviews || []);
   const [promptText, setPromptText] = useState(initialData.promptText || "");
+  const [selectedAspectRatio, setSelectedAspectRatio] = useState(initialData.selectedAspectRatio || "16:9");
   
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -65,8 +76,13 @@ const StepOne: React.FC<StepOneProps> = ({ onNext, initialData = {} }) => {
       selectedInfluencer,
       uploadedImages,
       uploadedImagePreviews,
-      promptText
+      promptText,
+      selectedAspectRatio
     });
+  };
+
+  const getAspectRatioValue = (id: string) => {
+    return aspectRatios.find(ratio => ratio.id === id)?.value || 16/9;
   };
 
   return (
@@ -145,6 +161,37 @@ const StepOne: React.FC<StepOneProps> = ({ onNext, initialData = {} }) => {
                 </div>
               </div>
             )}
+          </div>
+          
+          <div>
+            <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Video Format</h3>
+            <p className="text-sm text-gray-600 mb-3">Select the perfect format for your platform:</p>
+            
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {aspectRatios.map((ratio) => (
+                <button
+                  key={ratio.id}
+                  className={`p-3 rounded-lg border ${
+                    selectedAspectRatio === ratio.id 
+                      ? 'border-promogenie-600 bg-promogenie-50' 
+                      : 'border-gray-200 hover:border-promogenie-300'
+                  }`}
+                  onClick={() => setSelectedAspectRatio(ratio.id)}
+                >
+                  <div className="relative w-full mb-2">
+                    <AspectRatio 
+                      ratio={ratio.value} 
+                      className="bg-gray-100 rounded overflow-hidden"
+                    >
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        {ratio.id}
+                      </div>
+                    </AspectRatio>
+                  </div>
+                  <p className="text-xs text-center font-medium">{ratio.label}</p>
+                </button>
+              ))}
+            </div>
           </div>
           
           <div>

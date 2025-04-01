@@ -1,8 +1,8 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Pause, RefreshCw } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
 
 // Sample generated image
 const sampleGeneratedImage = "/lovable-uploads/5920f396-0660-48f6-8ae3-7895df22813d.png";
@@ -14,9 +14,13 @@ interface StepTwoProps {
 }
 
 const StepTwo: React.FC<StepTwoProps> = ({ onBack, onNext, initialData = {} }) => {
+  const { toast } = useToast();
   const [scriptText, setScriptText] = useState(initialData.scriptText || "");
   const [selectedVoice, setSelectedVoice] = useState(initialData.selectedVoice || "");
-  const [videoLength, setVideoLength] = useState(initialData.videoLength || "6");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [generatedAudioUrl, setGeneratedAudioUrl] = useState("");
+  const audioRef = useRef<HTMLAudioElement>(null);
   
   // The generated image from the previous step would be passed via initialData
   const selectedImage = initialData.selectedImage || sampleGeneratedImage;
@@ -33,15 +37,51 @@ const StepTwo: React.FC<StepTwoProps> = ({ onBack, onNext, initialData = {} }) =
   ];
   
   const calculateWishCost = () => {
-    // Base cost depending on video length
-    return videoLength === "6" ? 10 : 20;
+    // Base cost for voice generation
+    return 5;
+  };
+
+  const handleGenerateVoice = () => {
+    if (!scriptText || !selectedVoice) {
+      toast({
+        title: "Missing information",
+        description: "Please write a script and select a voice to continue.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsGenerating(true);
+    
+    // Simulate voice generation
+    setTimeout(() => {
+      // In a real app, this would be the URL returned from the API
+      setGeneratedAudioUrl("/path/to/generated/audio.mp3");
+      setIsGenerating(false);
+      
+      toast({
+        title: "Voice Generated",
+        description: "Your voice-over has been successfully generated."
+      });
+    }, 2000);
+  };
+  
+  const handlePlayAudio = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
   };
   
   const handleContinue = () => {
     onNext({
       scriptText,
       selectedVoice,
-      videoLength,
+      generatedAudioUrl,
       selectedImage
     });
   };
@@ -56,6 +96,56 @@ const StepTwo: React.FC<StepTwoProps> = ({ onBack, onNext, initialData = {} }) =
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="space-y-6">
           <div>
+            <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Ad Script</h3>
+            <textarea 
+              value={scriptText}
+              onChange={(e) => setScriptText(e.target.value)}
+              placeholder="Write your ad script here"
+              className="w-full min-h-[150px] bg-white text-promogenie-700 border-promogenie-200 p-3 rounded-md border"
+            ></textarea>
+            <p className="text-promogenie-500 mt-2 text-sm">
+              {scriptText.split(' ').length} words (recommended: max 15 words)
+            </p>
+            
+            <div className="mt-4">
+              <Button 
+                onClick={handleGenerateVoice}
+                className="w-full bg-promogenie-600 hover:bg-promogenie-700 text-white"
+                disabled={isGenerating || !scriptText || !selectedVoice}
+              >
+                {isGenerating ? (
+                  <>
+                    <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+                    Generating Voice...
+                  </>
+                ) : (
+                  <>
+                    Generate Voice (5 Wishes)
+                  </>
+                )}
+              </Button>
+
+              {generatedAudioUrl && (
+                <div className="mt-4 p-3 bg-gray-50 rounded-md">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium text-promogenie-700">Generated Voice</span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handlePlayAudio}
+                      className="flex items-center"
+                    >
+                      {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                      <span className="ml-1">{isPlaying ? "Pause" : "Play"}</span>
+                    </Button>
+                  </div>
+                  <audio ref={audioRef} src={generatedAudioUrl} onEnded={() => setIsPlaying(false)} className="hidden" />
+                </div>
+              )}
+            </div>
+          </div>
+          
+          <div>
             <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Generated Image</h3>
             <div className="bg-gray-50 rounded-lg p-4 flex justify-center">
               <img 
@@ -63,39 +153,6 @@ const StepTwo: React.FC<StepTwoProps> = ({ onBack, onNext, initialData = {} }) =
                 alt="Selected for video" 
                 className="rounded-lg max-h-64"
               />
-            </div>
-          </div>
-          
-          <div>
-            <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Ad Script</h3>
-            <textarea 
-              value={scriptText}
-              onChange={(e) => setScriptText(e.target.value)}
-              placeholder="Write your ad script here (max 12 seconds when read)"
-              className="w-full min-h-[150px] bg-white text-promogenie-700 border-promogenie-200 p-3 rounded-md border"
-            ></textarea>
-            <p className="text-promogenie-500 mt-2 text-sm">
-              {scriptText.split(' ').length} words (recommended: max {videoLength === "6" ? "15" : "30"} words for {videoLength} seconds)
-            </p>
-          </div>
-          
-          <div>
-            <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Video Length</h3>
-            <div className="flex space-x-4">
-              <Button
-                variant={videoLength === "6" ? "default" : "outline"}
-                className={videoLength === "6" ? "bg-promogenie-600 text-white" : "border-promogenie-300 text-promogenie-700"}
-                onClick={() => setVideoLength("6")}
-              >
-                6 seconds
-              </Button>
-              <Button
-                variant={videoLength === "12" ? "default" : "outline"}
-                className={videoLength === "12" ? "bg-promogenie-600 text-white" : "border-promogenie-300 text-promogenie-700"}
-                onClick={() => setVideoLength("12")}
-              >
-                12 seconds
-              </Button>
             </div>
           </div>
         </div>
@@ -143,7 +200,7 @@ const StepTwo: React.FC<StepTwoProps> = ({ onBack, onNext, initialData = {} }) =
           <Button 
             className="bg-promogenie-600 hover:bg-promogenie-700 text-white px-8"
             onClick={handleContinue}
-            disabled={!scriptText || !selectedVoice}
+            disabled={!scriptText || !selectedVoice || !generatedAudioUrl}
           >
             Continue
             <ChevronRight className="ml-2 h-4 w-4" />

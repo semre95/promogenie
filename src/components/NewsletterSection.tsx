@@ -37,33 +37,29 @@ const NewsletterSection = () => {
   return (
     <section className="py-16 bg-promogenie-50">
       <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between">
-          <div className="md:w-1/2 mb-8 md:mb-0 md:pr-8">
-            <h2 className="text-3xl font-bold mb-4">Stay Updated with AI Marketing Trends</h2>
-            <p className="text-gray-600">
-              Join our newsletter for exclusive AI marketing insights, tips, and special offers delivered directly to your inbox.
-            </p>
-          </div>
+        <div className="max-w-xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-4">Subscribe to Our Newsletter</h2>
+          <p className="text-gray-600 mb-8">
+            Stay updated with the latest AI marketing trends, tips, and insights delivered directly to your inbox.
+          </p>
           
-          <div className="md:w-1/2">
-            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
-              <Input
-                type="email"
-                placeholder="Your email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="flex-grow"
-              />
-              <Button 
-                type="submit" 
-                className="bg-promogenie-600 hover:bg-promogenie-700"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Subscribing...' : 'Subscribe'}
-              </Button>
-            </form>
-            <p className="text-gray-500 text-sm mt-3">We respect your privacy. Unsubscribe at any time.</p>
-          </div>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3 max-w-md mx-auto">
+            <Input
+              type="email"
+              placeholder="Your email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full"
+            />
+            <Button 
+              type="submit" 
+              className="w-full bg-promogenie-600 hover:bg-promogenie-700"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+            </Button>
+            <p className="text-gray-500 text-sm mt-2">We respect your privacy. Unsubscribe at any time.</p>
+          </form>
         </div>
       </div>
     </section>

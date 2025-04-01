@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import DashboardHeader from '@/components/DashboardHeader';
 import DashboardSidebar from '@/components/DashboardSidebar';
@@ -28,10 +28,23 @@ const Dashboard = () => {
     promptText: "",
     scriptText: "",
     selectedVoice: "",
-    videoLength: "6",
+    selectedAspectRatio: "16:9",
+    generatedAudioUrl: "",
     selectedImage: sampleGeneratedImage,
     generatedVideo: null
   });
+
+  // Check if user chose "remember me" on login
+  useEffect(() => {
+    const rememberedUser = localStorage.getItem("rememberedUser");
+    if (rememberedUser) {
+      const userData = JSON.parse(rememberedUser);
+      toast({
+        title: "Welcome back",
+        description: `Logged in as ${userData.email}`
+      });
+    }
+  }, [toast]);
   
   const handleStepOneComplete = (data: any) => {
     // In a real app, you would probably send this data to an API
@@ -93,6 +106,23 @@ const Dashboard = () => {
     // Reset the workflow or navigate to creations
     setActiveTab("creations");
   };
+
+  const handleResetWorkflow = () => {
+    // Reset workflow data and go back to step 1
+    setWorkflowData({
+      selectedInfluencer: "",
+      uploadedImages: [],
+      uploadedImagePreviews: [],
+      promptText: "",
+      scriptText: "",
+      selectedVoice: "",
+      selectedAspectRatio: "16:9",
+      generatedAudioUrl: "",
+      selectedImage: sampleGeneratedImage,
+      generatedVideo: null
+    });
+    setCurrentStep("step1");
+  };
   
   const handleBackToStepOne = () => {
     setCurrentStep("step1");
@@ -111,17 +141,26 @@ const Dashboard = () => {
           ...workflowData,
           selectedInfluencer: item.influencerId || "",
           promptText: item.prompt || "",
-          selectedImage: item.url
+          selectedImage: item.url,
+          selectedAspectRatio: item.aspectRatio || "16:9"
         });
-      } else {
+      } else if ('script' in item) {
         // It's a video
         setWorkflowData({
           ...workflowData,
           selectedInfluencer: item.influencerId || "",
           scriptText: item.script || "",
           selectedVoice: item.voiceId || "",
-          videoLength: item.length?.includes("6") ? "6" : "12",
-          generatedVideo: item.thumbnailUrl
+          generatedVideo: item.thumbnailUrl,
+          selectedAspectRatio: item.aspectRatio || "16:9"
+        });
+      } else if ('voiceText' in item) {
+        // It's a voice generation
+        setWorkflowData({
+          ...workflowData,
+          scriptText: item.voiceText || "",
+          selectedVoice: item.voiceId || "",
+          generatedAudioUrl: item.audioUrl
         });
       }
     }
@@ -150,7 +189,8 @@ const Dashboard = () => {
         case "step3":
           return <StepThree 
             onBack={handleBackToStepTwo} 
-            onFinish={handleStepThreeComplete} 
+            onFinish={handleStepThreeComplete}
+            onCreateNew={handleResetWorkflow} 
             initialData={workflowData}
           />;
           

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { Eye, EyeOff, Check } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -59,7 +59,7 @@ const Signup = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      <main className="flex-grow flex items-center justify-center py-16 px-4">
+      <main className="flex-grow flex items-center justify-center py-24 px-4">
         <div className="max-w-md w-full">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold mb-2">Create your account</h1>

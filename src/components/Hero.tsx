@@ -98,10 +98,10 @@ const Hero = () => {
                 </div>
               </div>
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-6 bg-gradient-to-r from-promogenie-800 via-promogenie-600 to-promogenie-400 bg-clip-text text-transparent">
-                Turn Product Photos into Influencer Videos
+                AI-Generated Product Ads in Seconds
               </h1>
               <p className="text-lg md:text-xl text-gray-600 mb-8">
-                Upload a product photo and get professional videos with AI influencers promoting your product. No filming, no casting, no hassle.
+                Upload a photo, get professional ads featuring virtual influencers promoting your product on TikTok, Instagram & YouTube.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Link to="/signup" className="px-8 py-3 bg-promogenie-600 text-white rounded-md font-medium text-lg hover:bg-promogenie-700 transition-colors shadow-lg button-shine flex items-center justify-center">
@@ -118,10 +118,10 @@ const Hero = () => {
                   <img src="https://randomuser.me/api/portraits/men/44.jpg" className="w-8 h-8 rounded-full border-2 border-white" alt="User" />
                   <img src="https://randomuser.me/api/portraits/women/55.jpg" className="w-8 h-8 rounded-full border-2 border-white" alt="User" />
                   <div className="w-8 h-8 rounded-full bg-promogenie-100 flex items-center justify-center border-2 border-white text-xs font-medium text-promogenie-600">
-                    +5k
+                    +1.5k
                   </div>
                 </div>
-                <span>Join thousands of brands using PromoGenie</span>
+                <span>Join thousands of customers using PromoGenie</span>
               </div>
             </div>
           </div>

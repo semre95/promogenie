@@ -1,8 +1,9 @@
 
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, Download, Share2, Video } from 'lucide-react';
+import { ChevronLeft, Download, Share2, Video, Home, RotateCw } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { Link } from 'react-router-dom';
 
 // Sample video thumbnail
 const sampleVideoThumbnail = "/lovable-uploads/d7e56406-f041-44e5-9e1e-38ae5532b408.png";
@@ -10,10 +11,11 @@ const sampleVideoThumbnail = "/lovable-uploads/d7e56406-f041-44e5-9e1e-38ae5532b
 interface StepThreeProps {
   onBack: () => void;
   onFinish: (data: any) => void;
+  onCreateNew: () => void;
   initialData?: any;
 }
 
-const StepThree: React.FC<StepThreeProps> = ({ onBack, onFinish, initialData = {} }) => {
+const StepThree: React.FC<StepThreeProps> = ({ onBack, onFinish, onCreateNew, initialData = {} }) => {
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
   
@@ -89,16 +91,37 @@ const StepThree: React.FC<StepThreeProps> = ({ onBack, onFinish, initialData = {
       </div>
       
       <div className="flex justify-between items-center pt-6 border-t border-gray-200">
-        <Button 
-          variant="outline" 
-          className="border-promogenie-300 text-promogenie-700"
-          onClick={onBack}
-        >
-          <ChevronLeft className="mr-2 h-4 w-4" />
-          Back
-        </Button>
+        <div className="flex space-x-4">
+          <Button 
+            variant="outline" 
+            className="border-promogenie-300 text-promogenie-700"
+            onClick={onBack}
+          >
+            <ChevronLeft className="mr-2 h-4 w-4" />
+            Back
+          </Button>
+          
+          <Link to="/dashboard">
+            <Button 
+              variant="outline" 
+              className="border-promogenie-300 text-promogenie-700"
+            >
+              <Home className="mr-2 h-4 w-4" />
+              Dashboard
+            </Button>
+          </Link>
+        </div>
         
         <div className="flex space-x-4">
+          <Button 
+            variant="outline" 
+            className="border-promogenie-300 text-promogenie-700 hover:bg-promogenie-50"
+            onClick={onCreateNew}
+          >
+            <RotateCw className="mr-2 h-4 w-4" />
+            Create New
+          </Button>
+          
           <Button 
             className="bg-promogenie-600 hover:bg-promogenie-700 text-white"
             onClick={handleDownload}
@@ -106,6 +129,7 @@ const StepThree: React.FC<StepThreeProps> = ({ onBack, onFinish, initialData = {
             <Download className="mr-2 h-4 w-4" />
             Download
           </Button>
+          
           <Button 
             variant="outline" 
             className="border-promogenie-300 text-promogenie-700 hover:bg-promogenie-50"

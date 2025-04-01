@@ -33,15 +33,20 @@ const Login = () => {
     const testEmail = localStorage.getItem("testEmail") ? atob(localStorage.getItem("testEmail") || "") : "";
     const testPassword = localStorage.getItem("testPassword") ? atob(localStorage.getItem("testPassword") || "") : "";
 
-    console.log("Test email from localStorage:", testEmail);
-    console.log("Test password from localStorage:", testPassword);
-    console.log("Entered email:", email);
-    console.log("Entered password:", password);
-
     // Always allow the test account to login
     if (email === "test@promogenie.co" && password === "prmgn2025*") {
       // Set authentication state
       localStorage.setItem("isAuthenticated", "true");
+      
+      // If "remember me" is checked, store the user info
+      if (rememberMe) {
+        localStorage.setItem("rememberedUser", JSON.stringify({
+          email,
+          lastLogin: new Date().toISOString()
+        }));
+      } else {
+        localStorage.removeItem("rememberedUser");
+      }
       
       // Redirect to dashboard
       setTimeout(() => {
@@ -73,7 +78,7 @@ const Login = () => {
       <div className="min-h-screen flex flex-col">
         <Navbar />
         
-        <main className="flex-grow flex items-center justify-center py-16 px-4">
+        <main className="flex-grow flex items-center justify-center py-24 px-4">
           <div className="w-full max-w-md">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold">Welcome back</h1>

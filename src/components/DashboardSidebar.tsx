@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   LayoutGrid, 
@@ -8,9 +7,10 @@ import {
   User,
   Download,
   HelpCircle,
-  Video
+  Video,
+  Home
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Separator } from './ui/separator';
@@ -83,6 +83,19 @@ const DashboardSidebar = ({ activeTab, setActiveTab }: DashboardSidebarProps) =>
       
       <nav className="py-6 flex-grow">
         <ul className="space-y-1 px-3">
+          <li>
+            <Link
+              to="/dashboard"
+              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-md transition-colors ${
+                activeTab === "dashboard"
+                  ? "bg-white text-promogenie-600 font-medium" 
+                  : "text-white hover:bg-promogenie-500"
+              }`}
+            >
+              <Home className="h-5 w-5" />
+              <span>Dashboard</span>
+            </Link>
+          </li>
           <li>
             <button
               onClick={() => setActiveTab("influencerVideos")}
