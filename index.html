@@ -514,28 +514,57 @@
               </button>
             </div>
             
-            <div id="passwordStrength" class="password-strength">
-              <div class="flex gap-1 my-1">
-                <div id="bar1" class="strength-bar w-1/5"></div>
-                <div id="bar2" class="strength-bar w-1/5"></div>
-                <div id="bar3" class="strength-bar w-1/5"></div>
-                <div id="bar4" class="strength-bar w-1/5"></div>
-                <div id="bar5" class="strength-bar w-1/5"></div>
+            <div id="passwordStrength" class="mt-2" style="display:none;">
+              <div class="flex items-center justify-between mb-1">
+                <div class="flex-grow space-x-1 flex">
+                  <div class="inline-block h-1.5 w-1/5 rounded-full bg-gray-200" id="bar1"></div>
+                  <div class="inline-block h-1.5 w-1/5 rounded-full bg-gray-200" id="bar2"></div>
+                  <div class="inline-block h-1.5 w-1/5 rounded-full bg-gray-200" id="bar3"></div>
+                  <div class="inline-block h-1.5 w-1/5 rounded-full bg-gray-200" id="bar4"></div>
+                  <div class="inline-block h-1.5 w-1/5 rounded-full bg-gray-200" id="bar5"></div>
+                </div>
+                <span class="text-xs font-medium ml-2" id="strengthText"></span>
               </div>
-              <p id="strengthText" class="text-xs font-medium"></p>
+              <p class="text-xs text-gray-500">
+                Use 8+ characters with a mix of uppercase, lowercase, numbers & symbols
+              </p>
             </div>
           </div>
           
-          <div class="flex items-center">
-            <input id="termsAgree" type="checkbox" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded" required>
-            <label for="termsAgree" class="ml-2 block text-sm text-gray-700">
-              I agree to the <a href="/terms" class="text-purple-600 hover:text-purple-500">Terms of Service</a> and <a href="/privacy" class="text-purple-600 hover:text-purple-500">Privacy Policy</a>
-            </label>
+          <div class="flex items-start">
+            <div class="flex items-center h-5">
+              <input
+                id="termsAgree"
+                type="checkbox"
+                class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+                required
+              >
+            </div>
+            <div class="ml-3 text-sm">
+              <label for="termsAgree" class="text-gray-700">
+                I agree to the <a href="/terms" class="text-purple-600 hover:text-purple-500">Terms of Service</a> and <a href="/privacy" class="text-purple-600 hover:text-purple-500">Privacy Policy</a>
+              </label>
+            </div>
           </div>
           
-          <button 
-            type="submit" 
-            class="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 font-medium button-shine"
+          <div class="flex items-start">
+            <div class="flex items-center h-5">
+              <input
+                id="marketingConsent"
+                type="checkbox"
+                class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+              >
+            </div>
+            <div class="ml-3 text-sm">
+              <label for="marketingConsent" class="text-gray-700">
+                I'd like to receive product updates and marketing communications from PromoGenie
+              </label>
+            </div>
+          </div>
+          
+          <button
+            type="submit"
+            class="w-full py-2 px-4 bg-purple-600 text-white font-medium rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors button-shine"
           >
             Create account
           </button>
@@ -568,3 +597,305 @@
             Already have an account?
             <button id="switchToLogin" class="font-medium text-purple-600 hover:text-purple-500">Sign in</button>
           </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Auth Toast -->
+  <div class="auth-toast" id="authToast">
+    <div class="flex items-center">
+      <svg class="w-5 h-5 mr-2" id="toastIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"></svg>
+      <div>
+        <p class="font-medium" id="toastTitle"></p>
+        <p class="text-sm text-gray-500" id="toastMessage"></p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- JavaScript for Auth Functionality -->
+  <script>
+    // Check if user is logged in
+    document.addEventListener('DOMContentLoaded', function() {
+      // Mobile menu toggle
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+      
+      if (mobileMenuButton) {
+        mobileMenuButton.addEventListener('click', function() {
+          mobileMenu.classList.toggle('active');
+        });
+      }
+
+      // Modal functionality
+      const loginButton = document.getElementById('loginButton');
+      const signupButton = document.getElementById('signupButton');
+      const mobileLoginButton = document.getElementById('mobileLoginButton');
+      const mobileSignupButton = document.getElementById('mobileSignupButton');
+      const loginModal = document.getElementById('loginModal');
+      const signupModal = document.getElementById('signupModal');
+      const closeButtons = document.querySelectorAll('.close-modal');
+      const switchToSignup = document.getElementById('switchToSignup');
+      const switchToLogin = document.getElementById('switchToLogin');
+      
+      // Open login modal
+      const openLoginModal = () => {
+        loginModal.classList.add('active');
+      };
+      
+      // Open signup modal
+      const openSignupModal = () => {
+        signupModal.classList.add('active');
+      };
+      
+      // Close all modals
+      const closeModals = () => {
+        loginModal.classList.remove('active');
+        signupModal.classList.remove('active');
+      };
+      
+      // Event listeners for buttons
+      if (loginButton) loginButton.addEventListener('click', openLoginModal);
+      if (signupButton) signupButton.addEventListener('click', openSignupModal);
+      if (mobileLoginButton) mobileLoginButton.addEventListener('click', openLoginModal);
+      if (mobileSignupButton) mobileSignupButton.addEventListener('click', openSignupModal);
+
+      // Close modal when clicking the X button
+      closeButtons.forEach(button => {
+        button.addEventListener('click', closeModals);
+      });
+      
+      // Close modal when clicking outside
+      window.addEventListener('click', (e) => {
+        if (e.target === loginModal) {
+          closeModals();
+        }
+        if (e.target === signupModal) {
+          closeModals();
+        }
+      });
+      
+      // Switch between login and signup
+      if (switchToSignup) {
+        switchToSignup.addEventListener('click', () => {
+          closeModals();
+          openSignupModal();
+        });
+      }
+      
+      if (switchToLogin) {
+        switchToLogin.addEventListener('click', () => {
+          closeModals();
+          openLoginModal();
+        });
+      }
+      
+      // Check if user is logged in
+      const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+      if (isAuthenticated) {
+        // Change login/signup buttons to user menu
+        if (loginButton) loginButton.textContent = "Dashboard";
+        if (loginButton) loginButton.href = "/dashboard.html";
+        if (loginButton) loginButton.removeEventListener('click', openLoginModal);
+        
+        if (signupButton) signupButton.textContent = "Logout";
+        if (signupButton) signupButton.addEventListener('click', () => {
+          localStorage.removeItem("isAuthenticated");
+          window.location.reload();
+        });
+        if (signupButton) signupButton.removeEventListener('click', openSignupModal);
+      }
+      
+      // Form submissions
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+      
+      if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          const email = document.getElementById('loginEmail').value;
+          const password = document.getElementById('loginPassword').value;
+          const rememberMe = document.getElementById('rememberMe').checked;
+          
+          // For demo purposes - store the test account in localStorage
+          if (!localStorage.getItem("testEmail")) {
+            localStorage.setItem("testEmail", btoa("test@example.com"));
+            localStorage.setItem("testPassword", btoa("Password123!"));
+          }
+          
+          // Get test account from localStorage
+          const testEmail = atob(localStorage.getItem("testEmail") || "");
+          const testPassword = atob(localStorage.getItem("testPassword") || "");
+          
+          // Validate login
+          if (email === testEmail && password === testPassword) {
+            localStorage.setItem("isAuthenticated", "true");
+            
+            if (rememberMe) {
+              localStorage.setItem("rememberedUser", JSON.stringify({ email }));
+            } else {
+              localStorage.removeItem("rememberedUser");
+            }
+            
+            showToast('Success', 'You have been logged in successfully', 'success');
+            setTimeout(() => {
+              window.location.href = "/dashboard.html";
+            }, 1500);
+          } else {
+            showToast('Error', 'Invalid email or password', 'error');
+          }
+        });
+      }
+      
+      if (signupForm) {
+        signupForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          const fullName = document.getElementById('fullName').value;
+          const email = document.getElementById('signupEmail').value;
+          const password = document.getElementById('signupPassword').value;
+          const termsAgree = document.getElementById('termsAgree').checked;
+          
+          if (!termsAgree) {
+            showToast('Error', 'You must agree to the Terms of Service', 'error');
+            return;
+          }
+          
+          // For demo purposes - store the account in localStorage
+          localStorage.setItem("testEmail", btoa(email));
+          localStorage.setItem("testPassword", btoa(password));
+          localStorage.setItem("isAuthenticated", "true");
+          
+          showToast('Success', 'Your account has been created', 'success');
+          setTimeout(() => {
+            window.location.href = "/dashboard.html";
+          }, 1500);
+        });
+      }
+      
+      // Password visibility toggle
+      window.togglePasswordVisibility = function(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+        
+        if (input.type === "password") {
+          input.type = "text";
+          icon.innerHTML = `
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+          `;
+        } else {
+          input.type = "password";
+          icon.innerHTML = `
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          `;
+        }
+      };
+      
+      // Password strength meter
+      window.checkPasswordStrength = function(password) {
+        const strengthDiv = document.getElementById('passwordStrength');
+        strengthDiv.style.display = password ? 'block' : 'none';
+        
+        if (!password) return;
+        
+        let strength = 0;
+        
+        // Length check
+        if (password.length >= 8) strength += 1;
+        if (password.length >= 12) strength += 1;
+        
+        // Complexity checks
+        if (/[A-Z]/.test(password)) strength += 1;
+        if (/[a-z]/.test(password)) strength += 1;
+        if (/[0-9]/.test(password)) strength += 1;
+        if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+        
+        // Calculate final strength (max 5)
+        const finalStrength = Math.min(strength, 5);
+        
+        // Update UI
+        const bars = [
+          document.getElementById('bar1'),
+          document.getElementById('bar2'),
+          document.getElementById('bar3'),
+          document.getElementById('bar4'),
+          document.getElementById('bar5')
+        ];
+        
+        // Reset all bars
+        bars.forEach(bar => {
+          bar.className = 'inline-block h-1.5 w-1/5 rounded-full bg-gray-200';
+        });
+        
+        // Color bars based on strength
+        for (let i = 0; i < finalStrength; i++) {
+          if (finalStrength <= 2) {
+            bars[i].className = 'inline-block h-1.5 w-1/5 rounded-full bg-red-500';
+          } else if (finalStrength <= 4) {
+            bars[i].className = 'inline-block h-1.5 w-1/5 rounded-full bg-yellow-500';
+          } else {
+            bars[i].className = 'inline-block h-1.5 w-1/5 rounded-full bg-green-500';
+          }
+        }
+        
+        // Set text
+        const strengthText = document.getElementById('strengthText');
+        if (finalStrength <= 2) {
+          strengthText.textContent = 'Weak';
+          strengthText.className = 'text-xs font-medium ml-2 text-red-500';
+        } else if (finalStrength <= 4) {
+          strengthText.textContent = 'Good';
+          strengthText.className = 'text-xs font-medium ml-2 text-yellow-500';
+        } else {
+          strengthText.textContent = 'Strong';
+          strengthText.className = 'text-xs font-medium ml-2 text-green-500';
+        }
+      };
+      
+      // Toast notification
+      window.showToast = function(title, message, type) {
+        const toast = document.getElementById('authToast');
+        const toastTitle = document.getElementById('toastTitle');
+        const toastMessage = document.getElementById('toastMessage');
+        const toastIcon = document.getElementById('toastIcon');
+        
+        // Set content
+        toastTitle.textContent = title;
+        toastMessage.textContent = message;
+        
+        // Set icon based on type
+        if (type === 'success') {
+          toastIcon.innerHTML = `<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />`;
+          toastIcon.style.color = '#10b981';
+        } else if (type === 'error') {
+          toastIcon.innerHTML = `<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />`;
+          toastIcon.style.color = '#ef4444';
+        } else {
+          toastIcon.innerHTML = `<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />`;
+          toastIcon.style.color = '#3b82f6';
+        }
+        
+        // Show the toast
+        toast.classList.add('show');
+        
+        // Hide after 5 seconds
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 5000);
+      };
+      
+      // Check for remembered user
+      const rememberedUser = JSON.parse(localStorage.getItem("rememberedUser"));
+      if (rememberedUser) {
+        const loginEmail = document.getElementById('loginEmail');
+        if (loginEmail) {
+          loginEmail.value = rememberedUser.email;
+          document.getElementById('rememberMe').checked = true;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
