@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ChevronRight, RefreshCw, Sparkles } from 'lucide-react';
@@ -235,33 +236,75 @@ const StepOne: React.FC<StepOneProps> = ({ onNext, initialData = {} }) => {
           </div>
           
           <div>
-            <div className="flex justify-between items-center mb-3">
+            <div className="flex justify-between items-start mb-3">
               <h3 className="text-promogenie-700 text-xl font-semibold">Scene Description</h3>
-              <Button 
-                className="bg-promogenie-600 hover:bg-promogenie-700 text-white px-6 py-6 h-auto"
-                onClick={handleGenerateImage}
-                disabled={isGenerating || !selectedInfluencer || uploadedImagePreviews.length === 0 || !promptText || !selectedAspectRatio}
-              >
-                {isGenerating ? (
-                  <>
-                    <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
-                    Generating...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="mr-2 h-5 w-5" />
-                    Generate Image
-                    <span className="ml-1 text-xs bg-promogenie-700/60 px-2 py-1 rounded-full">15 wishes</span>
-                  </>
-                )}
-              </Button>
             </div>
-            <textarea 
-              value={promptText}
-              onChange={(e) => setPromptText(e.target.value)}
-              placeholder="Describe the setting, style, mood, and any specific details..."
-              className="w-full min-h-[100px] bg-white text-promogenie-700 border-promogenie-200 p-3 rounded-md border"
-            ></textarea>
+            <div className="flex gap-4">
+              <div className="flex-grow">
+                <textarea 
+                  value={promptText}
+                  onChange={(e) => setPromptText(e.target.value)}
+                  placeholder="Describe the setting, style, mood, and any specific details..."
+                  className="w-full min-h-[100px] bg-white text-promogenie-700 border-promogenie-200 p-3 rounded-md border"
+                ></textarea>
+              </div>
+              <div>
+                <Button 
+                  className="bg-promogenie-600 hover:bg-promogenie-700 text-white px-6 py-6 h-auto w-full"
+                  onClick={handleGenerateImage}
+                  disabled={isGenerating || !selectedInfluencer || uploadedImagePreviews.length === 0 || !promptText || !selectedAspectRatio}
+                >
+                  {isGenerating ? (
+                    <>
+                      <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
+                      Generating...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="mr-2 h-5 w-5" />
+                      Generate Image
+                      <span className="ml-1 text-xs bg-promogenie-700/60 px-2 py-1 rounded-full">15 wishes</span>
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
+            
+            {/* Generated Image Preview */}
+            {generatedImage && (
+              <div className="mt-4">
+                <h4 className="text-promogenie-700 font-medium mb-2">Generated Image Preview</h4>
+                <div className="bg-gray-50 rounded-lg p-4 flex justify-center">
+                  <img 
+                    src={generatedImage} 
+                    alt="Generated" 
+                    className="rounded-lg max-h-60 object-contain"
+                  />
+                </div>
+                {showRegenerate && (
+                  <div className="mt-2 flex justify-center">
+                    <Button 
+                      variant="outline"
+                      className="border-promogenie-300 text-promogenie-700"
+                      onClick={handleRegenerate}
+                      disabled={isGenerating}
+                    >
+                      {isGenerating ? (
+                        <>
+                          <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+                          Regenerating...
+                        </>
+                      ) : (
+                        <>
+                          <RefreshCw className="mr-2 h-4 w-4" />
+                          Regenerate
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
         
@@ -301,46 +344,11 @@ const StepOne: React.FC<StepOneProps> = ({ onNext, initialData = {} }) => {
               </p>
             </div>
           </div>
-          
-          {/* Generated Image Preview */}
-          {generatedImage && (
-            <div className="mt-6">
-              <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Generated Image</h3>
-              <div className="bg-gray-50 rounded-lg p-4 flex justify-center">
-                <img 
-                  src={generatedImage} 
-                  alt="Generated" 
-                  className="rounded-lg max-h-80 object-contain"
-                />
-              </div>
-            </div>
-          )}
         </div>
       </div>
       
       <div className="flex justify-between items-center pt-6 border-t border-gray-200">
-        <div>
-          {showRegenerate && (
-            <Button 
-              variant="outline"
-              className="border-promogenie-300 text-promogenie-700"
-              onClick={handleRegenerate}
-              disabled={isGenerating}
-            >
-              {isGenerating ? (
-                <>
-                  <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                  Regenerating...
-                </>
-              ) : (
-                <>
-                  <RefreshCw className="mr-2 h-4 w-4" />
-                  Regenerate
-                </>
-              )}
-            </Button>
-          )}
-        </div>
+        <div></div>
         <Button 
           className="bg-promogenie-600 hover:bg-promogenie-700 text-white px-8"
           onClick={handleContinue}
