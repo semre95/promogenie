@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ChevronRight, RefreshCw, Sparkles } from 'lucide-react';
@@ -239,50 +238,46 @@ const StepOne: React.FC<StepOneProps> = ({ onNext, initialData = {} }) => {
             <div className="flex justify-between items-start mb-3">
               <h3 className="text-promogenie-700 text-xl font-semibold">Scene Description</h3>
             </div>
-            <div className="flex gap-4">
-              <div className="flex-grow">
-                <textarea 
-                  value={promptText}
-                  onChange={(e) => setPromptText(e.target.value)}
-                  placeholder="Describe the setting, style, mood, and any specific details..."
-                  className="w-full min-h-[100px] bg-white text-promogenie-700 border-promogenie-200 p-3 rounded-md border"
-                ></textarea>
-              </div>
-              <div>
-                <Button 
-                  className="bg-promogenie-600 hover:bg-promogenie-700 text-white px-6 py-6 h-auto w-full"
-                  onClick={handleGenerateImage}
-                  disabled={isGenerating || !selectedInfluencer || uploadedImagePreviews.length === 0 || !promptText || !selectedAspectRatio}
-                >
-                  {isGenerating ? (
-                    <>
-                      <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
-                      Generating...
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="mr-2 h-5 w-5" />
-                      Generate Image
-                      <span className="ml-1 text-xs bg-promogenie-700/60 px-2 py-1 rounded-full">15 wishes</span>
-                    </>
-                  )}
-                </Button>
-              </div>
+            <div className="grid grid-cols-[1fr,auto] gap-4">
+              <textarea 
+                value={promptText}
+                onChange={(e) => setPromptText(e.target.value)}
+                placeholder="Describe the setting, style, mood, and any specific details..."
+                className="w-full min-h-[180px] bg-white text-promogenie-700 border-promogenie-200 p-3 rounded-md border resize-y"
+              ></textarea>
+              <Button 
+                className="bg-promogenie-600 hover:bg-promogenie-700 text-white px-6 py-6 h-full flex-shrink-0"
+                onClick={handleGenerateImage}
+                disabled={isGenerating || !selectedInfluencer || uploadedImagePreviews.length === 0 || !promptText || !selectedAspectRatio}
+              >
+                {isGenerating ? (
+                  <>
+                    <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="mr-2 h-5 w-5" />
+                    Generate Image
+                    <span className="ml-1 text-xs bg-promogenie-700/60 px-2 py-1 rounded-full">15 wishes</span>
+                  </>
+                )}
+              </Button>
             </div>
             
-            {/* Generated Image Preview */}
+            {/* Generated Images Section */}
             {generatedImage && (
-              <div className="mt-4">
-                <h4 className="text-promogenie-700 font-medium mb-2">Generated Image Preview</h4>
+              <div className="mt-4 space-y-2">
+                <h4 className="text-promogenie-700 font-medium">Generated Images</h4>
                 <div className="bg-gray-50 rounded-lg p-4 flex justify-center">
                   <img 
                     src={generatedImage} 
                     alt="Generated" 
-                    className="rounded-lg max-h-60 object-contain"
+                    className="rounded-lg max-h-80 object-contain"
                   />
                 </div>
                 {showRegenerate && (
-                  <div className="mt-2 flex justify-center">
+                  <div className="flex justify-center">
                     <Button 
                       variant="outline"
                       className="border-promogenie-300 text-promogenie-700"
