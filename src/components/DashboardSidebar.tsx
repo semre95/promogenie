@@ -1,16 +1,14 @@
 
 import React, { useState } from 'react';
 import { 
-  Image, 
-  Video, 
-  Share2,
   LayoutGrid, 
   Settings,
   LogOut,
   CreditCard,
   User,
   Download,
-  HelpCircle
+  HelpCircle,
+  Video
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
@@ -87,41 +85,15 @@ const DashboardSidebar = ({ activeTab, setActiveTab }: DashboardSidebarProps) =>
         <ul className="space-y-1 px-3">
           <li>
             <button
-              onClick={() => setActiveTab("image")}
+              onClick={() => setActiveTab("influencerVideos")}
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-md transition-colors ${
-                activeTab === "image" 
-                  ? "bg-white text-promogenie-600 font-medium" 
-                  : "text-white hover:bg-promogenie-500"
-              }`}
-            >
-              <Image className="h-5 w-5" />
-              <span>Image Generation</span>
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => setActiveTab("video")}
-              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-md transition-colors ${
-                activeTab === "video" 
+                activeTab === "influencerVideos" || activeTab === "step1" || activeTab === "step2" || activeTab === "step3"
                   ? "bg-white text-promogenie-600 font-medium" 
                   : "text-white hover:bg-promogenie-500"
               }`}
             >
               <Video className="h-5 w-5" />
-              <span>Video Creation</span>
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => setActiveTab("export")}
-              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-md transition-colors ${
-                activeTab === "export" 
-                  ? "bg-white text-promogenie-600 font-medium" 
-                  : "text-white hover:bg-promogenie-500"
-              }`}
-            >
-              <Share2 className="h-5 w-5" />
-              <span>Export</span>
+              <span>Influencer Videos</span>
             </button>
           </li>
           <li>
