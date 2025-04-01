@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { ChevronRight, RefreshCw, Sparkles } from 'lucide-react';
+import { ChevronRight, RefreshCw, Sparkles, ImageIcon } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { 
   Select, 
@@ -9,6 +9,7 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 // Sample influencers data
 const techInfluencer = "https://randomuser.me/api/portraits/men/32.jpg";
@@ -238,68 +239,82 @@ const StepOne: React.FC<StepOneProps> = ({ onNext, initialData = {} }) => {
             <div className="flex justify-between items-start mb-3">
               <h3 className="text-promogenie-700 text-xl font-semibold">Scene Description</h3>
             </div>
-            <div className="grid grid-cols-[1fr,auto] gap-4">
-              <textarea 
-                value={promptText}
-                onChange={(e) => setPromptText(e.target.value)}
-                placeholder="Describe the setting, style, mood, and any specific details..."
-                className="w-full min-h-[180px] bg-white text-promogenie-700 border-promogenie-200 p-3 rounded-md border resize-y"
-              ></textarea>
+            
+            <div className="flex space-x-4">
+              <div className="flex-1">
+                <Textarea 
+                  value={promptText}
+                  onChange={(e) => setPromptText(e.target.value)}
+                  placeholder="Describe the setting, style, mood, and any specific details..."
+                  className="w-full min-h-[150px] bg-white text-promogenie-700 border-promogenie-200 p-3 rounded-md resize-none focus-visible:ring-promogenie-400"
+                />
+              </div>
+              
               <Button 
-                className="bg-promogenie-600 hover:bg-promogenie-700 text-white px-6 py-6 h-full flex-shrink-0"
+                className="bg-promogenie-600 hover:bg-promogenie-700 text-white h-auto flex-shrink-0 rounded-md shadow-md transition-all duration-300 hover:shadow-lg hover:translate-y-[-1px]"
                 onClick={handleGenerateImage}
                 disabled={isGenerating || !selectedInfluencer || uploadedImagePreviews.length === 0 || !promptText || !selectedAspectRatio}
               >
                 {isGenerating ? (
-                  <>
+                  <div className="flex items-center justify-center py-3 px-4">
                     <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
-                    Generating...
-                  </>
+                    <span>Generating...</span>
+                  </div>
                 ) : (
-                  <>
-                    <Sparkles className="mr-2 h-5 w-5" />
-                    Generate Image
-                    <span className="ml-1 text-xs bg-promogenie-700/60 px-2 py-1 rounded-full">15 wishes</span>
-                  </>
+                  <div className="flex flex-col items-center justify-center py-3 px-4">
+                    <Sparkles className="mb-1 h-5 w-5" />
+                    <span className="font-medium">Generate Image</span>
+                    <span className="text-xs bg-promogenie-700/60 px-2 py-0.5 rounded-full mt-1">15 wishes</span>
+                  </div>
                 )}
               </Button>
             </div>
             
             {/* Generated Images Section */}
-            {generatedImage && (
-              <div className="mt-4 space-y-2">
-                <h4 className="text-promogenie-700 font-medium">Generated Images</h4>
-                <div className="bg-gray-50 rounded-lg p-4 flex justify-center">
-                  <img 
-                    src={generatedImage} 
-                    alt="Generated" 
-                    className="rounded-lg max-h-80 object-contain"
-                  />
-                </div>
-                {showRegenerate && (
-                  <div className="flex justify-center">
-                    <Button 
-                      variant="outline"
-                      className="border-promogenie-300 text-promogenie-700"
-                      onClick={handleRegenerate}
-                      disabled={isGenerating}
-                    >
-                      {isGenerating ? (
-                        <>
-                          <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                          Regenerating...
-                        </>
-                      ) : (
-                        <>
-                          <RefreshCw className="mr-2 h-4 w-4" />
-                          Regenerate
-                        </>
-                      )}
-                    </Button>
+            <div className="mt-6">
+              <h4 className="text-promogenie-700 font-medium mb-3">Generated Images</h4>
+              
+              {generatedImage ? (
+                <div className="bg-gray-50 rounded-xl border border-gray-200 overflow-hidden">
+                  <div className="p-4 flex justify-center">
+                    <img 
+                      src={generatedImage} 
+                      alt="Generated" 
+                      className="rounded-lg max-h-[260px] object-contain"
+                    />
                   </div>
-                )}
-              </div>
-            )}
+                  
+                  {showRegenerate && (
+                    <div className="flex justify-center p-3 border-t border-gray-100 bg-gray-50">
+                      <Button 
+                        variant="outline"
+                        className="border-promogenie-300 text-promogenie-700 hover:bg-promogenie-50"
+                        onClick={handleRegenerate}
+                        disabled={isGenerating}
+                      >
+                        {isGenerating ? (
+                          <>
+                            <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+                            Regenerating...
+                          </>
+                        ) : (
+                          <>
+                            <RefreshCw className="mr-2 h-4 w-4" />
+                            Regenerate
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="bg-gray-50 border border-dashed border-gray-300 rounded-xl p-8 flex flex-col items-center justify-center text-center min-h-[220px]">
+                  <ImageIcon className="h-12 w-12 text-gray-300 mb-2" />
+                  <p className="text-gray-400 mb-1">No images generated yet</p>
+                  <p className="text-gray-400 text-sm">Fill in the details above and click "Generate Image"</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
         
