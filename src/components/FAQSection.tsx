@@ -42,8 +42,8 @@ const FAQSection = () => {
     <section className="py-16 md:py-24 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Frequently Asked Questions</h2>
+          <div className="flex items-center justify-between mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold">Frequently Asked Questions</h2>
             <Button 
               onClick={handleBypassLogin} 
               className="bg-promogenie-600 hover:bg-promogenie-700 text-white"
