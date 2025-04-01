@@ -1,167 +1,124 @@
-
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { useSearchParams } from 'react-router-dom';
 
 const Login = () => {
-  const { toast } = useToast();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Setup test account on component mount
+  const [loading, setLoading] = useState(false);
+  const [searchParams] = useSearchParams();
+  
+  // Redirect if already authenticated
   useEffect(() => {
-    // For demo purposes only - this ensures the test account is always set up
-    // In a production app, this would be handled securely on the server
-    localStorage.setItem("testEmail", btoa("test@promogenie.co"));
-    localStorage.setItem("testPassword", btoa("prmgn2025*"));
-  }, []);
+    if (localStorage.getItem("isAuthenticated") === "true") {
+      navigate('/dashboard');
+    }
+  }, [navigate]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    setLoading(true);
 
-    // For demo purposes, we check for the test account
-    const testEmail = localStorage.getItem("testEmail") ? atob(localStorage.getItem("testEmail") || "") : "";
-    const testPassword = localStorage.getItem("testPassword") ? atob(localStorage.getItem("testPassword") || "") : "";
+    // Basic validation
+    if (!email || !password) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields.",
+        variant: "destructive"
+      });
+      setLoading(false);
+      return;
+    }
 
-    // Always allow the test account to login
-    if (email === "test@promogenie.co" && password === "prmgn2025*") {
-      // Set authentication state
+    // Retrieve test account from localStorage (encrypted in a real app)
+    const testEmail = atob(localStorage.getItem("testEmail") || "");
+    const testPassword = atob(localStorage.getItem("testPassword") || "");
+
+    // Simulate authentication (replace with real API call)
+    if (email === testEmail && password === testPassword) {
+      // On successful login
       localStorage.setItem("isAuthenticated", "true");
       
-      // If "remember me" is checked, store the user info
+      // Remember user if "remember me" is checked
       if (rememberMe) {
-        localStorage.setItem("rememberedUser", JSON.stringify({
-          email,
-          lastLogin: new Date().toISOString()
-        }));
+        localStorage.setItem("rememberedUser", JSON.stringify({ email }));
       } else {
         localStorage.removeItem("rememberedUser");
       }
       
-      // Redirect to dashboard
-      setTimeout(() => {
-        toast({
-          title: "Login successful",
-          description: "Welcome to PromoGenie Studio!",
-        });
-        navigate('/dashboard');
-      }, 1000);
+      // Redirect to the dashboard HTML
+      window.location.href = "/dashboard.html";
     } else {
-      // Regular failed login
-      setTimeout(() => {
-        setIsSubmitting(false);
-        toast({
-          title: "Login failed",
-          description: "Invalid email or password. Try the test account: test@promogenie.co / prmgn2025*",
-          variant: "destructive"
-        });
-      }, 1000);
+      toast({
+        title: "Error",
+        description: "Invalid credentials.",
+        variant: "destructive"
+      });
     }
+
+    setLoading(false);
   };
 
   return (
-    <>
-      <Helmet>
-        <title>Login - PromoGenie</title>
-      </Helmet>
-      
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        
-        <main className="flex-grow flex items-center justify-center py-24 px-4">
-          <div className="w-full max-w-md">
-            <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold">Welcome back</h1>
-              <p className="text-gray-600 mt-2">Log in to your PromoGenie account</p>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <Card className="w-full max-w-md p-4">
+        <CardHeader>
+          <CardTitle className="text-2xl text-center">Login</CardTitle>
+          <CardDescription className="text-center">Enter your credentials to access your account</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input 
+                type="email" 
+                id="email" 
+                placeholder="Enter your email" 
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
+                required 
+              />
             </div>
-            
-            <div className="bg-white rounded-xl shadow-lg p-8">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                    Email
-                  </label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="Your email address"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                      Password
-                    </label>
-                    <Link to="/forgot-password" className="text-sm text-promogenie-600 hover:text-promogenie-700">
-                      Forgot password?
-                    </Link>
-                  </div>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="Your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </div>
-                
-                <div className="flex items-center">
-                  <div className="flex items-center">
-                    <Checkbox 
-                      id="remember-me" 
-                      checked={rememberMe}
-                      onCheckedChange={(checked) => setRememberMe(checked as boolean)}
-                    />
-                    <label htmlFor="remember-me" className="ml-2 text-sm text-gray-600">
-                      Remember me
-                    </label>
-                  </div>
-                </div>
-                
-                <Button 
-                  type="submit" 
-                  className="w-full bg-promogenie-600 hover:bg-promogenie-700"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Logging in...' : 'Log In'}
-                </Button>
-              </form>
-              
-              <div className="mt-8 pt-6 border-t border-gray-100 text-center">
-                <p className="text-gray-600">
-                  Don't have an account?{' '}
-                  <Link to="/signup" className="text-promogenie-600 hover:text-promogenie-700 font-medium">
-                    Sign up
-                  </Link>
-                </p>
-                
-                <div className="mt-4 text-sm text-gray-500">
-                  <p>For demo purposes, you can use:</p>
-                  <p className="font-mono mt-1">test@promogenie.co / prmgn2025*</p>
-                </div>
-              </div>
+            <div>
+              <Label htmlFor="password">Password</Label>
+              <Input 
+                type="password" 
+                id="password" 
+                placeholder="Enter your password" 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)} 
+                required 
+              />
             </div>
-          </div>
-        </main>
-        
-        <Footer />
-      </div>
-    </>
+            <div className="flex items-center space-x-2">
+              <Input 
+                type="checkbox" 
+                id="remember" 
+                checked={rememberMe} 
+                onChange={(e) => setRememberMe(e.target.checked)} 
+              />
+              <Label htmlFor="remember" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed">
+                Remember me
+              </Label>
+            </div>
+            <Button disabled={loading} type="submit" className="w-full">
+              {loading ? "Logging in..." : "Login"}
+            </Button>
+          </form>
+        </CardContent>
+        <CardFooter className="text-sm text-muted-foreground">
+          Don't have an account? <a href="/signup" className="text-blue-500">Sign up</a>
+        </CardFooter>
+      </Card>
+    </div>
   );
 };
 
