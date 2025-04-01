@@ -26,15 +26,6 @@ const Navbar = () => {
     }
     setIsMenuOpen(false);
   };
-  
-  // Function to bypass login and go to dashboard
-  const handleBypassLogin = () => {
-    // Set authenticated flag in localStorage to bypass login check
-    localStorage.setItem("isAuthenticated", "true");
-    
-    // Navigate to dashboard HTML page
-    window.location.href = "/dashboard.html";
-  };
 
   return (
     <nav className="bg-white shadow-sm py-4 w-full z-50 fixed top-0">
@@ -67,12 +58,6 @@ const Navbar = () => {
           <Link to="/about" className="font-medium text-gray-700 hover:text-promogenie-600 transition-colors">
             About
           </Link>
-          <button
-            onClick={handleBypassLogin}
-            className="font-medium text-promogenie-600 hover:text-promogenie-700 transition-colors"
-          >
-            Test Dashboard
-          </button>
           <Link to="/login" className="px-4 py-2 text-promogenie-600 border border-promogenie-600 rounded-md font-medium hover:bg-promogenie-50 transition-colors">
             Login
           </Link>
@@ -112,12 +97,6 @@ const Navbar = () => {
             <Link to="/about" className="font-medium text-gray-700 hover:text-promogenie-600 transition-colors" onClick={toggleMenu}>
               About
             </Link>
-            <button
-              onClick={handleBypassLogin}
-              className="font-medium text-promogenie-600 hover:text-promogenie-700 transition-colors text-left"
-            >
-              Test Dashboard
-            </button>
             <div className="pt-4 flex flex-col space-y-3">
               <Link to="/login" className="w-full px-4 py-2 text-center text-promogenie-600 border border-promogenie-600 rounded-md font-medium hover:bg-promogenie-50 transition-colors" onClick={toggleMenu}>
                 Login
