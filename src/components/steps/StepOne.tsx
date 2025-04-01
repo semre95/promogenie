@@ -1,8 +1,6 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { ChevronRight, RefreshCw } from 'lucide-react';
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { ChevronRight, RefreshCw, Sparkles } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { 
   Select, 
@@ -135,10 +133,6 @@ const StepOne: React.FC<StepOneProps> = ({ onNext, initialData = {} }) => {
     });
   };
 
-  const getAspectRatioValue = (id: string) => {
-    return aspectRatios.find(ratio => ratio.id === id)?.value || 16/9;
-  };
-
   return (
     <div className="space-y-8">
       <div className="text-center">
@@ -238,35 +232,30 @@ const StepOne: React.FC<StepOneProps> = ({ onNext, initialData = {} }) => {
                 </SelectContent>
               </Select>
             </div>
-            
-            <div className="grid grid-cols-5 gap-3 mt-4">
-              {aspectRatios.map((ratio) => (
-                <button
-                  key={ratio.id}
-                  className={`p-2 rounded-lg border ${
-                    selectedAspectRatio === ratio.id 
-                      ? 'border-promogenie-600 bg-promogenie-50' 
-                      : 'border-gray-200 hover:border-promogenie-300'
-                  }`}
-                  onClick={() => setSelectedAspectRatio(ratio.id)}
-                >
-                  <div className="relative w-full mb-2">
-                    <AspectRatio 
-                      ratio={ratio.value} 
-                      className="bg-gray-100 rounded overflow-hidden"
-                    >
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">
-                        {ratio.id}
-                      </div>
-                    </AspectRatio>
-                  </div>
-                </button>
-              ))}
-            </div>
           </div>
           
           <div>
-            <h3 className="text-promogenie-700 text-xl font-semibold mb-3">Scene Description</h3>
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="text-promogenie-700 text-xl font-semibold">Scene Description</h3>
+              <Button 
+                className="bg-promogenie-600 hover:bg-promogenie-700 text-white px-6 py-6 h-auto"
+                onClick={handleGenerateImage}
+                disabled={isGenerating || !selectedInfluencer || uploadedImagePreviews.length === 0 || !promptText || !selectedAspectRatio}
+              >
+                {isGenerating ? (
+                  <>
+                    <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="mr-2 h-5 w-5" />
+                    Generate Image
+                    <span className="ml-1 text-xs bg-promogenie-700/60 px-2 py-1 rounded-full">15 wishes</span>
+                  </>
+                )}
+              </Button>
+            </div>
             <textarea 
               value={promptText}
               onChange={(e) => setPromptText(e.target.value)}
@@ -331,22 +320,7 @@ const StepOne: React.FC<StepOneProps> = ({ onNext, initialData = {} }) => {
       
       <div className="flex justify-between items-center pt-6 border-t border-gray-200">
         <div>
-          {!generatedImage ? (
-            <Button 
-              className="bg-promogenie-600 hover:bg-promogenie-700 text-white px-8"
-              onClick={handleGenerateImage}
-              disabled={isGenerating || !selectedInfluencer || uploadedImagePreviews.length === 0 || !promptText || !selectedAspectRatio}
-            >
-              {isGenerating ? (
-                <>
-                  <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                  Generating...
-                </>
-              ) : (
-                "Generate Image"
-              )}
-            </Button>
-          ) : (
+          {showRegenerate && (
             <Button 
               variant="outline"
               className="border-promogenie-300 text-promogenie-700"

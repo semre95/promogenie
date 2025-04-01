@@ -1,13 +1,32 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Switch } from '@/components/ui/switch';
 
 interface PricingSectionProps {
   hideHeading?: boolean;
 }
 
 const PricingSection = ({ hideHeading = false }: PricingSectionProps) => {
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'annually'>('monthly');
+  
+  // Pricing data with both monthly and annual options
+  const pricingData = {
+    starter: {
+      monthly: 19,
+      annually: Math.round(19 * 10) // 17% discount (approximately 10 months)
+    },
+    pro: {
+      monthly: 79,
+      annually: Math.round(79 * 10)
+    },
+    team: {
+      monthly: 199,
+      annually: Math.round(199 * 10)
+    }
+  };
+  
   return (
     <section className="py-16 md:py-24 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -19,6 +38,18 @@ const PricingSection = ({ hideHeading = false }: PricingSectionProps) => {
             </p>
           </div>
         )}
+        
+        {/* Billing toggle */}
+        <div className="flex items-center justify-center gap-4 mb-12">
+          <span className={`text-sm font-medium ${billingCycle === 'monthly' ? 'text-promogenie-600' : 'text-gray-500'}`}>Monthly</span>
+          <Switch 
+            checked={billingCycle === 'annually'} 
+            onCheckedChange={() => setBillingCycle(billingCycle === 'monthly' ? 'annually' : 'monthly')}
+          />
+          <span className={`text-sm font-medium ${billingCycle === 'annually' ? 'text-promogenie-600' : 'text-gray-500'}`}>
+            Annually <span className="text-green-600 text-xs ml-1 font-semibold">(Save 17%)</span>
+          </span>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
           {/* Starter Plan */}
@@ -27,8 +58,8 @@ const PricingSection = ({ hideHeading = false }: PricingSectionProps) => {
               <p className="text-sm text-center uppercase font-medium text-gray-500 mb-2">For Small Businesses & Freelancers</p>
               <h3 className="text-xl font-bold mb-2 text-center">Starter</h3>
               <div className="flex items-end justify-center gap-1 mb-4">
-                <span className="text-4xl font-bold">$19</span>
-                <span className="text-gray-500">/mo</span>
+                <span className="text-4xl font-bold">${billingCycle === 'monthly' ? pricingData.starter.monthly : pricingData.starter.annually}</span>
+                <span className="text-gray-500">/{billingCycle === 'monthly' ? 'mo' : 'year'}</span>
               </div>
               <p className="text-gray-600 text-center text-sm">Perfect for those who just begin their journey.</p>
             </div>
@@ -73,8 +104,8 @@ const PricingSection = ({ hideHeading = false }: PricingSectionProps) => {
               <p className="text-sm text-center uppercase font-medium text-gray-500 mb-2">For Boutique Agencies & Startup Brands</p>
               <h3 className="text-xl font-bold mb-2 text-center">Pro</h3>
               <div className="flex items-end justify-center gap-1 mb-4">
-                <span className="text-4xl font-bold">$79</span>
-                <span className="text-gray-500">/mo</span>
+                <span className="text-4xl font-bold">${billingCycle === 'monthly' ? pricingData.pro.monthly : pricingData.pro.annually}</span>
+                <span className="text-gray-500">/{billingCycle === 'monthly' ? 'mo' : 'year'}</span>
               </div>
               <p className="text-gray-600 text-center text-sm">Designed for marketers aiming for more flexibility and options.</p>
             </div>
@@ -116,8 +147,8 @@ const PricingSection = ({ hideHeading = false }: PricingSectionProps) => {
               <p className="text-sm text-center uppercase font-medium text-gray-500 mb-2">For Creative Agencies & E-commerce Brands</p>
               <h3 className="text-xl font-bold mb-2 text-center">Team</h3>
               <div className="flex items-end justify-center gap-1 mb-4">
-                <span className="text-4xl font-bold">$199</span>
-                <span className="text-gray-500">/mo</span>
+                <span className="text-4xl font-bold">${billingCycle === 'monthly' ? pricingData.team.monthly : pricingData.team.annually}</span>
+                <span className="text-gray-500">/{billingCycle === 'monthly' ? 'mo' : 'year'}</span>
               </div>
               <p className="text-gray-600 text-center text-sm">Ideal for teams with regular advertising needs.</p>
             </div>
