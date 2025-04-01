@@ -18,22 +18,20 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="pt-16 flex-grow"> {/* Added flex-grow to ensure content takes available space */}
-        <main>
-          <Hero />
-          <FeatureSection />
-          <DemoSection />
-          <HowItWorksSection />
-          <VirtualInfluencersSection />
-          <CompetitiveEdgeSection />
-          <PricingSection />
-          <TestimonialSection />
-          <CTASection />
-          <FAQSection />
-          <NewsletterSection />
-        </main>
-        <Footer />
-      </div>
+      <main className="flex-grow">
+        <Hero />
+        <FeatureSection />
+        <DemoSection />
+        <HowItWorksSection />
+        <VirtualInfluencersSection />
+        <CompetitiveEdgeSection />
+        <PricingSection />
+        <TestimonialSection />
+        <CTASection />
+        <FAQSection />
+        <NewsletterSection />
+      </main>
+      <Footer />
     </div>
   );
 };

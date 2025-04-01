@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -165,138 +166,6 @@
     .mobile-menu.active {
       display: block;
     }
-
-    /* Auth Modal */
-    .auth-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      overflow-y: auto;
-    }
-
-    .auth-modal.active {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .auth-modal-content {
-      background-color: white;
-      border-radius: 12px;
-      width: 100%;
-      max-width: 500px;
-      margin: 20px;
-      animation: modal-appear 0.3s ease-out forwards;
-    }
-
-    @keyframes modal-appear {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .password-field {
-      position: relative;
-    }
-
-    .password-toggle {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      color: #6b7280;
-    }
-
-    .auth-divider {
-      display: flex;
-      align-items: center;
-      text-align: center;
-      margin: 24px 0;
-    }
-
-    .auth-divider::before,
-    .auth-divider::after {
-      content: '';
-      flex: 1;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .auth-divider span {
-      padding: 0 10px;
-      color: #6b7280;
-      font-size: 14px;
-    }
-
-    .social-login-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      padding: 8px 16px;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      font-weight: 500;
-      transition: background-color 0.2s;
-    }
-
-    .social-login-button:hover {
-      background-color: #f9fafb;
-    }
-
-    .auth-toast {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 16px;
-      border-radius: 8px;
-      background-color: white;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      z-index: 2000;
-      display: flex;
-      align-items: center;
-      transform: translateX(120%);
-      transition: transform 0.3s ease-in-out;
-    }
-
-    .auth-toast.show {
-      transform: translateX(0);
-    }
-
-    .password-strength {
-      margin-top: 8px;
-      display: none;
-    }
-
-    .strength-bar {
-      height: 4px;
-      border-radius: 2px;
-      background-color: #e5e7eb;
-      margin-right: 4px;
-      transition: background-color 0.3s;
-    }
-
-    .strength-bar.weak {
-      background-color: #ef4444;
-    }
-
-    .strength-bar.medium {
-      background-color: #f59e0b;
-    }
-
-    .strength-bar.strong {
-      background-color: #10b981;
-    }
   </style>
 </head>
 <body>
@@ -320,10 +189,10 @@
         </div>
         
         <div class="hidden md:flex items-center space-x-4">
-          <button id="loginButton" class="text-gray-600 hover:text-purple-700 px-3 py-2 rounded-md">Login</button>
-          <button id="signupButton" class="bg-purple-700 text-white hover:bg-purple-800 px-4 py-2 rounded-md button-shine">
+          <a href="/login" class="text-gray-600 hover:text-purple-700 px-3 py-2 rounded-md">Login</a>
+          <a href="#" class="bg-purple-700 text-white hover:bg-purple-800 px-4 py-2 rounded-md button-shine">
             Get Started
-          </button>
+          </a>
         </div>
         
         <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
@@ -342,558 +211,976 @@
           <a href="#testimonials" class="text-gray-600 hover:text-purple-700 py-2">Testimonials</a>
           <a href="#faq" class="text-gray-600 hover:text-purple-700 py-2">FAQ</a>
           <hr class="my-2">
-          <button id="mobileLoginButton" class="text-gray-600 hover:text-purple-700 py-2 text-left">Login</button>
-          <button id="mobileSignupButton" class="bg-purple-700 text-white hover:bg-purple-800 px-4 py-2 rounded-md text-center">
+          <a href="/login" class="text-gray-600 hover:text-purple-700 py-2">Login</a>
+          <a href="#" class="bg-purple-700 text-white hover:bg-purple-800 px-4 py-2 rounded-md text-center">
             Get Started
-          </button>
+          </a>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- Login Modal -->
-  <div id="loginModal" class="auth-modal">
-    <div class="auth-modal-content">
-      <div class="p-6 sm:p-8">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold font-display">Welcome back</h2>
-          <button class="close-modal text-gray-500 hover:text-gray-700">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        <p class="text-gray-600 mb-6">Sign in to continue to PromoGenie</p>
-
-        <form id="loginForm" class="space-y-4">
-          <div>
-            <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
-            <input 
-              type="email" 
-              id="loginEmail" 
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" 
-              placeholder="you@example.com" 
-              required
-            >
-          </div>
-          
-          <div>
-            <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <div class="password-field">
-              <input 
-                type="password" 
-                id="loginPassword" 
-                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" 
-                placeholder="••••••••" 
-                required
-              >
-              <button type="button" class="password-toggle" onclick="togglePasswordVisibility('loginPassword', 'loginPasswordToggle')">
-                <svg xmlns="http://www.w3.org/2000/svg" id="loginPasswordToggle" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+  <!-- Hero Section -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-center">
+          <div class="md:w-1/2 mb-10 md:mb-0 md:pr-12">
+            <div class="badge-pill mb-4">
+              <span>AI-Powered Influencer Videos</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight text-purple-700">
+              AI-Generated<br>Product Ads in<br>Seconds
+            </h1>
+            <p class="text-lg mb-8 text-gray-700">
+              Upload a photo, get professional ads featuring virtual influencers promoting your product on TikTok, Instagram & YouTube.
+            </p>
+            <div class="flex flex-wrap gap-4">
+              <a href="#" class="bg-purple-700 text-white px-6 py-3 rounded-lg font-medium button-shine inline-flex items-center">
+                Get Started Free
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                 </svg>
-              </button>
+              </a>
+              <a href="#features" class="border-2 border-purple-700 text-purple-700 hover:bg-purple-50 px-6 py-3 rounded-lg font-medium">
+                See Features
+              </a>
             </div>
-          </div>
-          
-          <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <input id="rememberMe" type="checkbox" class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
-              <label for="rememberMe" class="ml-2 block text-sm text-gray-700">
-                Remember me
-              </label>
-            </div>
-            <a href="#" class="text-sm font-medium text-purple-600 hover:text-purple-500">Forgot password?</a>
-          </div>
-
-          <button 
-            type="submit" 
-            class="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 font-medium button-shine"
-          >
-            Sign in
-          </button>
-        </form>
-
-        <div class="auth-divider">
-          <span>or continue with</span>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <button class="social-login-button">
-            <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-            </svg>
-            Google
-          </button>
-          <button class="social-login-button">
-            <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
-            </svg>
-            Facebook
-          </button>
-        </div>
-
-        <div class="mt-6 text-center">
-          <p class="text-sm text-gray-600">
-            Don't have an account?
-            <button id="switchToSignup" class="font-medium text-purple-600 hover:text-purple-500">Sign up</button>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Signup Modal -->
-  <div id="signupModal" class="auth-modal">
-    <div class="auth-modal-content">
-      <div class="p-6 sm:p-8">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold font-display">Create your account</h2>
-          <button class="close-modal text-gray-500 hover:text-gray-700">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-        
-        <p class="text-gray-600 mb-6">Start your 7-day free trial today</p>
-        
-        <form id="signupForm" class="space-y-4">
-          <div>
-            <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Full name</label>
-            <input 
-              type="text" 
-              id="fullName" 
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" 
-              placeholder="John Doe" 
-              required
-            >
-          </div>
-          
-          <div>
-            <label for="signupEmail" class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
-            <input 
-              type="email" 
-              id="signupEmail" 
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" 
-              placeholder="you@example.com" 
-              required
-            >
-          </div>
-          
-          <div>
-            <label for="companyName" class="block text-sm font-medium text-gray-700 mb-1">Company name (optional)</label>
-            <input 
-              type="text" 
-              id="companyName" 
-              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" 
-              placeholder="Your Company Ltd."
-            >
-          </div>
-          
-          <div>
-            <label for="signupPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <div class="password-field">
-              <input 
-                type="password" 
-                id="signupPassword" 
-                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" 
-                placeholder="••••••••" 
-                required
-                oninput="checkPasswordStrength(this.value)"
-              >
-              <button type="button" class="password-toggle" onclick="togglePasswordVisibility('signupPassword', 'signupPasswordToggle')">
-                <svg xmlns="http://www.w3.org/2000/svg" id="signupPasswordToggle" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-              </button>
-            </div>
-            
-            <div id="passwordStrength" class="mt-2" style="display:none;">
-              <div class="flex items-center justify-between mb-1">
-                <div class="flex-grow space-x-1 flex">
-                  <div class="inline-block h-1.5 w-1/5 rounded-full bg-gray-200" id="bar1"></div>
-                  <div class="inline-block h-1.5 w-1/5 rounded-full bg-gray-200" id="bar2"></div>
-                  <div class="inline-block h-1.5 w-1/5 rounded-full bg-gray-200" id="bar3"></div>
-                  <div class="inline-block h-1.5 w-1/5 rounded-full bg-gray-200" id="bar4"></div>
-                  <div class="inline-block h-1.5 w-1/5 rounded-full bg-gray-200" id="bar5"></div>
-                </div>
-                <span class="text-xs font-medium ml-2" id="strengthText"></span>
+            <div class="mt-8 flex items-center">
+              <div class="flex -space-x-2">
+                <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="User" class="h-8 w-8 rounded-full border-2 border-white">
+                <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="User" class="h-8 w-8 rounded-full border-2 border-white">
+                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User" class="h-8 w-8 rounded-full border-2 border-white">
               </div>
-              <p class="text-xs text-gray-500">
-                Use 8+ characters with a mix of uppercase, lowercase, numbers & symbols
-              </p>
+              <span class="ml-2 text-sm text-purple-700 font-medium">+1.5k</span>
+              <span class="ml-2 text-sm text-gray-600">Join thousands of customers using PromoGenie</span>
+            </div>
+          </div>
+          <div class="md:w-1/2">
+            <div class="rounded-2xl shadow-xl overflow-hidden">
+              <img src="public/lovable-uploads/870b0575-c3de-4c28-b5a6-637de4c614bc.png" alt="PromoGenie Dashboard" class="w-full">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trusted By Section -->
+  <section class="py-12 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-5xl mx-auto text-center">
+        <h2 class="text-xl md:text-2xl font-medium text-gray-500 uppercase tracking-wider mb-10">
+          Trusted by innovative brands
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+          <div class="flex items-center justify-center">
+            <div class="text-xl font-bold text-gray-400">ACME</div>
+          </div>
+          <div class="flex items-center justify-center">
+            <div class="text-xl font-bold text-gray-400">NexTech</div>
+          </div>
+          <div class="flex items-center justify-center">
+            <div class="text-xl font-bold text-gray-400">EcoStyle</div>
+          </div>
+          <div class="flex items-center justify-center">
+            <div class="text-xl font-bold text-gray-400">FitLife</div>
+          </div>
+          <div class="flex items-center justify-center">
+            <div class="text-xl font-bold text-gray-400">GlobeX</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Future of Marketing Section -->
+  <section id="features" class="py-16 md:py-24 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">
+          The Future of <span class="text-purple-600">Influencer Marketing</span>
+        </h2>
+        <p class="text-xl text-gray-600">
+          Why spend thousands on influencers when AI can create personalized, high-converting videos for you instantly?
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+        <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Upload Product Photos</h3>
+          <p class="text-gray-600">Start with any product photo. Our AI enhances it and places it in diverse contexts with virtual influencers.</p>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Choose Aspect Ratio</h3>
+          <p class="text-gray-600">Select the perfect format for your platform: square (1:1), portrait (3:4, 9:16), or landscape (16:9, 4:3).</p>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">AI Influencer Selection</h3>
+          <p class="text-gray-600">Choose from our diverse range of AI influencers matched to your product's category and target audience.</p>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Custom Prompting</h3>
+          <p class="text-gray-600">Describe the exact setting, mood, and context you want for your product promotion.</p>
+        </div>
+        
+        <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Video Generation</h3>
+          <p class="text-gray-600">Transform static images into engaging 6 or 12-second videos with your chosen influencer.</p>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Voice Selection</h3>
+          <p class="text-gray-600">Choose the perfect voice for your ad from our library of professional voiceovers.</p>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Script Creation</h3>
+          <p class="text-gray-600">Write custom ad scripts that your AI influencer will deliver naturally with perfect lip sync.</p>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-2">Easy Exporting</h3>
+          <p class="text-gray-600">Download your videos in formats optimized for TikTok, Instagram, YouTube, and other platforms.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo Section -->
+  <section id="demo" class="py-16 md:py-24 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-5xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">
+          See the Magic in Action
+        </h2>
+        <p class="text-xl text-gray-600 mb-12">
+          Watch how our AI transforms everyday product photos into professional marketing assets
+        </p>
+        
+        <div class="relative aspect-video bg-purple-800 rounded-xl overflow-hidden shadow-xl mb-12">
+          <div class="absolute inset-0 flex items-center justify-center">
+            <button id="playDemoButton" class="w-16 h-16 rounded-full bg-white bg-opacity-20 flex items-center justify-center hover:bg-opacity-30 transition-all">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+          <div class="absolute bottom-4 left-4 text-white">
+            <div class="text-sm font-medium">PromoGenie Demo</div>
+            <div class="text-xl font-bold">Transform Any Photo Into Ad Magic</div>
+          </div>
+        </div>
+        
+        <a href="#features" class="inline-flex items-center bg-purple-700 text-white px-6 py-3 rounded-lg font-medium button-shine mx-auto">
+          See All Features
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section id="how-it-works" class="py-16 md:py-24 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-5xl mx-auto text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">
+          How It Works
+        </h2>
+        <p class="text-xl text-purple-600 font-medium">
+          Simple As 1-2-3
+        </p>
+      </div>
+      
+      <div class="max-w-5xl mx-auto">
+        <div class="grid md:grid-cols-3 gap-8 relative">
+          <!-- Connection lines (only visible on md and up) -->
+          <div class="hidden md:block absolute top-16 left-[25%] right-[25%] h-0.5 bg-gray-200 z-0"></div>
+          
+          <!-- Step 1 -->
+          <div class="relative z-10 flex flex-col items-center text-center">
+            <div class="w-12 h-12 rounded-full bg-purple-600 text-white flex items-center justify-center text-xl font-bold mb-6">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Upload Your Product Photo</h3>
+            <p class="text-gray-600">
+              Simply upload a photo of your product. Our AI will analyze it and understand key features automatically.
+            </p>
+          </div>
+          
+          <!-- Step 2 -->
+          <div class="relative z-10 flex flex-col items-center text-center">
+            <div class="w-12 h-12 rounded-full bg-purple-600 text-white flex items-center justify-center text-xl font-bold mb-6">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Customize Your Ad</h3>
+            <p class="text-gray-600">
+              Choose from our virtual influencers, select a style (enthusiastic, professional, quirky), and adjust key messaging.
+            </p>
+          </div>
+          
+          <!-- Step 3 -->
+          <div class="relative z-10 flex flex-col items-center text-center">
+            <div class="w-12 h-12 rounded-full bg-purple-600 text-white flex items-center justify-center text-xl font-bold mb-6">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Download & Share</h3>
+            <p class="text-gray-600">
+              Get your professionally edited video ad with voiceover, captioning, and platform-optimized formatting ready to post.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Virtual Influencers Section -->
+  <section id="influencers" class="py-16 md:py-24 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-5xl mx-auto text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">
+          Meet Our <span class="text-purple-600">Virtual Influencers</span>
+        </h2>
+        <p class="text-xl text-gray-600">
+          AI-generated personalities with authentic human-like appearances and voices.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <!-- Influencer 1 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all">
+          <div class="relative">
+            <img src="public/lovable-uploads/e3c72713-65f3-488b-a55a-1b1f8c722d7b.png" alt="@TechyTyler" class="w-full h-56 object-cover">
+            <div class="ai-influencer-tag">AI INFLUENCER</div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold">@TechyTyler</h3>
+            <p class="text-purple-600 font-medium mb-3">Gadget Guru</p>
+            <p class="text-gray-600 mb-4">
+              Perfect for tech products, electronics, and innovative gadgets. Tyler delivers enthusiastic yet credible reviews.
+            </p>
+            <a href="#" class="text-purple-600 font-medium hover:text-purple-800 inline-flex items-center">
+              See Ad
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Influencer 2 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all">
+          <div class="relative">
+            <img src="public/lovable-uploads/5caf7cea-7582-4fd2-b1b0-c957990450e5.png" alt="@LuxeLena" class="w-full h-56 object-cover">
+            <div class="ai-influencer-tag">AI INFLUENCER</div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold">@LuxeLena</h3>
+            <p class="text-purple-600 font-medium mb-3">Lifestyle Expert</p>
+            <p class="text-gray-600 mb-4">
+              Ideal for beauty, fashion, and premium products. Lena brings elegance and sophistication to every ad.
+            </p>
+            <a href="#" class="text-purple-600 font-medium hover:text-purple-800 inline-flex items-center">
+              See Ad
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Influencer 3 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all">
+          <div class="relative">
+            <img src="public/lovable-uploads/7067dbc2-20b4-4f85-9ec1-2acf01dcac42.png" alt="@FitnessMax" class="w-full h-56 object-cover">
+            <div class="ai-influencer-tag">AI INFLUENCER</div>
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-bold">@FitnessMax</h3>
+            <p class="text-purple-600 font-medium mb-3">Wellness Coach</p>
+            <p class="text-gray-600 mb-4">
+              The go-to for health, fitness, and supplement products. Max builds trust with his energetic, motivational style.
+            </p>
+            <a href="#" class="text-purple-600 font-medium hover:text-purple-800 inline-flex items-center">
+              See Ad
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Competitive Edge Section -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col lg:flex-row lg:items-center">
+          <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">
+              Competitive Edge
+            </h2>
+            <p class="text-xl text-gray-600 mb-8">
+              Watch how we transformed this smartwatch photo into a high-converting ad in just 47 seconds.
+            </p>
+            
+            <div class="space-y-8">
+              <!-- Stat 1 -->
+              <div class="flex items-start">
+                <div class="stat-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-2xl font-bold text-purple-600 mb-1">3X Higher CTR</h3>
+                  <p class="text-gray-600">Than traditional influencer content</p>
+                </div>
+              </div>
+              
+              <!-- Stat 2 -->
+              <div class="flex items-start">
+                <div class="stat-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-2xl font-bold text-purple-600 mb-1">10X Cost Reduction</h3>
+                  <p class="text-gray-600">Compared to human influencers</p>
+                </div>
+              </div>
+              
+              <!-- Stat 3 -->
+              <div class="flex items-start">
+                <div class="stat-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-2xl font-bold text-purple-600 mb-1">Under 1 Minute</h3>
+                  <p class="text-gray-600">From upload to finished ad</p>
+                </div>
+              </div>
             </div>
           </div>
           
-          <div class="flex items-start">
-            <div class="flex items-center h-5">
-              <input
-                id="termsAgree"
-                type="checkbox"
-                class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
-                required
-              >
+          <div class="lg:w-1/2">
+            <div class="bg-gray-50 rounded-2xl p-8 flex items-center justify-center">
+              <div class="text-center">
+                <div class="mb-4 text-gray-500">Video Demo Placeholder</div>
+                <button class="w-16 h-16 rounded-full bg-purple-600 text-white flex items-center justify-center mx-auto hover:bg-purple-700 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+              </div>
             </div>
-            <div class="ml-3 text-sm">
-              <label for="termsAgree" class="text-gray-700">
-                I agree to the <a href="/terms" class="text-purple-600 hover:text-purple-500">Terms of Service</a> and <a href="/privacy" class="text-purple-600 hover:text-purple-500">Privacy Policy</a>
-              </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="py-16 md:py-24 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">
+          Simple, Transparent Pricing
+        </h2>
+        <p class="text-xl text-gray-600">
+          Choose the plan that best suits your needs. No hidden fees, cancel anytime.
+        </p>
+      </div>
+      
+      <!-- Pricing Toggle -->
+      <div class="flex justify-center items-center gap-3 mb-12">
+        <span class="text-purple-600 font-medium">Monthly</span>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="pricingToggle" value="" class="sr-only peer">
+          <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+        </label>
+        <span class="text-gray-600 font-medium">Annually <span class="text-green-500">(Save 17%)</span></span>
+      </div>
+      
+      <!-- Pricing Cards -->
+      <div class="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+        <!-- Starter Plan -->
+        <div class="pricing-card bg-white">
+          <div class="text-gray-500 uppercase font-medium text-sm mb-3">FOR SMALL BUSINESSES & FREELANCERS</div>
+          <h3 class="text-2xl font-bold mb-1">Starter</h3>
+          <div class="text-4xl font-bold mb-2">$19<span class="text-base font-normal text-gray-500">/mo</span></div>
+          <p class="text-gray-600 mb-6">Perfect for those who just begin their journey.</p>
+          
+          <div class="border-t border-gray-100 pt-6 mb-6">
+            <div class="text-xl font-bold mb-4">10<span class="text-base font-normal text-gray-500"> Wishes per month</span></div>
+            <ul class="space-y-3">
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span>3 AI influencers</span>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span>720p video quality</span>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span>6 second videos</span>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span>Email support</span>
+              </li>
+            </ul>
+          </div>
+          
+          <a href="#" class="block w-full py-3 border border-purple-600 text-purple-600 text-center rounded-lg font-medium hover:bg-purple-50 transition-colors">
+            Get Started
+          </a>
+        </div>
+        
+        <!-- Pro Plan -->
+        <div class="pricing-card bg-white highlight-card">
+          <div class="best-value-badge">BEST VALUE</div>
+          <div class="text-gray-500 uppercase font-medium text-sm mb-3">FOR BOUTIQUE AGENCIES & STARTUP BRANDS</div>
+          <h3 class="text-2xl font-bold mb-1">Pro</h3>
+          <div class="text-4xl font-bold mb-2">$79<span class="text-base font-normal text-gray-500">/mo</span></div>
+          <p class="text-gray-600 mb-6">Designed for marketers aiming for more flexibility and options.</p>
+          
+          <div class="border-t border-gray-100 pt-6 mb-6">
+            <div class="text-xl font-bold mb-4">50<span class="text-base font-normal text-gray-500"> Wishes per month</span></div>
+            <ul class="space-y-3">
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span>All 8 AI influencers</span>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span>1080p HD video quality</span>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span>12 second videos</span>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span>Priority support</span>
+              </li>
+            </ul>
+          </div>
+          
+          <a href="#" class="block w-full py-3 bg-purple-600 text-white text-center rounded-lg font-medium hover:bg-purple-700 transition-colors button-shine">
+            Get Started
+          </a>
+        </div>
+        
+        <!-- Team Plan -->
+        <div class="pricing-card bg-white">
+          <div class="text-gray-500 uppercase font-medium text-sm mb-3">FOR CREATIVE AGENCIES & E-COMMERCE BRANDS</div>
+          <h3 class="text-2xl font-bold mb-1">Team</h3>
+          <div class="text-4xl font-bold mb-2">$199<span class="text-base font-normal text-gray-500">/mo</span></div>
+          <p class="text-gray-600 mb-6">Ideal for teams with regular advertising needs.</p>
+          
+          <div class="border-t border-gray-100 pt-6 mb-6">
+            <div class="text-xl font-bold mb-4">150<span class="text-base font-normal text-gray-500"> Wishes per month</span></div>
+            <ul class="space-y-3">
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span>Custom AI influencer creation</span>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span>4K Ultra HD video quality</span>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span>12 second videos with post-processing</span>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span>Dedicated account manager</span>
+              </li>
+            </ul>
+          </div>
+          
+          <a href="#" class="block w-full py-3 border border-purple-600 text-purple-600 text-center rounded-lg font-medium hover:bg-purple-50 transition-colors">
+            Get Started
+          </a>
+        </div>
+        
+        <!-- Enterprise Plan -->
+        <div class="pricing-card bg-white">
+          <div class="text-gray-500 uppercase font-medium text-sm mb-3">FOR LARGE-SCALE AD GENERATION NEEDS</div>
+          <h3 class="text-2xl font-bold mb-1">Enterprise</h3>
+          <div class="text-2xl font-bold mb-2">Let's Talk</div>
+          <p class="text-gray-600 mb-6">Tell us what you need, and we'll tailor our solutions.</p>
+          
+          <div class="border-t border-gray-100 pt-6 mb-6">
+            <div class="text-xl font-bold mb-4">As Many As You Need</div>
+            <ul class="space-y-3">
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span>Custom AI influencer creation</span>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span>4K Ultra HD video quality</span>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span>12 second videos with post-processing</span>
+              </li>
+              <li class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span>Dedicated account manager</span>
+              </li>
+            </ul>
+          </div>
+          
+          <a href="#" class="block w-full py-3 bg-gray-800 text-white text-center rounded-lg font-medium hover:bg-gray-900 transition-colors">
+            Contact Sales
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="py-16 md:py-24 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">
+          What <span class="text-purple-600">Our Customers</span> Say
+        </h2>
+        <p class="text-xl text-gray-600">
+          Join thousands of businesses transforming their marketing with PromoGenie
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <!-- Testimonial 1 -->
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all">
+          <div class="mb-6 text-purple-300 text-4xl font-serif">"</div>
+          <p class="text-gray-700 mb-6">
+            PromoGenie revolutionized our marketing workflow. We've cut our content creation time by 80% while producing more engaging ads than ever before.
+          </p>
+          <div class="flex items-center">
+            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Sarah J." class="w-12 h-12 rounded-full mr-4">
+            <div>
+              <h4 class="font-bold">Sarah J.</h4>
+              <p class="text-gray-600 text-sm">Marketing Director</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Testimonial 2 -->
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all">
+          <div class="mb-6 text-purple-300 text-4xl font-serif">"</div>
+          <p class="text-gray-700 mb-6">
+            As a small business owner, I couldn't afford professional photoshoots. PromoGenie lets me create studio-quality product images that convert much better than my amateur photos.
+          </p>
+          <div class="flex items-center">
+            <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Mark L." class="w-12 h-12 rounded-full mr-4">
+            <div>
+              <h4 class="font-bold">Mark L.</h4>
+              <p class="text-gray-600 text-sm">Founder</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Testimonial 3 -->
+        <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all">
+          <div class="mb-6 text-purple-300 text-4xl font-serif">"</div>
+          <p class="text-gray-700 mb-6">
+            The AI influencer videos are incredible. Our engagement rates jumped 35% when we started using them in our social media campaigns. Worth every penny!
+          </p>
+          <div class="flex items-center">
+            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Tiffany H." class="w-12 h-12 rounded-full mr-4">
+            <div>
+              <h4 class="font-bold">Tiffany H.</h4>
+              <p class="text-gray-600 text-sm">Social Media Manager</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex items-center justify-center mt-12">
+        <div class="flex -space-x-2">
+          <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="User" class="h-8 w-8 rounded-full border-2 border-white">
+          <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="User" class="h-8 w-8 rounded-full border-2 border-white">
+          <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User" class="h-8 w-8 rounded-full border-2 border-white">
+          <span class="flex items-center justify-center h-8 w-8 rounded-full bg-purple-100 text-purple-700 text-xs border-2 border-white">+5k</span>
+        </div>
+        <span class="ml-4 text-gray-600">Trusted by 5,000+ businesses worldwide</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 md:py-24 hero-gradient text-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">
+          Ready to Revolutionize Your Advertising?
+        </h2>
+        <p class="text-xl mb-8">
+          Try PromoGenie risk-free with our 7-day money-back guarantee. Create your first ad in under a minute.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="#" class="px-8 py-3 bg-white text-purple-600 rounded-lg font-medium text-lg hover:bg-gray-100 transition-colors shadow-lg button-shine flex items-center justify-center">
+            <span>Start Free Trial</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </a>
+          <a href="#demo" class="px-8 py-3 border border-white text-white rounded-lg font-medium text-lg hover:bg-purple-600 transition-colors flex items-center justify-center">
+            <span>See Live Demo</span>
+          </a>
+        </div>
+        <p class="mt-6 text-sm text-purple-200">
+          No credit card required • 7-day free trial • Cancel anytime
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-16 md:py-24 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">
+          Frequently Asked Questions
+        </h2>
+        
+        <div class="space-y-4">
+          <!-- FAQ Item 1 -->
+          <div class="accordion-item">
+            <button class="accordion-button" data-target="faq1">
+              <span>How realistic are the virtual influencers?</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform accordion-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div id="faq1" class="accordion-content active">
+              <p>Our virtual influencers are generated using cutting-edge AI that combines realistic facial animation with natural voice synthesis. The result is indistinguishable from human influencers in video format. They have consistent personalities and styles that audiences connect with, despite being AI-generated.</p>
             </div>
           </div>
           
-          <div class="flex items-start">
-            <div class="flex items-center h-5">
-              <input
-                id="marketingConsent"
-                type="checkbox"
-                class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
-              >
-            </div>
-            <div class="ml-3 text-sm">
-              <label for="marketingConsent" class="text-gray-700">
-                I'd like to receive product updates and marketing communications from PromoGenie
-              </label>
+          <!-- FAQ Item 2 -->
+          <div class="accordion-item">
+            <button class="accordion-button" data-target="faq2">
+              <span>Can I customize the script and voice tones?</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform accordion-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div id="faq2" class="accordion-content">
+              <p>Yes, you have full control over the script content and can select from a variety of voice tones for each AI influencer. You can choose voices that match the personality of the influencer and the mood of your marketing campaign, from enthusiastic and energetic to professional and trustworthy.</p>
             </div>
           </div>
           
-          <button
-            type="submit"
-            class="w-full py-2 px-4 bg-purple-600 text-white font-medium rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors button-shine"
-          >
-            Create account
+          <!-- FAQ Item 3 -->
+          <div class="accordion-item">
+            <button class="accordion-button" data-target="faq3">
+              <span>What platforms are the ads optimized for?</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform accordion-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div id="faq3" class="accordion-content">
+              <p>Our ads are optimized for all major social media platforms including TikTok, Instagram (Reels and Stories), YouTube (including Shorts), Facebook, and Twitter. You can select the appropriate aspect ratio and format for each platform when creating your ads.</p>
+            </div>
+          </div>
+          
+          <!-- FAQ Item 4 -->
+          <div class="accordion-item">
+            <button class="accordion-button" data-target="faq4">
+              <span>How does the pricing compare to human influencers?</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform accordion-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div id="faq4" class="accordion-content">
+              <p>PromoGenie typically costs 90% less than working with human influencers of comparable reach. While a mid-tier human influencer might charge $1,000+ per post, you can create dozens of AI influencer videos for a fraction of that cost with our subscription plans.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="text-center mt-12">
+          <p class="text-gray-600 mb-4">Still have questions?</p>
+          <a href="#" class="text-purple-600 font-medium hover:text-purple-800">Contact our team</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="py-16 md:py-24 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-4">
+          Subscribe to Our Newsletter
+        </h2>
+        <p class="text-gray-600 mb-8">
+          Stay updated with the latest AI marketing trends, tips, and insights delivered directly to your inbox.
+        </p>
+        <form class="space-y-4">
+          <div>
+            <input type="email" placeholder="Your email address" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent">
+          </div>
+          <button type="submit" class="w-full bg-purple-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-purple-700 transition-colors">
+            Subscribe
           </button>
         </form>
-        
-        <div class="auth-divider">
-          <span>or continue with</span>
-        </div>
-        
-        <div class="grid grid-cols-2 gap-3">
-          <button class="social-login-button">
-            <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-            </svg>
-            Google
-          </button>
-          <button class="social-login-button">
-            <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
-            </svg>
-            Facebook
-          </button>
-        </div>
-        
-        <div class="mt-6 text-center">
-          <p class="text-sm text-gray-600">
-            Already have an account?
-            <button id="switchToLogin" class="font-medium text-purple-600 hover:text-purple-500">Sign in</button>
+        <p class="text-sm text-gray-500 mt-4">
+          We respect your privacy. Unsubscribe at any time.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white pt-16 pb-8 border-t border-gray-100">
+    <div class="container mx-auto px-4">
+      <div class="grid md:grid-cols-4 gap-8 mb-12">
+        <div>
+          <div class="flex items-center mb-4">
+            <div class="w-8 h-8 bg-purple-700 text-white rounded-md flex items-center justify-center mr-2">P</div>
+            <span class="text-xl font-bold text-gray-800">PromoGenie</span>
+          </div>
+          <p class="text-gray-600 mb-4">
+            AI-powered marketing assets for modern businesses. Create stunning product photos, videos, and social media content in seconds.
           </p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-purple-600">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-purple-600">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+                <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/>
+              </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-purple-600">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-bold mb-4">Product</h3>
+          <ul class="space-y-3">
+            <li><a href="#features" class="text-gray-600 hover:text-purple-600">Features</a></li>
+            <li><a href="#pricing" class="text-gray-600 hover:text-purple-600">Pricing</a></li>
+            <li><a href="#demo" class="text-gray-600 hover:text-purple-600">Demos</a></li>
+            <li><a href="#testimonials" class="text-gray-600 hover:text-purple-600">Testimonials</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-bold mb-4">Company</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-600 hover:text-purple-600">About Us</a></li>
+            <li><a href="#" class="text-gray-600 hover:text-purple-600">Careers</a></li>
+            <li><a href="#" class="text-gray-600 hover:text-purple-600">Blog</a></li>
+            <li><a href="#" class="text-gray-600 hover:text-purple-600">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-bold mb-4">Legal</h3>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-600 hover:text-purple-600">Privacy Policy</a></li>
+            <li><a href="#" class="text-gray-600 hover:text-purple-600">Terms of Service</a></li>
+            <li><a href="#" class="text-gray-600 hover:text-purple-600">Cookies</a></li>
+          </ul>
         </div>
       </div>
-    </div>
-  </div>
-  
-  <!-- Auth Toast -->
-  <div class="auth-toast" id="authToast">
-    <div class="flex items-center">
-      <svg class="w-5 h-5 mr-2" id="toastIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"></svg>
-      <div>
-        <p class="font-medium" id="toastTitle"></p>
-        <p class="text-sm text-gray-500" id="toastMessage"></p>
+      
+      <div class="border-t border-gray-100 pt-8 text-center text-gray-500 text-sm">
+        <p>&copy; 2023 PromoGenie. All rights reserved.</p>
       </div>
     </div>
-  </div>
-  
-  <!-- JavaScript for Auth Functionality -->
+  </footer>
+
+  <!-- Required script tag for GPT Engineer -->
+  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+
+  <!-- JavaScript -->
   <script>
-    // Check if user is logged in
-    document.addEventListener('DOMContentLoaded', function() {
-      // Mobile menu toggle
-      const mobileMenuButton = document.getElementById('mobile-menu-button');
-      const mobileMenu = document.getElementById('mobile-menu');
-      
-      if (mobileMenuButton) {
-        mobileMenuButton.addEventListener('click', function() {
-          mobileMenu.classList.toggle('active');
-        });
-      }
-
-      // Modal functionality
-      const loginButton = document.getElementById('loginButton');
-      const signupButton = document.getElementById('signupButton');
-      const mobileLoginButton = document.getElementById('mobileLoginButton');
-      const mobileSignupButton = document.getElementById('mobileSignupButton');
-      const loginModal = document.getElementById('loginModal');
-      const signupModal = document.getElementById('signupModal');
-      const closeButtons = document.querySelectorAll('.close-modal');
-      const switchToSignup = document.getElementById('switchToSignup');
-      const switchToLogin = document.getElementById('switchToLogin');
-      
-      // Open login modal
-      const openLoginModal = () => {
-        loginModal.classList.add('active');
-      };
-      
-      // Open signup modal
-      const openSignupModal = () => {
-        signupModal.classList.add('active');
-      };
-      
-      // Close all modals
-      const closeModals = () => {
-        loginModal.classList.remove('active');
-        signupModal.classList.remove('active');
-      };
-      
-      // Event listeners for buttons
-      if (loginButton) loginButton.addEventListener('click', openLoginModal);
-      if (signupButton) signupButton.addEventListener('click', openSignupModal);
-      if (mobileLoginButton) mobileLoginButton.addEventListener('click', openLoginModal);
-      if (mobileSignupButton) mobileSignupButton.addEventListener('click', openSignupModal);
-
-      // Close modal when clicking the X button
-      closeButtons.forEach(button => {
-        button.addEventListener('click', closeModals);
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-button').addEventListener('click', function() {
+      document.getElementById('mobile-menu').classList.toggle('active');
+    });
+    
+    // Close mobile menu when clicking on a navigation link
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', function() {
+        document.getElementById('mobile-menu').classList.remove('active');
       });
-      
-      // Close modal when clicking outside
-      window.addEventListener('click', (e) => {
-        if (e.target === loginModal) {
-          closeModals();
-        }
-        if (e.target === signupModal) {
-          closeModals();
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 100,
+            behavior: 'smooth'
+          });
         }
       });
-      
-      // Switch between login and signup
-      if (switchToSignup) {
-        switchToSignup.addEventListener('click', () => {
-          closeModals();
-          openSignupModal();
-        });
-      }
-      
-      if (switchToLogin) {
-        switchToLogin.addEventListener('click', () => {
-          closeModals();
-          openLoginModal();
-        });
-      }
-      
-      // Check if user is logged in
-      const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
-      if (isAuthenticated) {
-        // Change login/signup buttons to user menu
-        if (loginButton) loginButton.textContent = "Dashboard";
-        if (loginButton) loginButton.href = "/dashboard.html";
-        if (loginButton) loginButton.removeEventListener('click', openLoginModal);
+    });
+    
+    // Toggle pricing (monthly/annual)
+    const pricingToggle = document.getElementById('pricingToggle');
+    if (pricingToggle) {
+      pricingToggle.addEventListener('change', function() {
+        const isAnnual = this.checked;
+        // Implementation for switching prices would go here
+        console.log('Annual pricing selected:', isAnnual);
+      });
+    }
+    
+    // FAQ Accordions
+    document.querySelectorAll('.accordion-button').forEach(button => {
+      button.addEventListener('click', function() {
+        const targetId = this.getAttribute('data-target');
+        const content = document.getElementById(targetId);
         
-        if (signupButton) signupButton.textContent = "Logout";
-        if (signupButton) signupButton.addEventListener('click', () => {
-          localStorage.removeItem("isAuthenticated");
-          window.location.reload();
-        });
-        if (signupButton) signupButton.removeEventListener('click', openSignupModal);
-      }
-      
-      // Form submissions
-      const loginForm = document.getElementById('loginForm');
-      const signupForm = document.getElementById('signupForm');
-      
-      if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
-          e.preventDefault();
-          
-          const email = document.getElementById('loginEmail').value;
-          const password = document.getElementById('loginPassword').value;
-          const rememberMe = document.getElementById('rememberMe').checked;
-          
-          // For demo purposes - store the test account in localStorage
-          if (!localStorage.getItem("testEmail")) {
-            localStorage.setItem("testEmail", btoa("test@example.com"));
-            localStorage.setItem("testPassword", btoa("Password123!"));
-          }
-          
-          // Get test account from localStorage
-          const testEmail = atob(localStorage.getItem("testEmail") || "");
-          const testPassword = atob(localStorage.getItem("testPassword") || "");
-          
-          // Validate login
-          if (email === testEmail && password === testPassword) {
-            localStorage.setItem("isAuthenticated", "true");
-            
-            if (rememberMe) {
-              localStorage.setItem("rememberedUser", JSON.stringify({ email }));
-            } else {
-              localStorage.removeItem("rememberedUser");
-            }
-            
-            showToast('Success', 'You have been logged in successfully', 'success');
-            setTimeout(() => {
-              window.location.href = "/dashboard.html";
-            }, 1500);
-          } else {
-            showToast('Error', 'Invalid email or password', 'error');
+        // Toggle the active class on content
+        content.classList.toggle('active');
+        
+        // Toggle icon rotation
+        const icon = this.querySelector('.accordion-icon');
+        icon.classList.toggle('rotate-180');
+        
+        // Close other accordion items
+        document.querySelectorAll('.accordion-content').forEach(item => {
+          if (item.id !== targetId && item.classList.contains('active')) {
+            item.classList.remove('active');
+            const otherButton = document.querySelector(`[data-target="${item.id}"]`);
+            otherButton.querySelector('.accordion-icon').classList.remove('rotate-180');
           }
         });
-      }
-      
-      if (signupForm) {
-        signupForm.addEventListener('submit', function(e) {
-          e.preventDefault();
-          
-          const fullName = document.getElementById('fullName').value;
-          const email = document.getElementById('signupEmail').value;
-          const password = document.getElementById('signupPassword').value;
-          const termsAgree = document.getElementById('termsAgree').checked;
-          
-          if (!termsAgree) {
-            showToast('Error', 'You must agree to the Terms of Service', 'error');
-            return;
-          }
-          
-          // For demo purposes - store the account in localStorage
-          localStorage.setItem("testEmail", btoa(email));
-          localStorage.setItem("testPassword", btoa(password));
-          localStorage.setItem("isAuthenticated", "true");
-          
-          showToast('Success', 'Your account has been created', 'success');
-          setTimeout(() => {
-            window.location.href = "/dashboard.html";
-          }, 1500);
-        });
-      }
-      
-      // Password visibility toggle
-      window.togglePasswordVisibility = function(inputId, iconId) {
-        const input = document.getElementById(inputId);
-        const icon = document.getElementById(iconId);
-        
-        if (input.type === "password") {
-          input.type = "text";
-          icon.innerHTML = `
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-          `;
-        } else {
-          input.type = "password";
-          icon.innerHTML = `
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-          `;
-        }
-      };
-      
-      // Password strength meter
-      window.checkPasswordStrength = function(password) {
-        const strengthDiv = document.getElementById('passwordStrength');
-        strengthDiv.style.display = password ? 'block' : 'none';
-        
-        if (!password) return;
-        
-        let strength = 0;
-        
-        // Length check
-        if (password.length >= 8) strength += 1;
-        if (password.length >= 12) strength += 1;
-        
-        // Complexity checks
-        if (/[A-Z]/.test(password)) strength += 1;
-        if (/[a-z]/.test(password)) strength += 1;
-        if (/[0-9]/.test(password)) strength += 1;
-        if (/[^A-Za-z0-9]/.test(password)) strength += 1;
-        
-        // Calculate final strength (max 5)
-        const finalStrength = Math.min(strength, 5);
-        
-        // Update UI
-        const bars = [
-          document.getElementById('bar1'),
-          document.getElementById('bar2'),
-          document.getElementById('bar3'),
-          document.getElementById('bar4'),
-          document.getElementById('bar5')
-        ];
-        
-        // Reset all bars
-        bars.forEach(bar => {
-          bar.className = 'inline-block h-1.5 w-1/5 rounded-full bg-gray-200';
-        });
-        
-        // Color bars based on strength
-        for (let i = 0; i < finalStrength; i++) {
-          if (finalStrength <= 2) {
-            bars[i].className = 'inline-block h-1.5 w-1/5 rounded-full bg-red-500';
-          } else if (finalStrength <= 4) {
-            bars[i].className = 'inline-block h-1.5 w-1/5 rounded-full bg-yellow-500';
-          } else {
-            bars[i].className = 'inline-block h-1.5 w-1/5 rounded-full bg-green-500';
-          }
-        }
-        
-        // Set text
-        const strengthText = document.getElementById('strengthText');
-        if (finalStrength <= 2) {
-          strengthText.textContent = 'Weak';
-          strengthText.className = 'text-xs font-medium ml-2 text-red-500';
-        } else if (finalStrength <= 4) {
-          strengthText.textContent = 'Good';
-          strengthText.className = 'text-xs font-medium ml-2 text-yellow-500';
-        } else {
-          strengthText.textContent = 'Strong';
-          strengthText.className = 'text-xs font-medium ml-2 text-green-500';
-        }
-      };
-      
-      // Toast notification
-      window.showToast = function(title, message, type) {
-        const toast = document.getElementById('authToast');
-        const toastTitle = document.getElementById('toastTitle');
-        const toastMessage = document.getElementById('toastMessage');
-        const toastIcon = document.getElementById('toastIcon');
-        
-        // Set content
-        toastTitle.textContent = title;
-        toastMessage.textContent = message;
-        
-        // Set icon based on type
-        if (type === 'success') {
-          toastIcon.innerHTML = `<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />`;
-          toastIcon.style.color = '#10b981';
-        } else if (type === 'error') {
-          toastIcon.innerHTML = `<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />`;
-          toastIcon.style.color = '#ef4444';
-        } else {
-          toastIcon.innerHTML = `<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />`;
-          toastIcon.style.color = '#3b82f6';
-        }
-        
-        // Show the toast
-        toast.classList.add('show');
-        
-        // Hide after 5 seconds
-        setTimeout(() => {
-          toast.classList.remove('show');
-        }, 5000);
-      };
-      
-      // Check for remembered user
-      const rememberedUser = JSON.parse(localStorage.getItem("rememberedUser"));
-      if (rememberedUser) {
-        const loginEmail = document.getElementById('loginEmail');
-        if (loginEmail) {
-          loginEmail.value = rememberedUser.email;
-          document.getElementById('rememberMe').checked = true;
-        }
+      });
+    });
+    
+    // Video player functionality
+    document.getElementById('playDemoButton')?.addEventListener('click', function() {
+      console.log('Video play button clicked');
+      // Implementation for playing video would go here
+      alert('Video playback would start here in a real implementation.');
+    });
+    
+    // Form submission handling
+    const subscribeForm = document.querySelector('form');
+    subscribeForm?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const emailInput = this.querySelector('input[type="email"]');
+      if (emailInput.value) {
+        alert(`Thank you for subscribing with: ${emailInput.value}`);
+        emailInput.value = '';
+      } else {
+        alert('Please enter a valid email address.');
       }
     });
   </script>

@@ -165,41 +165,4 @@
   .accordion-content {
     @apply py-3 text-gray-600;
   }
-  
-  /* Auth Modal Styles */
-  .auth-modal {
-    @apply fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden;
-  }
-  
-  .auth-modal-content {
-    @apply bg-white rounded-xl shadow-xl w-full max-w-md mx-4 overflow-hidden;
-  }
-  
-  .auth-form {
-    @apply p-8 space-y-5;
-  }
-  
-  .auth-input {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent;
-  }
-  
-  .social-auth-button {
-    @apply flex items-center justify-center w-full border border-gray-300 rounded-md py-2 px-4 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors;
-  }
-  
-  .password-field {
-    @apply relative;
-  }
-  
-  .password-toggle {
-    @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer;
-  }
-  
-  .auth-toast {
-    @apply fixed top-4 right-4 bg-white rounded-md shadow-lg p-4 transform transition-all duration-300 opacity-0 translate-y-[-1rem] pointer-events-none z-50;
-  }
-  
-  .auth-toast.show {
-    @apply opacity-100 translate-y-0 pointer-events-auto;
-  }
 }
