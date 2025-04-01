@@ -2,7 +2,10 @@
 import React, { useState } from 'react';
 import { Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Switch } from '@/components/ui/switch';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 interface PricingSectionProps {
   hideHeading?: boolean;
@@ -28,8 +31,8 @@ const PricingSection = ({ hideHeading = false }: PricingSectionProps) => {
   };
   
   return (
-    <section className="py-16 md:py-24 bg-gray-50">
-      <div className="container mx-auto px-4">
+    <section className="py-16 md:py-24 bg-gradient-to-b from-white to-gray-50">
+      <div className="container mx-auto px-4 max-w-7xl">
         {!hideHeading && (
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Simple, Transparent Pricing</h2>
@@ -40,30 +43,45 @@ const PricingSection = ({ hideHeading = false }: PricingSectionProps) => {
         )}
         
         {/* Billing toggle */}
-        <div className="flex items-center justify-center gap-4 mb-12">
-          <span className={`text-sm font-medium ${billingCycle === 'monthly' ? 'text-promogenie-600' : 'text-gray-500'}`}>Monthly</span>
-          <Switch 
-            checked={billingCycle === 'annually'} 
-            onCheckedChange={() => setBillingCycle(billingCycle === 'monthly' ? 'annually' : 'monthly')}
-          />
-          <span className={`text-sm font-medium ${billingCycle === 'annually' ? 'text-promogenie-600' : 'text-gray-500'}`}>
-            Annually <span className="text-green-600 text-xs ml-1 font-semibold">(Save 17%)</span>
-          </span>
+        <div className="flex flex-col items-center justify-center gap-4 mb-12">
+          <ToggleGroup
+            type="single"
+            value={billingCycle}
+            onValueChange={(value) => value && setBillingCycle(value as 'monthly' | 'annually')}
+            className="bg-gray-100 p-1 rounded-full border"
+          >
+            <ToggleGroupItem 
+              value="monthly" 
+              className="data-[state=on]:bg-white data-[state=on]:text-primary data-[state=on]:shadow-sm rounded-full px-6 py-2"
+            >
+              Monthly
+            </ToggleGroupItem>
+            <ToggleGroupItem 
+              value="annually" 
+              className="data-[state=on]:bg-white data-[state=on]:text-primary data-[state=on]:shadow-sm rounded-full px-6 py-2"
+            >
+              Annually <span className="text-green-600 text-xs ml-1 font-medium">(Save 17%)</span>
+            </ToggleGroupItem>
+          </ToggleGroup>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {/* Starter Plan */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow">
-            <div className="p-6 border-b">
-              <p className="text-sm text-center uppercase font-medium text-gray-500 mb-2">For Small Businesses & Freelancers</p>
-              <h3 className="text-xl font-bold mb-2 text-center">Starter</h3>
-              <div className="flex items-end justify-center gap-1 mb-4">
+          <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
+            <CardHeader className="pb-4">
+              <CardDescription className="text-center uppercase text-xs font-medium">
+                For Small Businesses & Freelancers
+              </CardDescription>
+              <CardTitle className="text-xl font-bold text-center">Starter</CardTitle>
+              <div className="flex items-center justify-center gap-1 mt-2">
                 <span className="text-4xl font-bold">${billingCycle === 'monthly' ? pricingData.starter.monthly : pricingData.starter.annually}</span>
-                <span className="text-gray-500">/{billingCycle === 'monthly' ? 'mo' : 'year'}</span>
+                <span className="text-gray-500 text-sm">/{billingCycle === 'monthly' ? 'mo' : 'year'}</span>
               </div>
-              <p className="text-gray-600 text-center text-sm">Perfect for those who just begin their journey.</p>
-            </div>
-            <div className="p-6">
+              <CardDescription className="text-center mt-2">
+                Perfect for those who just begin their journey.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-2">
               <div className="mb-4 flex items-center">
                 <span className="text-2xl font-semibold">10</span>
                 <span className="ml-2 text-gray-600">Wishes per month</span>
@@ -71,45 +89,47 @@ const PricingSection = ({ hideHeading = false }: PricingSectionProps) => {
 
               <ul className="space-y-3">
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
                   <span>3 AI influencers</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
                   <span>720p video quality</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
                   <span>6 second videos</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
                   <span>Email support</span>
                 </li>
               </ul>
-            </div>
-            <div className="p-6 pt-0">
-              <Link to="/signup" className="block w-full py-3 px-4 text-center bg-white border border-promogenie-600 text-promogenie-600 hover:bg-promogenie-50 rounded-md font-medium transition-colors">
-                Get Started
-              </Link>
-            </div>
-          </div>
+            </CardContent>
+            <CardFooter className="pt-2">
+              <Button asChild variant="outline" className="w-full">
+                <Link to="/signup">Get Started</Link>
+              </Button>
+            </CardFooter>
+          </Card>
           
           {/* Pro Plan */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden border-2 border-promogenie-600 hover:shadow-lg transform scale-105 transition-all relative">
-            <div className="absolute top-0 right-0 bg-promogenie-600 text-white text-xs font-bold px-3 py-1 rounded-bl">
-              BEST VALUE
-            </div>
-            <div className="p-6 border-b">
-              <p className="text-sm text-center uppercase font-medium text-gray-500 mb-2">For Boutique Agencies & Startup Brands</p>
-              <h3 className="text-xl font-bold mb-2 text-center">Pro</h3>
-              <div className="flex items-end justify-center gap-1 mb-4">
+          <Card className="border-2 border-primary shadow-md hover:shadow-lg transform scale-105 transition-all relative">
+            <Badge className="absolute -top-3 right-4 bg-primary hover:bg-primary">BEST VALUE</Badge>
+            <CardHeader className="pb-4">
+              <CardDescription className="text-center uppercase text-xs font-medium">
+                For Boutique Agencies & Startup Brands
+              </CardDescription>
+              <CardTitle className="text-xl font-bold text-center">Pro</CardTitle>
+              <div className="flex items-center justify-center gap-1 mt-2">
                 <span className="text-4xl font-bold">${billingCycle === 'monthly' ? pricingData.pro.monthly : pricingData.pro.annually}</span>
-                <span className="text-gray-500">/{billingCycle === 'monthly' ? 'mo' : 'year'}</span>
+                <span className="text-gray-500 text-sm">/{billingCycle === 'monthly' ? 'mo' : 'year'}</span>
               </div>
-              <p className="text-gray-600 text-center text-sm">Designed for marketers aiming for more flexibility and options.</p>
-            </div>
-            <div className="p-6">
+              <CardDescription className="text-center mt-2">
+                Designed for marketers aiming for more flexibility and options.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-2">
               <div className="mb-4 flex items-center">
                 <span className="text-2xl font-semibold">50</span>
                 <span className="ml-2 text-gray-600">Wishes per month</span>
@@ -117,42 +137,46 @@ const PricingSection = ({ hideHeading = false }: PricingSectionProps) => {
               
               <ul className="space-y-3">
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
                   <span>All 8 AI influencers</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
                   <span>1080p HD video quality</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
                   <span>12 second videos</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
                   <span>Priority support</span>
                 </li>
               </ul>
-            </div>
-            <div className="p-6 pt-0">
-              <Link to="/signup" className="block w-full py-3 px-4 text-center bg-promogenie-600 text-white hover:bg-promogenie-700 rounded-md font-medium transition-colors shadow-md">
-                Get Started
-              </Link>
-            </div>
-          </div>
+            </CardContent>
+            <CardFooter className="pt-2">
+              <Button asChild className="w-full">
+                <Link to="/signup">Get Started</Link>
+              </Button>
+            </CardFooter>
+          </Card>
           
           {/* Team Plan */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow">
-            <div className="p-6 border-b">
-              <p className="text-sm text-center uppercase font-medium text-gray-500 mb-2">For Creative Agencies & E-commerce Brands</p>
-              <h3 className="text-xl font-bold mb-2 text-center">Team</h3>
-              <div className="flex items-end justify-center gap-1 mb-4">
+          <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
+            <CardHeader className="pb-4">
+              <CardDescription className="text-center uppercase text-xs font-medium">
+                For Creative Agencies & E-commerce Brands
+              </CardDescription>
+              <CardTitle className="text-xl font-bold text-center">Team</CardTitle>
+              <div className="flex items-center justify-center gap-1 mt-2">
                 <span className="text-4xl font-bold">${billingCycle === 'monthly' ? pricingData.team.monthly : pricingData.team.annually}</span>
-                <span className="text-gray-500">/{billingCycle === 'monthly' ? 'mo' : 'year'}</span>
+                <span className="text-gray-500 text-sm">/{billingCycle === 'monthly' ? 'mo' : 'year'}</span>
               </div>
-              <p className="text-gray-600 text-center text-sm">Ideal for teams with regular advertising needs.</p>
-            </div>
-            <div className="p-6">
+              <CardDescription className="text-center mt-2">
+                Ideal for teams with regular advertising needs.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-2">
               <div className="mb-4 flex items-center">
                 <span className="text-2xl font-semibold">150</span>
                 <span className="ml-2 text-gray-600">Wishes per month</span>
@@ -160,70 +184,74 @@ const PricingSection = ({ hideHeading = false }: PricingSectionProps) => {
               
               <ul className="space-y-3">
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
                   <span>Custom AI influencer creation</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
                   <span>4K Ultra HD video quality</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
                   <span>12 second videos with post-processing</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
                   <span>Dedicated account manager</span>
                 </li>
               </ul>
-            </div>
-            <div className="p-6 pt-0">
-              <Link to="/signup" className="block w-full py-3 px-4 text-center bg-white border border-promogenie-600 text-promogenie-600 hover:bg-promogenie-50 rounded-md font-medium transition-colors">
-                Get Started
-              </Link>
-            </div>
-          </div>
+            </CardContent>
+            <CardFooter className="pt-2">
+              <Button asChild variant="outline" className="w-full">
+                <Link to="/signup">Get Started</Link>
+              </Button>
+            </CardFooter>
+          </Card>
           
           {/* Enterprise Plan */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow">
-            <div className="p-6 border-b">
-              <p className="text-sm text-center uppercase font-medium text-gray-500 mb-2">For Large-scale Ad Generation Needs</p>
-              <h3 className="text-xl font-bold mb-2 text-center">Enterprise</h3>
-              <div className="flex items-end justify-center gap-1 mb-4">
+          <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
+            <CardHeader className="pb-4">
+              <CardDescription className="text-center uppercase text-xs font-medium">
+                For Large-scale Ad Generation Needs
+              </CardDescription>
+              <CardTitle className="text-xl font-bold text-center">Enterprise</CardTitle>
+              <div className="flex items-center justify-center gap-1 mt-2">
                 <span className="text-2xl font-bold">Let's Talk</span>
               </div>
-              <p className="text-gray-600 text-center text-sm">Tell us what you need, and we'll tailor our solutions.</p>
-            </div>
-            <div className="p-6">
+              <CardDescription className="text-center mt-2">
+                Tell us what you need, and we'll tailor our solutions.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-2">
               <div className="mb-4 flex items-center">
                 <span className="font-semibold">As Many As You Need</span>
               </div>
               
               <ul className="space-y-3">
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
                   <span>Custom AI influencer creation</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
                   <span>4K Ultra HD video quality</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
                   <span>12 second videos with post-processing</span>
                 </li>
                 <li className="flex items-start">
-                  <Check className="h-5 w-5 text-promogenie-600 mr-2 flex-shrink-0 mt-0.5" />
+                  <Check className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
                   <span>Dedicated account manager</span>
                 </li>
               </ul>
-            </div>
-            <div className="p-6 pt-0">
-              <Link to="/contact" className="block w-full py-3 px-4 text-center bg-gray-800 text-white hover:bg-gray-900 rounded-md font-medium transition-colors">
-                Contact Sales
-              </Link>
-            </div>
-          </div>
+            </CardContent>
+            <CardFooter className="pt-2">
+              <Button asChild variant="secondary" className="w-full bg-gray-800 hover:bg-gray-900 text-white">
+                <Link to="/contact">Contact Sales</Link>
+              </Button>
+            </CardFooter>
+          </Card>
         </div>
       </div>
     </section>
