@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { 
-  LayoutGrid, 
   Settings,
   LogOut,
   CreditCard,
   User,
   Download,
   HelpCircle,
-  Video,
-  Home
+  Video
 } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
@@ -83,19 +81,6 @@ const DashboardSidebar = ({ activeTab, setActiveTab }: DashboardSidebarProps) =>
       
       <nav className="py-6 flex-grow">
         <ul className="space-y-1 px-3">
-          <li>
-            <Link
-              to="/dashboard"
-              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-md transition-colors ${
-                activeTab === "dashboard"
-                  ? "bg-white text-promogenie-600 font-medium" 
-                  : "text-white hover:bg-promogenie-500"
-              }`}
-            >
-              <Home className="h-5 w-5" />
-              <span>Dashboard</span>
-            </Link>
-          </li>
           <li>
             <button
               onClick={() => setActiveTab("influencerVideos")}
