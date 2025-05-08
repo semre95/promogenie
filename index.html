@@ -82,6 +82,20 @@
             }
         }
         
+        /* Horizontal arrow animation */
+        .arrow-animate-horizontal {
+            animation: bounceHorizontal 2s infinite;
+        }
+        
+        @keyframes bounceHorizontal {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(10px);
+            }
+        }
+        
         /* Video placeholder style */
         .video-placeholder {
             background: linear-gradient(to right, #333, #666);
@@ -89,6 +103,26 @@
             align-items: center;
             justify-content: center;
             color: white;
+        }
+        
+        /* Fade in animation */
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Scale animation */
+        .scale-in {
+            animation: scaleIn 0.5s ease forwards;
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
         
         /* Dark mode styles */
@@ -111,6 +145,30 @@
         
         .dark .shadow-lg {
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
+        }
+        
+        /* Button shine effect */
+        .button-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .button-shine::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: rotate(30deg);
+            transition: transform 0.7s;
+            opacity: 0;
+        }
+        
+        .button-shine:hover::after {
+            transform: rotate(30deg) translate(100%, 100%);
+            opacity: 1;
         }
     </style>
 </head>
@@ -162,15 +220,15 @@
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row items-center">
                 <div class="md:w-1/2 mb-10 md:mb-0">
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6">Transform Your Products with AI-Generated Content</h1>
-                    <p class="text-xl mb-8">Create stunning product images, videos, and even virtual influencers in seconds. No design skills required.</p>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#try-it" class="px-8 py-3 bg-white text-primary-600 font-bold rounded-full hover:bg-gray-100 transition-all shadow-lg">Try it Now</a>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6 fade-in">Transform Your Products with AI-Generated Content</h1>
+                    <p class="text-xl mb-8 fade-in" style="animation-delay: 0.2s">Create stunning product images, videos, and even virtual influencers in seconds. No design skills required.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 fade-in" style="animation-delay: 0.4s">
+                        <a href="#try-it" class="px-8 py-3 bg-white text-primary-600 font-bold rounded-full hover:bg-gray-100 transition-all shadow-lg button-shine">Try it Now</a>
                         <a href="#how-it-works" class="px-8 py-3 border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-primary-600 transition-all">Learn More</a>
                     </div>
                 </div>
                 <div class="md:w-1/2">
-                    <div class="bg-white p-6 rounded-xl shadow-2xl">
+                    <div class="bg-white p-6 rounded-xl shadow-2xl scale-in">
                         <img src="public/lovable-uploads/02292c9e-d249-4d0c-8923-6e0d87d32456.png" alt="Teddy Bear" class="w-full rounded-lg">
                     </div>
                 </div>
@@ -181,56 +239,63 @@
     <!-- How It Works Section -->
     <section id="how-it-works" class="py-20 bg-gray-50 dark:bg-gray-900">
         <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-heading font-bold text-center mb-16">How It Works</h2>
+            <h2 class="text-4xl font-heading font-bold text-center mb-16 fade-in">How It Works</h2>
             
-            <div class="max-w-4xl mx-auto">
-                <div class="mb-16">
-                    <h3 class="text-2xl font-semibold mb-6 text-center">1. Upload your product image</h3>
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-                        <img src="public/lovable-uploads/02292c9e-d249-4d0c-8923-6e0d87d32456.png" alt="Teddy Bear Product" class="w-full">
+            <div class="max-w-6xl mx-auto">
+                <!-- Horizontal Steps Layout -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                    <!-- Step 1 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden p-6 fade-in" style="animation-delay: 0.2s">
+                        <h3 class="text-2xl font-semibold mb-4 text-center">1. Upload your product image</h3>
+                        <div class="aspect-square flex items-center justify-center bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden mb-4">
+                            <img src="public/lovable-uploads/02292c9e-d249-4d0c-8923-6e0d87d32456.png" alt="Teddy Bear Product" class="w-full h-auto max-h-48 object-contain">
+                        </div>
+                    </div>
+                    
+                    <!-- Arrow for desktop -->
+                    <div class="hidden md:flex justify-center items-center">
+                        <svg class="w-16 h-16 text-primary-500 arrow-animate-horizontal" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </div>
+                    
+                    <!-- Arrow for mobile -->
+                    <div class="flex md:hidden justify-center items-center py-4">
+                        <svg class="w-16 h-16 text-primary-500 arrow-animate" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                        </svg>
+                    </div>
+                    
+                    <!-- Step 2 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden p-6 fade-in" style="animation-delay: 0.4s">
+                        <h3 class="text-2xl font-semibold mb-4 text-center">2. Our AI generates multiple variations</h3>
+                        <div class="grid grid-cols-3 gap-2">
+                            <img src="public/lovable-uploads/15d02f10-f13f-40eb-84d8-16694c9223da.png" alt="Generated Teddy Bear 1" class="w-full h-auto rounded-lg">
+                            <img src="public/lovable-uploads/f3ec1d83-7766-4df0-a241-420e5bde6de7.png" alt="Generated Teddy Bear 2" class="w-full h-auto rounded-lg">
+                            <img src="public/lovable-uploads/1823caea-87a1-4d43-b008-9e63afe450c2.png" alt="Generated Teddy Bear 3" class="w-full h-auto rounded-lg">
+                        </div>
                     </div>
                 </div>
                 
-                <div class="flex justify-center mb-12">
-                    <svg class="w-16 h-16 text-primary-500 arrow-animate" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-                    </svg>
-                </div>
-                
-                <div class="mb-16">
-                    <h3 class="text-2xl font-semibold mb-6 text-center">2. Our AI generates multiple product variations</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-                            <img src="public/lovable-uploads/15d02f10-f13f-40eb-84d8-16694c9223da.png" alt="Generated Teddy Bear 1" class="w-full h-64 object-cover">
+                <!-- Step 3 -->
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex flex-col md:flex-row gap-8 items-center bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 fade-in" style="animation-delay: 0.6s">
+                        <div class="md:w-1/2">
+                            <h3 class="text-2xl font-semibold mb-4 text-center md:text-left">3. Create product videos</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">
+                                Our AI technology transforms your product images into engaging videos that grab attention and drive conversions.
+                            </p>
                         </div>
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-                            <img src="public/lovable-uploads/f3ec1d83-7766-4df0-a241-420e5bde6de7.png" alt="Generated Teddy Bear 2" class="w-full h-64 object-cover">
-                        </div>
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-                            <img src="public/lovable-uploads/1823caea-87a1-4d43-b008-9e63afe450c2.png" alt="Generated Teddy Bear 3" class="w-full h-64 object-cover">
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="flex justify-center mb-12">
-                    <svg class="w-16 h-16 text-primary-500 arrow-animate" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-                    </svg>
-                </div>
-                
-                <div>
-                    <h3 class="text-2xl font-semibold mb-6 text-center">3. Bring your product to life with videos</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-                            <img src="public/lovable-uploads/03b93097-1a51-4180-bc3c-68b17391ec3a.png" alt="Teddy Bear Product" class="w-full h-64 object-cover">
-                        </div>
-                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden video-placeholder h-64">
-                            <div class="text-center">
-                                <svg class="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                <p class="text-lg font-semibold">Teddy Bear Video</p>
+                        <div class="md:w-1/2 grid grid-cols-2 gap-4">
+                            <img src="public/lovable-uploads/03b93097-1a51-4180-bc3c-68b17391ec3a.png" alt="Teddy Bear Product" class="w-full h-auto rounded-lg">
+                            <div class="video-placeholder rounded-lg flex items-center justify-center">
+                                <div class="text-center">
+                                    <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <p class="text-sm">Video Preview</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -242,22 +307,22 @@
     <!-- Examples Section -->
     <section id="examples" class="py-20">
         <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-heading font-bold text-center mb-16">Combine Models With Your Products</h2>
+            <h2 class="text-4xl font-heading font-bold text-center mb-16 fade-in">Combine Models With Your Products</h2>
             
             <div class="max-w-6xl mx-auto">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-20">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
                     <!-- Example 1 -->
-                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden p-8">
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden p-6 fade-in" style="animation-delay: 0.2s">
                         <h3 class="text-2xl font-semibold mb-6">Example 1: Model with Glasses</h3>
                         
                         <div class="grid grid-cols-2 gap-4 mb-8">
                             <div>
                                 <p class="font-medium mb-2">Product Image:</p>
-                                <img src="public/lovable-uploads/0dfbbe62-da6e-471c-ba5c-32830c5fff18.png" alt="Glasses" class="w-full rounded-lg">
+                                <img src="public/lovable-uploads/0dfbbe62-da6e-471c-ba5c-32830c5fff18.png" alt="Glasses" class="w-full rounded-lg h-40 object-contain bg-gray-50 dark:bg-gray-700">
                             </div>
                             <div>
                                 <p class="font-medium mb-2">Model Image:</p>
-                                <img src="public/lovable-uploads/d6220d68-ed53-4b09-bdd2-83bc044794fd.png" alt="Redhead Model" class="w-full rounded-lg">
+                                <img src="public/lovable-uploads/d6220d68-ed53-4b09-bdd2-83bc044794fd.png" alt="Redhead Model" class="w-full rounded-lg h-40 object-cover">
                             </div>
                         </div>
                         
@@ -266,17 +331,17 @@
                     </div>
                     
                     <!-- Example 2 -->
-                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden p-8">
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden p-6 fade-in" style="animation-delay: 0.4s">
                         <h3 class="text-2xl font-semibold mb-6">Example 2: Model with Teddy Bear</h3>
                         
                         <div class="grid grid-cols-2 gap-4 mb-8">
                             <div>
                                 <p class="font-medium mb-2">Product Image:</p>
-                                <img src="public/lovable-uploads/02292c9e-d249-4d0c-8923-6e0d87d32456.png" alt="Teddy Bear" class="w-full rounded-lg">
+                                <img src="public/lovable-uploads/02292c9e-d249-4d0c-8923-6e0d87d32456.png" alt="Teddy Bear" class="w-full rounded-lg h-40 object-contain bg-gray-50 dark:bg-gray-700">
                             </div>
                             <div>
                                 <p class="font-medium mb-2">Model Image:</p>
-                                <img src="public/lovable-uploads/d6220d68-ed53-4b09-bdd2-83bc044794fd.png" alt="Redhead Model" class="w-full rounded-lg">
+                                <img src="public/lovable-uploads/d6220d68-ed53-4b09-bdd2-83bc044794fd.png" alt="Redhead Model" class="w-full rounded-lg h-40 object-cover">
                             </div>
                         </div>
                         
@@ -291,35 +356,39 @@
     <!-- Try It Yourself Section -->
     <section id="try-it" class="py-20 bg-gray-50 dark:bg-gray-900">
         <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-heading font-bold text-center mb-6">Try It Yourself</h2>
-            <p class="text-xl text-center mb-16 max-w-3xl mx-auto">Choose your product and model to see what our AI can create for you. Here are some examples of what's possible.</p>
+            <h2 class="text-4xl font-heading font-bold text-center mb-6 fade-in">Try It Yourself</h2>
+            <p class="text-xl text-center mb-16 max-w-3xl mx-auto fade-in" style="animation-delay: 0.2s">Choose your product and model to see what our AI can create for you. Here are some examples of what's possible.</p>
             
             <div class="max-w-6xl mx-auto">
                 <!-- Example Set 1: Teddy Bear + Kleopatra -->
-                <div class="mb-20">
+                <div class="mb-20 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 fade-in" style="animation-delay: 0.3s">
                     <h3 class="text-2xl font-semibold mb-8 text-center">Example 1: Teddy Bear + Kleopatra</h3>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                         <div>
                             <p class="font-medium mb-2">Product Image:</p>
-                            <img src="public/lovable-uploads/02292c9e-d249-4d0c-8923-6e0d87d32456.png" alt="Teddy Bear" class="w-full rounded-lg">
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center justify-center">
+                                <img src="public/lovable-uploads/02292c9e-d249-4d0c-8923-6e0d87d32456.png" alt="Teddy Bear" class="max-h-40 object-contain">
+                            </div>
                         </div>
                         <div>
                             <p class="font-medium mb-2">Model Image:</p>
-                            <img src="public/lovable-uploads/142a1f3e-e19c-46b3-bb53-fbbabd5d115b.png" alt="Kleopatra" class="w-full rounded-lg">
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center justify-center">
+                                <img src="public/lovable-uploads/142a1f3e-e19c-46b3-bb53-fbbabd5d115b.png" alt="Kleopatra" class="max-h-40 object-contain">
+                            </div>
                         </div>
                     </div>
                     
                     <p class="font-medium mb-4">Generated Images:</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                        <img src="public/lovable-uploads/d2fcbeeb-b068-4545-90a6-96432617e77d.png" alt="Kleo with Teddy 1" class="w-full rounded-lg">
-                        <img src="public/lovable-uploads/f49e9462-b9cd-41e3-bac0-3da8dee9bf3b.png" alt="Kleo with Teddy 2" class="w-full rounded-lg">
-                        <img src="public/lovable-uploads/c5381bd5-084d-44ec-a4d1-32fa67069574.png" alt="Kleo with Teddy 3" class="w-full rounded-lg">
-                        <img src="public/lovable-uploads/550347c0-69ec-4275-8fe3-3dde80d183c9.png" alt="Kleo with Teddy 4" class="w-full rounded-lg">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+                        <img src="public/lovable-uploads/d2fcbeeb-b068-4545-90a6-96432617e77d.png" alt="Kleo with Teddy 1" class="w-full rounded-lg h-32 object-cover">
+                        <img src="public/lovable-uploads/f49e9462-b9cd-41e3-bac0-3da8dee9bf3b.png" alt="Kleo with Teddy 2" class="w-full rounded-lg h-32 object-cover">
+                        <img src="public/lovable-uploads/c5381bd5-084d-44ec-a4d1-32fa67069574.png" alt="Kleo with Teddy 3" class="w-full rounded-lg h-32 object-cover">
+                        <img src="public/lovable-uploads/550347c0-69ec-4275-8fe3-3dde80d183c9.png" alt="Kleo with Teddy 4" class="w-full rounded-lg h-32 object-cover">
                     </div>
                     
                     <p class="font-medium mb-4">Generated Video:</p>
-                    <div class="video-placeholder h-64 rounded-lg">
+                    <div class="video-placeholder h-48 rounded-lg">
                         <div class="text-center">
                             <svg class="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
@@ -331,30 +400,34 @@
                 </div>
                 
                 <!-- Example Set 2: Couch + Kleopatra -->
-                <div class="mb-20">
+                <div class="mb-20 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 fade-in" style="animation-delay: 0.4s">
                     <h3 class="text-2xl font-semibold mb-8 text-center">Example 2: Couch + Kleopatra</h3>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                         <div>
                             <p class="font-medium mb-2">Product Image:</p>
-                            <img src="public/lovable-uploads/70e3f3a1-2bc7-4b09-8a2b-13ad56466b8f.png" alt="Couch" class="w-full rounded-lg">
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center justify-center">
+                                <img src="public/lovable-uploads/70e3f3a1-2bc7-4b09-8a2b-13ad56466b8f.png" alt="Couch" class="max-h-40 object-contain">
+                            </div>
                         </div>
                         <div>
                             <p class="font-medium mb-2">Model Image:</p>
-                            <img src="public/lovable-uploads/142a1f3e-e19c-46b3-bb53-fbbabd5d115b.png" alt="Kleopatra" class="w-full rounded-lg">
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center justify-center">
+                                <img src="public/lovable-uploads/142a1f3e-e19c-46b3-bb53-fbbabd5d115b.png" alt="Kleopatra" class="max-h-40 object-contain">
+                            </div>
                         </div>
                     </div>
                     
                     <p class="font-medium mb-4">Generated Images:</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                        <img src="public/lovable-uploads/e753c93b-7788-4abb-84e8-04ef16e84c75.png" alt="Kleo with Couch 1" class="w-full rounded-lg">
-                        <img src="public/lovable-uploads/05dc4396-a8d9-4ac8-8e95-f62051be82f3.png" alt="Kleo with Couch 2" class="w-full rounded-lg">
-                        <img src="public/lovable-uploads/0df14a41-07a4-420b-8958-98483ef4d615.png" alt="Kleo with Couch 3" class="w-full rounded-lg">
-                        <img src="public/lovable-uploads/70e3f3a1-2bc7-4b09-8a2b-13ad56466b8f.png" alt="Kleo with Couch 4" class="w-full rounded-lg">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+                        <img src="public/lovable-uploads/e753c93b-7788-4abb-84e8-04ef16e84c75.png" alt="Kleo with Couch 1" class="w-full rounded-lg h-32 object-cover">
+                        <img src="public/lovable-uploads/05dc4396-a8d9-4ac8-8e95-f62051be82f3.png" alt="Kleo with Couch 2" class="w-full rounded-lg h-32 object-cover">
+                        <img src="public/lovable-uploads/0df14a41-07a4-420b-8958-98483ef4d615.png" alt="Kleo with Couch 3" class="w-full rounded-lg h-32 object-cover">
+                        <img src="public/lovable-uploads/70e3f3a1-2bc7-4b09-8a2b-13ad56466b8f.png" alt="Kleo with Couch 4" class="w-full rounded-lg h-32 object-cover">
                     </div>
                     
                     <p class="font-medium mb-4">Generated Video:</p>
-                    <div class="video-placeholder h-64 rounded-lg">
+                    <div class="video-placeholder h-48 rounded-lg">
                         <div class="text-center">
                             <svg class="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
@@ -371,14 +444,14 @@
     <!-- Voice Sync Section -->
     <section class="py-20">
         <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-heading font-bold text-center mb-6">Add Voice & Lipsync</h2>
-            <p class="text-xl text-center mb-16 max-w-3xl mx-auto">After generating your product videos, add voice to have your virtual models speak about your products!</p>
+            <h2 class="text-4xl font-heading font-bold text-center mb-6 fade-in">Add Voice & Lipsync</h2>
+            <p class="text-xl text-center mb-12 max-w-3xl mx-auto fade-in" style="animation-delay: 0.2s">After generating your product videos, add voice to have your virtual models speak about your products!</p>
             
-            <div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+            <div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 fade-in" style="animation-delay: 0.3s">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                     <div>
                         <h3 class="text-2xl font-semibold mb-4">Voice & Lipsync Demo</h3>
-                        <p class="mb-6">Watch as our AI combines video, voice, and lip synchronization to create a seamless presentation.</p>
+                        <p class="mb-6 text-gray-600 dark:text-gray-300">Watch as our AI combines video, voice, and lip synchronization to create a seamless presentation.</p>
                         
                         <div class="space-y-4 mb-6">
                             <div>
@@ -396,7 +469,7 @@
                             </div>
                         </div>
                         
-                        <button class="px-6 py-3 bg-primary-600 text-white font-bold rounded-lg hover:bg-primary-700 transition-all">
+                        <button class="px-6 py-3 bg-primary-600 text-white font-bold rounded-lg hover:bg-primary-700 transition-all button-shine">
                             Generate Video with Voice
                         </button>
                     </div>
@@ -418,36 +491,36 @@
     <!-- Coming Soon Section -->
     <section id="coming-soon" class="py-20 bg-gray-50 dark:bg-gray-900">
         <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-heading font-bold text-center mb-16">Coming Soon: Create Your Own Influencers</h2>
+            <h2 class="text-4xl font-heading font-bold text-center mb-16 fade-in">Coming Soon: Create Your Own Influencers</h2>
             
             <div class="max-w-6xl mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
-                        <img src="public/lovable-uploads/d2fcbeeb-b068-4545-90a6-96432617e77d.png" alt="Custom Influencer 1" class="w-full rounded-lg mb-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 fade-in" style="animation-delay: 0.2s">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 transform hover:-translate-y-1 transition duration-300">
+                        <img src="public/lovable-uploads/d2fcbeeb-b068-4545-90a6-96432617e77d.png" alt="Custom Influencer 1" class="w-full rounded-lg mb-4 h-48 object-cover">
                         <p class="font-medium text-center">Influencer Style 1</p>
                     </div>
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
-                        <img src="public/lovable-uploads/f49e9462-b9cd-41e3-bac0-3da8dee9bf3b.png" alt="Custom Influencer 2" class="w-full rounded-lg mb-4">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 transform hover:-translate-y-1 transition duration-300">
+                        <img src="public/lovable-uploads/f49e9462-b9cd-41e3-bac0-3da8dee9bf3b.png" alt="Custom Influencer 2" class="w-full rounded-lg mb-4 h-48 object-cover">
                         <p class="font-medium text-center">Influencer Style 2</p>
                     </div>
-                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4">
-                        <img src="public/lovable-uploads/c5381bd5-084d-44ec-a4d1-32fa67069574.png" alt="Custom Influencer 3" class="w-full rounded-lg mb-4">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 transform hover:-translate-y-1 transition duration-300">
+                        <img src="public/lovable-uploads/c5381bd5-084d-44ec-a4d1-32fa67069574.png" alt="Custom Influencer 3" class="w-full rounded-lg mb-4 h-48 object-cover">
                         <p class="font-medium text-center">Influencer Style 3</p>
                     </div>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div class="video-placeholder h-48 rounded-lg">
-                        <p class="text-center">Influencer Video 1</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 fade-in" style="animation-delay: 0.4s">
+                    <div class="video-placeholder h-32 rounded-lg transform hover:-translate-y-1 transition duration-300">
+                        <p class="text-center text-sm">Influencer Video 1</p>
                     </div>
-                    <div class="video-placeholder h-48 rounded-lg">
-                        <p class="text-center">Influencer Video 2</p>
+                    <div class="video-placeholder h-32 rounded-lg transform hover:-translate-y-1 transition duration-300">
+                        <p class="text-center text-sm">Influencer Video 2</p>
                     </div>
-                    <div class="video-placeholder h-48 rounded-lg">
-                        <p class="text-center">Influencer Video 3</p>
+                    <div class="video-placeholder h-32 rounded-lg transform hover:-translate-y-1 transition duration-300">
+                        <p class="text-center text-sm">Influencer Video 3</p>
                     </div>
-                    <div class="video-placeholder h-48 rounded-lg">
-                        <p class="text-center">Influencer Video 4</p>
+                    <div class="video-placeholder h-32 rounded-lg transform hover:-translate-y-1 transition duration-300">
+                        <p class="text-center text-sm">Influencer Video 4</p>
                     </div>
                 </div>
             </div>
@@ -457,9 +530,9 @@
     <!-- CTA Section -->
     <section class="gradient-bg text-white py-16">
         <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl md:text-4xl font-heading font-bold mb-8">Ready to Transform Your Product Marketing?</h2>
-            <div class="flex flex-col md:flex-row justify-center gap-6">
-                <a href="#" class="px-8 py-4 bg-white text-primary-600 font-bold rounded-full hover:bg-gray-100 transition-all shadow-lg text-lg">
+            <h2 class="text-3xl md:text-4xl font-heading font-bold mb-8 fade-in">Ready to Transform Your Product Marketing?</h2>
+            <div class="flex flex-col md:flex-row justify-center gap-6 fade-in" style="animation-delay: 0.2s">
+                <a href="#" class="px-8 py-4 bg-white text-primary-600 font-bold rounded-full hover:bg-gray-100 transition-all shadow-lg text-lg button-shine">
                     Go To Platform
                 </a>
                 <a href="#" class="px-8 py-4 border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-primary-600 transition-all text-lg">
@@ -669,6 +742,26 @@
             } else {
                 console.log('User is not authenticated');
             }
+            
+            // Add animation on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+            
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
         });
 
         // Mobile menu toggle
