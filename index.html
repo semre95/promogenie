@@ -191,6 +191,26 @@
         .gallery-image:hover {
             transform: scale(1.05);
         }
+        
+        /* Ensure images are fully visible */
+        .full-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        /* Ensure consistent image heights */
+        .fixed-height-sm {
+            height: 200px;
+        }
+        
+        .fixed-height-md {
+            height: 300px;
+        }
+        
+        .fixed-height-lg {
+            height: 400px;
+        }
     </style>
 </head>
 
@@ -250,7 +270,7 @@
                 </div>
                 <div class="md:w-1/2">
                     <div class="bg-white p-6 rounded-xl shadow-2xl scale-in">
-                        <img src="public/lovable-uploads/02292c9e-d249-4d0c-8923-6e0d87d32456.png" alt="Teddy Bear" class="w-full rounded-lg">
+                        <img src="public/lovable-uploads/02292c9e-d249-4d0c-8923-6e0d87d32456.png" alt="Teddy Bear" class="w-full h-80 object-contain rounded-lg">
                     </div>
                 </div>
             </div>
@@ -262,14 +282,14 @@
         <div class="container mx-auto px-4">
             <h2 class="text-4xl font-heading font-bold text-center mb-16 fade-in">How It Works</h2>
             
-            <div class="max-w-6xl mx-auto">
+            <div class="max-w-7xl mx-auto">
                 <!-- Horizontal Steps Layout -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
                     <!-- Step 1 -->
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden p-6 fade-in" style="animation-delay: 0.2s">
                         <h3 class="text-2xl font-semibold mb-4 text-center">1. Upload your product image</h3>
-                        <div class="aspect-square flex items-center justify-center bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden mb-4">
-                            <img src="public/lovable-uploads/02292c9e-d249-4d0c-8923-6e0d87d32456.png" alt="Teddy Bear Product" class="w-full h-auto max-h-48 object-contain">
+                        <div class="flex items-center justify-center bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden p-4">
+                            <img src="public/lovable-uploads/02292c9e-d249-4d0c-8923-6e0d87d32456.png" alt="Teddy Bear Product" class="w-full h-64 object-contain">
                         </div>
                     </div>
                     
@@ -290,16 +310,16 @@
                     <!-- Step 2 -->
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden p-6 fade-in" style="animation-delay: 0.4s">
                         <h3 class="text-2xl font-semibold mb-4 text-center">2. Our AI generates multiple variations</h3>
-                        <div class="grid grid-cols-3 gap-2">
-                            <img src="public/lovable-uploads/15d02f10-f13f-40eb-84d8-16694c9223da.png" alt="Generated Teddy Bear 1" class="w-full h-auto rounded-lg">
-                            <img src="public/lovable-uploads/f3ec1d83-7766-4df0-a241-420e5bde6de7.png" alt="Generated Teddy Bear 2" class="w-full h-auto rounded-lg">
-                            <img src="public/lovable-uploads/1823caea-87a1-4d43-b008-9e63afe450c2.png" alt="Generated Teddy Bear 3" class="w-full h-auto rounded-lg">
+                        <div class="grid grid-cols-3 gap-2 h-64">
+                            <img src="public/lovable-uploads/15d02f10-f13f-40eb-84d8-16694c9223da.png" alt="Generated Teddy Bear 1" class="w-full h-full object-contain rounded-lg">
+                            <img src="public/lovable-uploads/f3ec1d83-7766-4df0-a241-420e5bde6de7.png" alt="Generated Teddy Bear 2" class="w-full h-full object-contain rounded-lg">
+                            <img src="public/lovable-uploads/1823caea-87a1-4d43-b008-9e63afe450c2.png" alt="Generated Teddy Bear 3" class="w-full h-full object-contain rounded-lg">
                         </div>
                     </div>
                 </div>
                 
                 <!-- Step 3 -->
-                <div class="max-w-4xl mx-auto">
+                <div class="max-w-6xl mx-auto">
                     <div class="flex flex-col md:flex-row gap-8 items-center bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 fade-in" style="animation-delay: 0.6s">
                         <div class="md:w-1/2">
                             <h3 class="text-2xl font-semibold mb-4 text-center md:text-left">3. Create product videos</h3>
@@ -308,8 +328,8 @@
                             </p>
                         </div>
                         <div class="md:w-1/2 grid grid-cols-2 gap-4">
-                            <img src="public/lovable-uploads/03b93097-1a51-4180-bc3c-68b17391ec3a.png" alt="Teddy Bear Product" class="w-full h-auto rounded-lg">
-                            <div class="video-placeholder rounded-lg flex items-center justify-center">
+                            <img src="public/lovable-uploads/d6220d68-ed53-4b09-bdd2-83bc044794fd.png" alt="Model Image" class="w-full h-64 object-cover rounded-lg">
+                            <div class="video-placeholder rounded-lg flex items-center justify-center h-64">
                                 <div class="text-center">
                                     <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
@@ -331,43 +351,29 @@
             <h2 class="text-4xl font-heading font-bold text-center mb-16 fade-in">Combine Models With Your Products</h2>
             
             <div class="max-w-6xl mx-auto">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
-                    <!-- Example 1 -->
-                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden p-6 fade-in" style="animation-delay: 0.2s">
-                        <h3 class="text-2xl font-semibold mb-6">Example 1: Model with Glasses</h3>
-                        
-                        <div class="grid grid-cols-2 gap-4 mb-8">
-                            <div>
-                                <p class="font-medium mb-2">Product Image:</p>
-                                <img src="public/lovable-uploads/0dfbbe62-da6e-471c-ba5c-32830c5fff18.png" alt="Glasses" class="w-full rounded-lg h-40 object-contain bg-gray-50 dark:bg-gray-700">
-                            </div>
-                            <div>
-                                <p class="font-medium mb-2">Model Image:</p>
-                                <img src="public/lovable-uploads/d6220d68-ed53-4b09-bdd2-83bc044794fd.png" alt="Redhead Model" class="w-full rounded-lg h-40 object-cover">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden p-8 fade-in" style="animation-delay: 0.2s">
+                    <h3 class="text-3xl font-semibold mb-8 text-center">Example: Model with Teddy Bear</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                        <div>
+                            <p class="font-medium mb-4 text-xl">Product Image:</p>
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center justify-center h-80">
+                                <img src="public/lovable-uploads/ba076d31-54aa-4411-a1b8-f8fa563964f4.png" alt="Teddy Bear" class="max-h-full w-auto object-contain">
                             </div>
                         </div>
-                        
-                        <p class="font-medium mb-2">Output:</p>
-                        <img src="public/lovable-uploads/58e4eba3-f397-4670-8a4b-a137ad4b44bb.png" alt="Model with Glasses" class="w-full rounded-lg">
+                        <div>
+                            <p class="font-medium mb-4 text-xl">Model Image:</p>
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center justify-center h-80">
+                                <img src="public/lovable-uploads/1372bf23-6385-42e4-aab8-24f2abbd1958.png" alt="Redhead Model" class="max-h-full w-auto object-contain">
+                            </div>
+                        </div>
                     </div>
                     
-                    <!-- Example 2 -->
-                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden p-6 fade-in" style="animation-delay: 0.4s">
-                        <h3 class="text-2xl font-semibold mb-6">Example 2: Model with Teddy Bear</h3>
-                        
-                        <div class="grid grid-cols-2 gap-4 mb-8">
-                            <div>
-                                <p class="font-medium mb-2">Product Image:</p>
-                                <img src="public/lovable-uploads/02292c9e-d249-4d0c-8923-6e0d87d32456.png" alt="Teddy Bear" class="w-full rounded-lg h-40 object-contain bg-gray-50 dark:bg-gray-700">
-                            </div>
-                            <div>
-                                <p class="font-medium mb-2">Model Image:</p>
-                                <img src="public/lovable-uploads/d6220d68-ed53-4b09-bdd2-83bc044794fd.png" alt="Redhead Model" class="w-full rounded-lg h-40 object-cover">
-                            </div>
+                    <p class="font-medium mb-4 text-xl text-center">Output:</p>
+                    <div class="flex justify-center">
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg max-w-2xl">
+                            <img src="public/lovable-uploads/49332377-af15-44b9-bda5-029a6040ce83.png" alt="Model with Teddy Bear" class="w-full h-auto rounded-lg">
                         </div>
-                        
-                        <p class="font-medium mb-2">Output:</p>
-                        <img src="public/lovable-uploads/6a0edc39-1f9e-4d1e-8148-e8752f40e20b.png" alt="Model with Teddy Bear" class="w-full rounded-lg">
                     </div>
                 </div>
             </div>
@@ -380,120 +386,120 @@
             <h2 class="text-4xl font-heading font-bold text-center mb-6 fade-in">Try It Yourself</h2>
             <p class="text-xl text-center mb-16 max-w-3xl mx-auto fade-in" style="animation-delay: 0.2s">Choose your product and model to see what our AI can create for you.</p>
             
-            <div class="max-w-6xl mx-auto">
-                <div class="mb-20 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 fade-in" style="animation-delay: 0.3s">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-20 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 fade-in" style="animation-delay: 0.3s">
                     <h3 class="text-2xl font-semibold mb-8 text-center">Select a Product to use with Kleopatra</h3>
                     
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
                         <!-- Product Selection Options -->
                         <div 
-                            class="product-option cursor-pointer p-3 bg-gray-50 dark:bg-gray-700 rounded-lg flex flex-col items-center"
+                            class="product-option cursor-pointer p-4 bg-gray-50 dark:bg-gray-700 rounded-lg flex flex-col items-center"
                             :class="{ 'selected': selectedProduct === 'teddybear' }"
                             @click="selectedProduct = 'teddybear'"
                         >
-                            <img src="public/lovable-uploads/02292c9e-d249-4d0c-8923-6e0d87d32456.png" alt="Teddy Bear" class="h-32 object-contain mb-2">
+                            <img src="public/lovable-uploads/ba076d31-54aa-4411-a1b8-f8fa563964f4.png" alt="Teddy Bear" class="h-40 object-contain mb-4">
                             <p class="font-medium text-center">Teddy Bear</p>
                         </div>
                         
                         <div 
-                            class="product-option cursor-pointer p-3 bg-gray-50 dark:bg-gray-700 rounded-lg flex flex-col items-center"
+                            class="product-option cursor-pointer p-4 bg-gray-50 dark:bg-gray-700 rounded-lg flex flex-col items-center"
                             :class="{ 'selected': selectedProduct === 'couch' }"
                             @click="selectedProduct = 'couch'"
                         >
-                            <img src="public/lovable-uploads/c5b21235-26e7-4ec6-9c05-725c5cba0658.png" alt="Couch" class="h-32 object-contain mb-2">
+                            <img src="public/lovable-uploads/c5b21235-26e7-4ec6-9c05-725c5cba0658.png" alt="Couch" class="h-40 object-contain mb-4">
                             <p class="font-medium text-center">Couch</p>
                         </div>
                         
                         <div 
-                            class="product-option cursor-pointer p-3 bg-gray-50 dark:bg-gray-700 rounded-lg flex flex-col items-center"
+                            class="product-option cursor-pointer p-4 bg-gray-50 dark:bg-gray-700 rounded-lg flex flex-col items-center"
                             :class="{ 'selected': selectedProduct === 'glasses' }"
                             @click="selectedProduct = 'glasses'"
                         >
-                            <img src="public/lovable-uploads/4ef15c5b-968f-4987-879f-eefc81a9dd67.png" alt="Glasses" class="h-32 object-contain mb-2">
+                            <img src="public/lovable-uploads/0dfbbe62-da6e-471c-ba5c-32830c5fff18.png" alt="Glasses" class="h-40 object-contain mb-4">
                             <p class="font-medium text-center">Glasses</p>
                         </div>
                         
                         <div 
-                            class="product-option cursor-pointer p-3 bg-gray-50 dark:bg-gray-700 rounded-lg flex flex-col items-center"
+                            class="product-option cursor-pointer p-4 bg-gray-50 dark:bg-gray-700 rounded-lg flex flex-col items-center"
                             :class="{ 'selected': selectedProduct === 'kimono' }"
                             @click="selectedProduct = 'kimono'"
                         >
-                            <img src="public/lovable-uploads/19d7666e-59c1-4ce7-acee-ad843acd56c7.png" alt="Kimono" class="h-32 object-contain mb-2">
+                            <img src="public/lovable-uploads/19d7666e-59c1-4ce7-acee-ad843acd56c7.png" alt="Kimono" class="h-40 object-contain mb-4">
                             <p class="font-medium text-center">Kimono</p>
                         </div>
                     </div>
                     
-                    <div class="flex flex-col md:flex-row gap-8 mb-12">
-                        <div class="md:w-1/3">
+                    <div class="flex flex-col lg:flex-row gap-8 mb-12">
+                        <div class="lg:w-1/3">
                             <div class="mb-6">
-                                <p class="font-medium mb-3">Selected Product:</p>
-                                <div x-show="selectedProduct === 'teddybear'" class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center justify-center scale-in">
-                                    <img src="public/lovable-uploads/02292c9e-d249-4d0c-8923-6e0d87d32456.png" alt="Teddy Bear" class="max-h-40 object-contain">
+                                <p class="font-medium mb-3 text-lg">Selected Product:</p>
+                                <div x-show="selectedProduct === 'teddybear'" class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg flex items-center justify-center h-64 scale-in">
+                                    <img src="public/lovable-uploads/ba076d31-54aa-4411-a1b8-f8fa563964f4.png" alt="Teddy Bear" class="max-h-full object-contain">
                                 </div>
-                                <div x-show="selectedProduct === 'couch'" class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center justify-center scale-in">
-                                    <img src="public/lovable-uploads/c5b21235-26e7-4ec6-9c05-725c5cba0658.png" alt="Couch" class="max-h-40 object-contain">
+                                <div x-show="selectedProduct === 'couch'" class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg flex items-center justify-center h-64 scale-in">
+                                    <img src="public/lovable-uploads/c5b21235-26e7-4ec6-9c05-725c5cba0658.png" alt="Couch" class="max-h-full object-contain">
                                 </div>
-                                <div x-show="selectedProduct === 'glasses'" class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center justify-center scale-in">
-                                    <img src="public/lovable-uploads/4ef15c5b-968f-4987-879f-eefc81a9dd67.png" alt="Glasses" class="max-h-40 object-contain">
+                                <div x-show="selectedProduct === 'glasses'" class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg flex items-center justify-center h-64 scale-in">
+                                    <img src="public/lovable-uploads/0dfbbe62-da6e-471c-ba5c-32830c5fff18.png" alt="Glasses" class="max-h-full object-contain">
                                 </div>
-                                <div x-show="selectedProduct === 'kimono'" class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center justify-center scale-in">
-                                    <img src="public/lovable-uploads/19d7666e-59c1-4ce7-acee-ad843acd56c7.png" alt="Kimono" class="max-h-40 object-contain">
+                                <div x-show="selectedProduct === 'kimono'" class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg flex items-center justify-center h-64 scale-in">
+                                    <img src="public/lovable-uploads/19d7666e-59c1-4ce7-acee-ad843acd56c7.png" alt="Kimono" class="max-h-full object-contain">
                                 </div>
                             </div>
                             
                             <div>
-                                <p class="font-medium mb-3">Model Image:</p>
-                                <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg flex items-center justify-center">
-                                    <img src="public/lovable-uploads/36967fab-0bce-4c1a-87b4-9744dadde0ed.png" alt="Kleopatra" class="max-h-40 object-contain">
+                                <p class="font-medium mb-3 text-lg">Model Image:</p>
+                                <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg flex items-center justify-center h-64">
+                                    <img src="public/lovable-uploads/2a5ccf1b-b68e-45b2-9823-265819cbc2fe.png" alt="Kleopatra" class="max-h-full object-contain">
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="md:w-2/3">
-                            <p class="font-medium mb-4">Generated Images:</p>
+                        <div class="lg:w-2/3">
+                            <p class="font-medium mb-4 text-lg">Generated Images:</p>
                             
                             <!-- Teddy Bear Generated Images -->
                             <div x-show="selectedProduct === 'teddybear'" class="grid grid-cols-2 gap-4 mb-8 scale-in">
-                                <img src="public/lovable-uploads/7628915e-2da8-4dcc-a0e2-39c1cae7af96.png" alt="Kleo with Teddy 1" class="w-full rounded-lg h-48 object-cover gallery-image">
-                                <img src="public/lovable-uploads/3c576178-98bc-4476-837f-65f74fd98f53.png" alt="Kleo with Teddy 2" class="w-full rounded-lg h-48 object-cover gallery-image">
-                                <img src="public/lovable-uploads/10173a56-b74c-44b1-b935-fe53d3952e77.png" alt="Kleo with Teddy 3" class="w-full rounded-lg h-48 object-cover gallery-image">
-                                <img src="public/lovable-uploads/d8a4d974-257f-425a-b222-147ba51ad394.png" alt="Kleo with Teddy 4" class="w-full rounded-lg h-48 object-cover gallery-image">
+                                <img src="public/lovable-uploads/1e58ddd9-1d2d-41f5-9dc9-53e663f91e88.png" alt="Kleo with Teddy 1" class="w-full rounded-lg h-64 object-cover gallery-image">
+                                <img src="public/lovable-uploads/3c576178-98bc-4476-837f-65f74fd98f53.png" alt="Kleo with Teddy 2" class="w-full rounded-lg h-64 object-cover gallery-image">
+                                <img src="public/lovable-uploads/10173a56-b74c-44b1-b935-fe53d3952e77.png" alt="Kleo with Teddy 3" class="w-full rounded-lg h-64 object-cover gallery-image">
+                                <img src="public/lovable-uploads/d8a4d974-257f-425a-b222-147ba51ad394.png" alt="Kleo with Teddy 4" class="w-full rounded-lg h-64 object-cover gallery-image">
                             </div>
                             
                             <!-- Couch Generated Images -->
                             <div x-show="selectedProduct === 'couch'" class="grid grid-cols-2 gap-4 mb-8 scale-in">
-                                <img src="public/lovable-uploads/69796e9d-44ef-4efe-9406-2b4a4b66a865.png" alt="Kleo with Couch 1" class="w-full rounded-lg h-48 object-cover gallery-image">
-                                <img src="public/lovable-uploads/4b82d678-c5c1-444d-b0a7-c5e7aa093528.png" alt="Kleo with Couch 2" class="w-full rounded-lg h-48 object-cover gallery-image">
-                                <img src="public/lovable-uploads/3e142cb9-cdc5-4ddf-a633-4f3c75926475.png" alt="Kleo with Couch 3" class="w-full rounded-lg h-48 object-cover gallery-image">
-                                <img src="public/lovable-uploads/9f13fda1-e63c-4920-a307-37f7879a3237.png" alt="Kleo with Couch 4" class="w-full rounded-lg h-48 object-cover gallery-image">
+                                <img src="public/lovable-uploads/69796e9d-44ef-4efe-9406-2b4a4b66a865.png" alt="Kleo with Couch 1" class="w-full rounded-lg h-64 object-cover gallery-image">
+                                <img src="public/lovable-uploads/4b82d678-c5c1-444d-b0a7-c5e7aa093528.png" alt="Kleo with Couch 2" class="w-full rounded-lg h-64 object-cover gallery-image">
+                                <img src="public/lovable-uploads/3e142cb9-cdc5-4ddf-a633-4f3c75926475.png" alt="Kleo with Couch 3" class="w-full rounded-lg h-64 object-cover gallery-image">
+                                <img src="public/lovable-uploads/9f13fda1-e63c-4920-a307-37f7879a3237.png" alt="Kleo with Couch 4" class="w-full rounded-lg h-64 object-cover gallery-image">
                             </div>
                             
                             <!-- Glasses Generated Images -->
                             <div x-show="selectedProduct === 'glasses'" class="grid grid-cols-2 gap-4 mb-8 scale-in">
-                                <img src="public/lovable-uploads/a28599ab-b11b-4b20-b842-6c712a39fe2d.png" alt="Kleo with Glasses 1" class="w-full rounded-lg h-48 object-cover gallery-image">
-                                <img src="public/lovable-uploads/24712ee3-2f4c-4976-a3ea-d2aef5f91472.png" alt="Kleo with Glasses 2" class="w-full rounded-lg h-48 object-cover gallery-image">
-                                <img src="public/lovable-uploads/d4d75372-67ba-4421-bd33-88a574294082.png" alt="Kleo with Glasses 3" class="w-full rounded-lg h-48 object-cover gallery-image">
-                                <img src="public/lovable-uploads/09f44d1a-fff2-4f3a-97ec-94751831f09c.png" alt="Kleo with Glasses 4" class="w-full rounded-lg h-48 object-cover gallery-image">
+                                <img src="public/lovable-uploads/a28599ab-b11b-4b20-b842-6c712a39fe2d.png" alt="Kleo with Glasses 1" class="w-full rounded-lg h-64 object-cover gallery-image">
+                                <img src="public/lovable-uploads/24712ee3-2f4c-4976-a3ea-d2aef5f91472.png" alt="Kleo with Glasses 2" class="w-full rounded-lg h-64 object-cover gallery-image">
+                                <img src="public/lovable-uploads/d4d75372-67ba-4421-bd33-88a574294082.png" alt="Kleo with Glasses 3" class="w-full rounded-lg h-64 object-cover gallery-image">
+                                <img src="public/lovable-uploads/09f44d1a-fff2-4f3a-97ec-94751831f09c.png" alt="Kleo with Glasses 4" class="w-full rounded-lg h-64 object-cover gallery-image">
                             </div>
                             
                             <!-- Kimono Generated Images -->
                             <div x-show="selectedProduct === 'kimono'" class="grid grid-cols-2 gap-4 mb-8 scale-in">
-                                <img src="public/lovable-uploads/f2869308-7bea-4da8-b6f0-a3775bcf9f81.png" alt="Kleo with Kimono 1" class="w-full rounded-lg h-48 object-cover gallery-image">
-                                <img src="public/lovable-uploads/647cd7e3-f485-41e5-95f3-02534353e6db.png" alt="Kleo with Kimono 2" class="w-full rounded-lg h-48 object-cover gallery-image">
-                                <img src="public/lovable-uploads/3e351c1c-aa43-4414-ae77-2cdd510d898e.png" alt="Kleo with Kimono 3" class="w-full rounded-lg h-48 object-cover gallery-image">
-                                <img src="public/lovable-uploads/19d7666e-59c1-4ce7-acee-ad843acd56c7.png" alt="Kleo with Kimono 4" class="w-full rounded-lg h-48 object-cover gallery-image">
+                                <img src="public/lovable-uploads/f2869308-7bea-4da8-b6f0-a3775bcf9f81.png" alt="Kleo with Kimono 1" class="w-full rounded-lg h-64 object-cover gallery-image">
+                                <img src="public/lovable-uploads/647cd7e3-f485-41e5-95f3-02534353e6db.png" alt="Kleo with Kimono 2" class="w-full rounded-lg h-64 object-cover gallery-image">
+                                <img src="public/lovable-uploads/3e351c1c-aa43-4414-ae77-2cdd510d898e.png" alt="Kleo with Kimono 3" class="w-full rounded-lg h-64 object-cover gallery-image">
+                                <img src="public/lovable-uploads/51676dc0-ff4c-4a7a-a646-471f2cc64955.png" alt="Kleo with Kimono 4" class="w-full rounded-lg h-64 object-cover gallery-image">
                             </div>
                         </div>
                     </div>
                     
-                    <p class="font-medium mb-4">Generated Video:</p>
-                    <div class="video-placeholder h-64 rounded-lg">
+                    <p class="font-medium mb-4 text-lg">Generated Video:</p>
+                    <div class="video-placeholder h-96 rounded-lg">
                         <div class="text-center">
-                            <svg class="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <svg class="w-20 h-20 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            <p class="text-lg font-semibold">
+                            <p class="text-2xl font-semibold">
                                 <span x-show="selectedProduct === 'teddybear'">Kleo with Teddy Bear Video</span>
                                 <span x-show="selectedProduct === 'couch'">Kleo with Couch Video</span>
                                 <span x-show="selectedProduct === 'glasses'">Kleo with Glasses Video</span>
@@ -512,7 +518,7 @@
             <h2 class="text-4xl font-heading font-bold text-center mb-6 fade-in">Add Voice & Lipsync</h2>
             <p class="text-xl text-center mb-12 max-w-3xl mx-auto fade-in" style="animation-delay: 0.2s">After generating your product videos, add voice to have your virtual models speak about your products!</p>
             
-            <div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 fade-in" style="animation-delay: 0.3s">
+            <div class="max-w-5xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 fade-in" style="animation-delay: 0.3s">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                     <div>
                         <h3 class="text-2xl font-semibold mb-4">Voice & Lipsync Demo</h3>
@@ -534,12 +540,12 @@
                             </div>
                         </div>
                         
-                        <button class="px-6 py-3 bg-primary-600 text-white font-bold rounded-lg hover:bg-primary-700 transition-all button-shine">
+                        <button class="w-full px-6 py-3 bg-primary-600 text-white font-bold rounded-lg hover:bg-primary-700 transition-all button-shine">
                             Generate Video with Voice
                         </button>
                     </div>
                     
-                    <div class="video-placeholder h-64 rounded-lg">
+                    <div class="video-placeholder h-80 rounded-lg">
                         <div class="text-center">
                             <svg class="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
@@ -561,30 +567,30 @@
             <div class="max-w-6xl mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 fade-in" style="animation-delay: 0.2s">
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 transform hover:-translate-y-1 transition duration-300">
-                        <img src="public/lovable-uploads/7628915e-2da8-4dcc-a0e2-39c1cae7af96.png" alt="Custom Influencer 1" class="w-full rounded-lg mb-4 h-48 object-cover">
+                        <img src="public/lovable-uploads/7628915e-2da8-4dcc-a0e2-39c1cae7af96.png" alt="Custom Influencer 1" class="w-full h-72 object-cover rounded-lg mb-4">
                         <p class="font-medium text-center">Influencer Style 1</p>
                     </div>
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 transform hover:-translate-y-1 transition duration-300">
-                        <img src="public/lovable-uploads/3c576178-98bc-4476-837f-65f74fd98f53.png" alt="Custom Influencer 2" class="w-full rounded-lg mb-4 h-48 object-cover">
+                        <img src="public/lovable-uploads/3c576178-98bc-4476-837f-65f74fd98f53.png" alt="Custom Influencer 2" class="w-full h-72 object-cover rounded-lg mb-4">
                         <p class="font-medium text-center">Influencer Style 2</p>
                     </div>
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 transform hover:-translate-y-1 transition duration-300">
-                        <img src="public/lovable-uploads/10173a56-b74c-44b1-b935-fe53d3952e77.png" alt="Custom Influencer 3" class="w-full rounded-lg mb-4 h-48 object-cover">
+                        <img src="public/lovable-uploads/10173a56-b74c-44b1-b935-fe53d3952e77.png" alt="Custom Influencer 3" class="w-full h-72 object-cover rounded-lg mb-4">
                         <p class="font-medium text-center">Influencer Style 3</p>
                     </div>
                 </div>
                 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 fade-in" style="animation-delay: 0.4s">
-                    <div class="video-placeholder h-32 rounded-lg transform hover:-translate-y-1 transition duration-300">
+                    <div class="video-placeholder h-40 rounded-lg transform hover:-translate-y-1 transition duration-300">
                         <p class="text-center text-sm">Influencer Video 1</p>
                     </div>
-                    <div class="video-placeholder h-32 rounded-lg transform hover:-translate-y-1 transition duration-300">
+                    <div class="video-placeholder h-40 rounded-lg transform hover:-translate-y-1 transition duration-300">
                         <p class="text-center text-sm">Influencer Video 2</p>
                     </div>
-                    <div class="video-placeholder h-32 rounded-lg transform hover:-translate-y-1 transition duration-300">
+                    <div class="video-placeholder h-40 rounded-lg transform hover:-translate-y-1 transition duration-300">
                         <p class="text-center text-sm">Influencer Video 3</p>
                     </div>
-                    <div class="video-placeholder h-32 rounded-lg transform hover:-translate-y-1 transition duration-300">
+                    <div class="video-placeholder h-40 rounded-lg transform hover:-translate-y-1 transition duration-300">
                         <p class="text-center text-sm">Influencer Video 4</p>
                     </div>
                 </div>
