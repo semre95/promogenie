@@ -5,6 +5,7 @@ const sleep = (seconds: number) => new Promise(resolve => setTimeout(resolve, se
 // Encryption function (placeholder - replace with actual implementation)
 const encrypt = async (password: string): Promise<string> => {
   // In a real implementation, this would use a proper encryption algorithm
+  // For now, we'll just return the password to make the login function work
   return password;
 };
 
